@@ -44,6 +44,7 @@ public class HuntSpec {
     assertTrue(hunt1.hashCode() == hunt2.hashCode());
   }
 
+  @SuppressWarnings("unlikely-arg-type")
   @Test
   void huntsAreNotEqualToOtherKindsOfThings() {
     hunt1._id = FAKE_ID_STRING_1;

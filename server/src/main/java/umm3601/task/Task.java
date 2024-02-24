@@ -1,12 +1,10 @@
-package umm3601.hunt;
-
-import java.util.ArrayList;
+package umm3601.task;
 
 import org.mongojack.Id;
 import org.mongojack.ObjectId;
 
 @SuppressWarnings({ "VisibilityModifier" })
-public class Hunt {
+public class Task {
 
   @ObjectId
   @Id
@@ -14,17 +12,15 @@ public class Hunt {
   @SuppressWarnings({ "MemberName" })
   public String _id;
 
-  public String hostid;
-  public String title;
   public String description;
-  public ArrayList<String> tasks;
+  public String huntid;
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof Hunt)) {
+    if (!(obj instanceof Task)) {
       return false;
     }
-    Hunt other = (Hunt) obj;
+    Task other = (Task) obj;
     return _id.equals(other._id);
   }
 
