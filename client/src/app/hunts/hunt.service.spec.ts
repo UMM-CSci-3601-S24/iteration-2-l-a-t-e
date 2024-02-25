@@ -64,7 +64,7 @@ describe('HuntService', () => {
 
         expect(mockedMethod)
           .withContext('talks to the correct endpoint')
-          .toHaveBeenCalledWith('api/hunts', { params: new HttpParams() });
+          .toHaveBeenCalledWith(huntService.huntUrl, { params: new HttpParams() });
       });
     }));
   });
