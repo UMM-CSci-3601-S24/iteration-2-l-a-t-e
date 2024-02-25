@@ -5,13 +5,18 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
+import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
@@ -45,12 +50,13 @@ public HuntController(MongoDatabase database) {
   UuidRepresentation.STANDARD);
 }
 
+// Might not needed.
 public void getHunt(Context ctx) {
   String id = ctx.pathParam("id");
   Hunt hunt;
 
   try {
-    hunt = huntCollection.find(eq("_id", new ObjectId(.id))).first();
+    hunt = huntCollection.find(eq("_id", new ObjectId(id))).first();
 
   } catch (IllegalArgumentException e) {
     throw new BadRequestResponse("The requested hunt id wasn't a legal Mongo Object ID.");
@@ -71,7 +77,7 @@ public void getHunt(Context ctx) {
    */
 
 public void getAllHunts(Context ctx) {
-  Bson combinedFilter = constructFilter(ctx);
+  Bson combinedFilter = constructFilter(ctx); // Not sure if needed.
   Bson sortingOrder = constructSortingOrder(ctx);
 
   ArrayList<Hunt> matchingHunts = huntCollection
@@ -79,7 +85,7 @@ public void getAllHunts(Context ctx) {
     .sort(sortingOrder)
     .into(new ArrayList<>());
 
-  // Set the JSON body of the response to be the list of users returned by the database.
+  // Set the JSON body of the response to be the list of todos returned by the database.
   // According to the Javalin documentation (https://javalin.io/documentation#context),
   // this calls result(jsonString), and also sets content type to json
   ctx.json(matchingHunts);
@@ -87,4 +93,51 @@ public void getAllHunts(Context ctx) {
   // Explicitly set the context status to OK
   ctx.status(HttpStatus.OK);
 }
+
+// Not sure if needed.
+
+/**
+ * @param ctx
+ * @return
+ *
+ */
+
+ private Bson constructFilter(Context ctx) {
+  List<Bson> filters = new ArrayList<>();
+  // starts with an empty list of filer.
+
+  if (ctx.queryParamMap().containsKey(TITLE_KEY)) {
+    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TITLE_KEY)), Pattern.CASE_INSENSITIVE);
+    filters.add(regex(TITLE_KEY, pattern));
+    }
+
+  if (ctx.queryParamMap().containsKey(DESCRIPTION_KEY)) {
+  Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(DESCRIPTION_KEY)), Pattern.CASE_INSENSITIVE);
+  filters.add(regex(DESCRIPTION_KEY, pattern));
+    }
+
+  if (ctx.queryParamMap().containsKey(TASK_KEY)) {
+    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASK_KEY)), Pattern.CASE_INSENSITIVE);
+    filters.add(regex(TASK_KEY, pattern));
+  }
+
+  // Combine list of filters into a single filtering document.
+  Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
+
+  return combinedFilter;
+  }
+
+  /**
+   *
+   * @param ctx
+   * @return
+   *
+   */
+
+   private Bson constructSortingOrder(Context ctx) {
+    String sortBy = Objects.requireNonNullElse(ctx.queryParam("sortby"), "title");
+    String sortOrder = Objects.requireNonNullElse(ctx.queryParam("sortorder"), "asc");
+    Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
+    return sortingOrder;
+  }
 }
