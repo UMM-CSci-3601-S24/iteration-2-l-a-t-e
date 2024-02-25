@@ -140,4 +140,20 @@ public void getAllHunts(Context ctx) {
     Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
     return sortingOrder;
   }
+
+  /**
+   *
+   * @param server // The javalin server instance
+   * @param HuntController The controller handles the hunt endpoints
+   *
+   */
+
+  public void addRoutes(Javalin server) {
+
+    // get the specified Hunt
+    server.get(API_HUNTS_BY_ID, this::getHunt);
+    // List hunts, filtered using query parameters
+    server.get(API_HUNTS, this::getAllHunts);
+  }
+
 }
