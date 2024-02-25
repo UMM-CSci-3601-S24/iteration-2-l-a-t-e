@@ -30,6 +30,7 @@ public class HuntController implements Controller {
   private static final String API_HUNTS = "/api/hunts";
   private static final String API_HUNTS_BY_ID = "/api/hunts/{id}";
 
+  static final String HOST_KEY = "hostid";
   static final String TITLE_KEY = "title";
   static final String DESCRIPTION_KEY = "description";
   static final String TASK_KEY = "tasks";
@@ -105,6 +106,11 @@ public void getAllHunts(Context ctx) {
  private Bson constructFilter(Context ctx) {
   List<Bson> filters = new ArrayList<>();
   // starts with an empty list of filer.
+
+  if (ctx.queryParamMap().containsKey(HOST_KEY)) {
+    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(HOST_KEY)), Pattern.CASE_INSENSITIVE);
+    filters.add(regex(HOST_KEY, pattern));
+    }
 
   if (ctx.queryParamMap().containsKey(TITLE_KEY)) {
     Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TITLE_KEY)), Pattern.CASE_INSENSITIVE);

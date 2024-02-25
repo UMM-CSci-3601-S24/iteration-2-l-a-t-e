@@ -95,7 +95,7 @@ class HuntControllerSpec {
       MongoClientSettings.builder()
         .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
         .build());
-  db = mongoClient.getDatabase("test");
+    db = mongoClient.getDatabase("test");
   }
 
   @AfterAll
