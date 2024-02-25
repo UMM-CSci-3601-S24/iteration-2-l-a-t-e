@@ -116,16 +116,19 @@ class HuntControllerSpec {
     List<Document> testHunts = new ArrayList<>();
     testHunts.add(
       new Document()
+          .append("hostid","1234567")
           .append("title","CSCI3601Hunt")
           .append("description","teamAkaHunt")
           .append("tasks","take picture of science building"));
     testHunts.add(
       new Document()
+          .append("hostid","1234567")
           .append("title","KKHunt")
           .append("description","for event test")
           .append("tasks","take picture of library building"));
     testHunts.add(
       new Document()
+          .append("hostid","1234567")
           .append("title","NicHunt")
           .append("description","for even test 2")
           .append("tasks","take picture of classroom"));
@@ -133,6 +136,7 @@ class HuntControllerSpec {
     KKhuntId = new ObjectId();
     Document KK = new Document()
         .append("_id", KKhuntId)
+        .append("hostid","1234567")
         .append("title", "KKTestHunt")
         .append("description", "This is test hunt for KK")
         .append("tasks", "take picture of dining hall");
