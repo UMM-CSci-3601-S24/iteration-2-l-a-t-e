@@ -30,42 +30,42 @@ describe('HuntService', () => {
       tasks: []
     }
   ];
-let huntService: HuntService;
-let httpClient: HttpClient;
-let httpTestingController: HttpTestingController;
+  let huntService: HuntService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
-beforeEach(() => {
-  // Set up the mock handling of the HTTP requests
-  TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule]
+  beforeEach(() => {
+    // Set up the mock handling of the HTTP requests
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
+
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    huntService = TestBed.inject(HuntService);
   });
 
-  httpClient = TestBed.inject(HttpClient);
-  httpTestingController = TestBed.inject(HttpTestingController);
-  huntService = TestBed.inject(HuntService);
-});
+  afterEach(() => {
+    // After every test, assert that there are no more pending requests.
+    httpTestingController.verify();
+  });
 
-afterEach(() => {
-  // After every test, assert that there are no more pending requests.
-  httpTestingController.verify();
-});
+  describe('When getHunts() is called with no parameters', () => {
 
-describe('When getHunts() is called with no parameters', () => {
+    it('calls `api/hunts`', waitForAsync(() => {
 
-  it('calls `api/hunts`', waitForAsync(() => {
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testHunts));
 
-    const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testHunts));
+      huntService.getHunts().subscribe(() => {
 
-    huntService.getHunts().subscribe(() => {
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
 
-      expect(mockedMethod)
-        .withContext('one call')
-        .toHaveBeenCalledTimes(1);
-
-      expect(mockedMethod)
-        .withContext('talks to the correct endpoint')
-        .toHaveBeenCalledWith('api/hunts', { params: new HttpParams() });
-    });
-  }));
-});
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith('api/hunts', { params: new HttpParams() });
+      });
+    }));
+  });
 });
