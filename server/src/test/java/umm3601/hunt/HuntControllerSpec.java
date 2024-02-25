@@ -1,8 +1,15 @@
 package umm3601.hunt;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.mongodb.MongoClientSettings;
@@ -24,7 +32,9 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import io.javalin.Javalin;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import io.javalin.json.JavalinJackson;
 
 /**
@@ -55,7 +65,7 @@ class HuntControllerSpec {
   private Context ctx;
 
   @Captor
-  private ArgumentCaptor<ArrayList<Hunt>> huntArrayLisCaptor;
+  private ArgumentCaptor<ArrayList<Hunt>> huntArrayListCaptor;
 
   @Captor
   private ArgumentCaptor<Hunt> huntCaptor;
@@ -132,6 +142,39 @@ class HuntControllerSpec {
 
     huntController = new HuntController(db);
   }
+ /**
+  * Test for addRoutes method in HuntController.
+  */
+  @Test // Still failed
+  void addRoutes() {
+    Javalin mockServer = mock(Javalin.class);
+    huntController.addRoutes(mockServer);
+    verify(mockServer, Mockito.atLeast(3)).get(any(), any());
+    verify(mockServer, Mockito.atLeastOnce()).post(any(), any());
+    verify(mockServer, Mockito.atLeastOnce()).delete(any(), any());
+  }
 
+  /**
+   * Test for getAllHunts() in HuntController.
+   */
+  @Test // Still failed
+  void canGetAllHunts() throws IOException {
+    // When something asks the (mocked) context for the queryParamMap,
+    // it will return an empty map (since there are no query params in
+    // this case where we want all users).
+    when(ctx.queryParamMap()).thenReturn(Collections.emptyMap());
 
+    // Ask the huntController to getHunts
+    // (which will ask the context for its queryParamMap)
+    huntController.getAllHunts(ctx);
+
+    verify(ctx).json(huntArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    // Check that the database collection holds the same number of documents
+    // as the size of the captured List<Hunt>
+    assertEquals(
+        db.getCollection("hunts").countDocuments(),
+        huntArrayListCaptor.getValue().size());
+  }
 }
