@@ -44,4 +44,11 @@ public class TaskSpec {
     assertTrue(task1.hashCode() == task2.hashCode());
   }
 
+  @SuppressWarnings("unlikely-arg-type")
+  @Test
+  void tasksAreNotEqualToOtherKindsOfThings() {
+    task1._id = FAKE_ID_STRING_1;
+    // a task is not equal to its id even though id is used for checking equality
+    assertFalse(task1.equals(FAKE_ID_STRING_1));
+  }
 }
