@@ -123,11 +123,6 @@ public void getAllHunts(Context ctx) {
   filters.add(regex(DESCRIPTION_KEY, pattern));
     }
 
-  if (ctx.queryParamMap().containsKey(TASK_KEY)) {
-    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASK_KEY)), Pattern.CASE_INSENSITIVE);
-    filters.add(regex(TASK_KEY, pattern));
-  }
-
   // Combine list of filters into a single filtering document.
   Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
 

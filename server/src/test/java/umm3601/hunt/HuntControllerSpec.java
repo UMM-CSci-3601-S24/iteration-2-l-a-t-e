@@ -122,28 +122,26 @@ class HuntControllerSpec {
       new Document()
           .append("hostid", "1234567")
           .append("title", "CSCI3601Hunt")
-          .append("description", "teamAkaHunt")
-          .append("tasks", (List<String>) Arrays.asList("12", "13")));
+          .append("description", "teamAkaHunt"));
+
     testHunts.add(
       new Document()
           .append("hostid", "1234567")
           .append("title", "KKHunt")
-          .append("description", "for event test")
-          .append("tasks", (List<String>) Arrays.asList("14", "15")));
+          .append("description", "for event test"));
+
     testHunts.add(
       new Document()
           .append("hostid", "1234567")
           .append("title", "NicHunt")
-          .append("description", "for even test 2")
-          .append("tasks", (List<String>) Arrays.asList("16", "17")));
+          .append("description", "for even test 2"));
 
     kkHuntId = new ObjectId();
     Document kk = new Document()
         .append("_id", kkHuntId)
         .append("hostid", "1234567")
         .append("title", "KKTestHunt")
-        .append("description", "This is test hunt for KK")
-        .append("tasks", (List<String>) Arrays.asList("18", "19"));
+        .append("description", "This is test hunt for KK");
 
     huntDocuments.insertMany(testHunts);
     huntDocuments.insertOne(kk);
@@ -299,30 +297,6 @@ class HuntControllerSpec {
     // Confirm that all the users passed to `json` work for OHMNET.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("This is test hunt for KK", hunt.description);
-    }
-  }
-
-  /**
-   * Test for filter getHuntsByTasks
-   */
-  @Test
-  void canGetHuntsWithTasks() throws IOException {
-    Map<String, List<String>> queryParams = new HashMap<>();
-
-    queryParams.put(HuntController.TASK_KEY, Arrays.asList(new String[] {"18", "19"}));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
-    when(ctx.queryParamMap()).thenReturn(queryParams);
-    when(ctx.queryParam(HuntController.TASK_KEY)).thenReturn("18", "19");
-    when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
-
-    huntController.getAllHunts(ctx);
-
-    verify(ctx).json(huntArrayListCaptor.capture());
-    verify(ctx).status(HttpStatus.OK);
-
-    // Confirm that all the users passed to `json` work for OHMNET.
-    for (Hunt hunt : huntArrayListCaptor.getValue()) {
-      assertEquals((List<String>) Arrays.asList("18", "19"), hunt.tasks);
     }
   }
 }
