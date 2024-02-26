@@ -107,7 +107,7 @@ class HuntControllerSpec {
   @BeforeEach
   void setupEach() throws IOException {
     // reset our mock context and argument captor (declared with Mockito
-    // aanotations @Mock and @Captor).
+    // anotations @Mock and @Captor).
     MockitoAnnotations.openMocks(this);
 
     // Setup Database
@@ -119,19 +119,19 @@ class HuntControllerSpec {
           .append("hostid","1234567")
           .append("title","CSCI3601Hunt")
           .append("description","teamAkaHunt")
-          .append("tasks","take picture of science building"));
+          .append("tasks", (List<String>) Arrays.asList( "12" , "13")));
     testHunts.add(
       new Document()
           .append("hostid","1234567")
           .append("title","KKHunt")
           .append("description","for event test")
-          .append("tasks","take picture of library building"));
+          .append("tasks", (List<String>) Arrays.asList( "14" , "15")));
     testHunts.add(
       new Document()
           .append("hostid","1234567")
           .append("title","NicHunt")
           .append("description","for even test 2")
-          .append("tasks","take picture of classroom"));
+          .append("tasks", (List<String>) Arrays.asList( "16" , "17")));
 
     KKhuntId = new ObjectId();
     Document KK = new Document()
@@ -139,7 +139,7 @@ class HuntControllerSpec {
         .append("hostid","1234567")
         .append("title", "KKTestHunt")
         .append("description", "This is test hunt for KK")
-        .append("tasks", "take picture of dining hall");
+        .append("tasks", (List<String>) Arrays.asList( "18" , "19"));
 
     huntDocuments.insertMany(testHunts);
     huntDocuments.insertOne(KK);
@@ -165,7 +165,7 @@ class HuntControllerSpec {
   void canGetAllHunts() throws IOException {
     // When something asks the (mocked) context for the queryParamMap,
     // it will return an empty map (since there are no query params in
-    // this case where we want all users).
+    // this case where we want all hunts).
     when(ctx.queryParamMap()).thenReturn(Collections.emptyMap());
 
     // Ask the huntController to getHunts
