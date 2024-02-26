@@ -1,10 +1,29 @@
-<form [formGroup]="addHuntForm" (ngSubmit)="onSaveForm()">
-  <div formArrayName="tableRows">
-    <div *ngFor="let task of getFormControls.controls; let i=index" [formGroupName]="i">
-      <input formControlName="task" placeholder="Enter task">
-      <button type="button" (click)="removeTask(i)">Remove Task</button>
-    </div>
+<form [formGroup]="huntForm">
+  <h2>Create Hunt</h2>
+
+  <div>
+    <label for="title">Title: </label>
+    <input id="title" type="text" formControlName="title">
   </div>
-  <button type="button" (click)="addTask()">Add Task</button>
-  <button type="submit">Save Tasks</button>
+
+  <div>
+    <label for="description">Description: </label>
+    <input id="description" type="text" formControlName="description">
+  </div>
+  <br>
+  <div formArrayName="tasks">
+    <h2>Tasks</h2>
+
+    <div *ngFor="let task of tasks.controls; let i=index">
+      <!-- The repeated alias template -->
+      <label for="task-{{ i }}">Task:</label>
+      <input id="task-{{ i }}" type="text" [formControlName]="i">
+    </div>
+    <button type="button" (click)="addTask()">+</button>
+
+
+    <br>
+    <button type="button"> Create Hunt</button>
+  </div>
+
 </form>
