@@ -34,6 +34,7 @@ public class HuntController implements Controller {
   static final String TITLE_KEY = "title";
   static final String DESCRIPTION_KEY = "description";
   static final String TASK_KEY = "tasks";
+  static final String SORT_ORDER_KEY = "sortorder";
 
   private final JacksonMongoCollection<Hunt> huntCollection;
 
