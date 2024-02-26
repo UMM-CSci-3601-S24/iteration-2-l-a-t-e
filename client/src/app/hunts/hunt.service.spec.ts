@@ -13,21 +13,18 @@ describe('HuntService', () => {
       hostid: 'chris',
       title: 'Chris\'s Hunt',
       description: 'Chris\'s test hunt',
-      tasks: []
     },
     {
       _id: 'hunt2_id',
       hostid: 'pat',
       title: 'Pat\'s Hunt',
       description: 'Pat\'s test hunt',
-      tasks: []
     },
     {
       _id: 'hunt3_id',
       hostid: 'jamie',
       title: 'Jamie\'s Hunt',
       description: 'Jamie\'s test hunt',
-      tasks: []
     }
   ];
   let huntService: HuntService;
