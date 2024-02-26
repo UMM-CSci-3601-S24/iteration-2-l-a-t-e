@@ -6,7 +6,6 @@
     "hostid": "generic",
     "title": "Generic-Classic",
     "description": "This is a classic scavenger hunt that will apply to most towns"
-
   },
   {
     "_id": {
@@ -15,7 +14,6 @@
     "hostid": "generic",
     "title": "Generic-Nature",
     "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild"
-
   },
   {
     "_id": {
@@ -24,6 +22,5 @@
     "hostid": "generic",
     "title": "Generic-College",
     "description": "This is a scavenger hunt that will allow hunters to explore a college campus"
-
   }
  ]
