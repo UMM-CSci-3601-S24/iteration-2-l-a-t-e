@@ -3,8 +3,8 @@
     <mat-card class="general-hunt-card">
       <div class="flex-1">
         <div class="hunt-cards-container flex-row gap-8 flex-wrap">
-          @for (hunt of filteredHunts; track hunt._id) {
-          <app-hunt-card [simple]="true" class="hunt-card" [hunt]="hunt"></app-hunt-card>
+          @for (hunt of serverFilteredHunts; track hunt._id) {
+          <app-hunt-card class="hunt-card" [hunt]="hunt"></app-hunt-card>
           }
         </div>
       </div>
