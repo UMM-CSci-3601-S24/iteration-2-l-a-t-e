@@ -191,7 +191,7 @@ public void getAllHunts(Context ctx) {
      */
     Hunt newHunt = ctx.bodyValidator(Hunt.class)
       .check(hnt -> hnt.title != null && hnt.title.length() > 0, "Hunt must have non-empty title")
-      .check(hnt -> hnt.description != null && hnt.title.length() > 0, "Hunt must have non-empty description")
+      .check(hnt -> hnt.description != null && hnt.description.length() > 0, "Hunt must have non-empty description")
       .get();
 
     // Add new hunt to the database.

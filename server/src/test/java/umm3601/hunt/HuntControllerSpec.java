@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,7 @@ import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.json.JavalinJackson;
 import io.javalin.validation.BodyValidator;
+import io.javalin.validation.ValidationException;
 
 /**
  * Tests the logic of the HuntController
@@ -336,6 +338,51 @@ class HuntControllerSpec {
   }
 
 
+  /**
+   * Test for blank title that throws Exception
+   *
+   * @throws IOException
+   */
 
+  @Test
+  void addInvalidTitleHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": "",
+          "description": "This is description of the test"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
+    assertThrows(ValidationException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+
+  }
+
+  /**
+   *
+   * Test for blank description that throws Exception
+   * @throws IOException
+   */
+
+   @Test
+   void addInvalidDescriptionHunt() throws IOException {
+     String testNewHunt = """
+         {
+           "hostid": "345678",
+           "title": "TEST TITLE",
+           "description": ""
+         }
+         """;
+     when(ctx.bodyValidator(Hunt.class))
+         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+     assertThrows(ValidationException.class, () -> {
+       huntController.addNewHunt(ctx);
+     });
+
+   }
 }
