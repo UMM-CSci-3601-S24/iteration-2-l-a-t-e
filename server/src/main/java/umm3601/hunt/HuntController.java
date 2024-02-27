@@ -35,7 +35,7 @@ public class HuntController implements Controller {
   static final String HOST_KEY = "hostid";
   static final String TITLE_KEY = "title";
   static final String DESCRIPTION_KEY = "description";
-  static final String TASK_KEY = "tasks";
+
   static final String SORT_ORDER_KEY = "sortorder";
 
   private final JacksonMongoCollection<Hunt> huntCollection;
@@ -125,11 +125,6 @@ public void getAllHunts(Context ctx) {
   filters.add(regex(DESCRIPTION_KEY, pattern));
     }
 
-  if (ctx.queryParamMap().containsKey(TASK_KEY)) {
-    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASK_KEY)), Pattern.CASE_INSENSITIVE);
-    filters.add(regex(TASK_KEY, pattern));
-  }
-
   // Combine list of filters into a single filtering document.
   Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
 
@@ -166,8 +161,8 @@ public void getAllHunts(Context ctx) {
     // Add new hunt with hunt info being in JSON body
     // of the HTTP request.
     server.post(API_HUNTS, this::addNewHunt);
-    // Delete the specified hunt.
-    server.delete(API_HUNTS_BY_ID, this::deleteHunt);
+    // // Delete the specified hunt.
+    // server.delete(API_HUNTS_BY_ID, this::deleteHunt);
   }
 
   /**
