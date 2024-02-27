@@ -6,8 +6,7 @@ import org.mongojack.ObjectId;
 @SuppressWarnings({ "VisibilityModifier" })
 public class Hunt {
 
-  @ObjectId
-  @Id
+  @ObjectId @Id
 
   @SuppressWarnings({ "MemberName" })
   public String _id;
