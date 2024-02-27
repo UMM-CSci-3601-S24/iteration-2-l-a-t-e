@@ -1,0 +1,29 @@
+.hunt-card {
+  text-transform: capitalize;
+  margin: 20px;
+  max-width: 800px;
+  width: relative;
+  max-width: 300px;
+  height: relative min 300px;
+  border-style: inset;
+  min-height: 300px;
+  background-color: rgb(225, 240, 225);
+}
+
+.hunt-title {
+  background-color: #baeec1;
+  text-align: center;
+}
+
+.hunt-card-link {
+  color: inherit; /* Use the same color as the parent element */
+  text-decoration: none; /* Remove underline */
+}
+
+.hunt-card-link:link,
+.hunt-card-link:visited,
+.hunt-card-link:hover,
+.hunt-card-link:active {
+  color: inherit;
+  text-decoration: none;
+}

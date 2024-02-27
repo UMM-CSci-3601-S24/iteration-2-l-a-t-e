@@ -1,9 +1,12 @@
 @if (this.hunt) {
-    <mat-card class="hunt-card">
+<a class="hunt-card-link" [routerLink]="['/hunts', hunt._id]">
+  <mat-card class="hunt-card">
 
-        <mat-card-header>
-            <mat-card-title>{{ hunt.title }}</mat-card-title>
-            <mat-card-subtitle>{{ hunt.description }}</mat-card-subtitle>
-        </mat-card-header>
-    </mat-card>
+    <mat-card-header>
+      <mat-card-title class="hunt-title">{{ hunt.title }}</mat-card-title>
+      <mat-card-subtitle>{{ hunt.description }}</mat-card-subtitle>
+    </mat-card-header>
+
+  </mat-card>
+</a>
 }
