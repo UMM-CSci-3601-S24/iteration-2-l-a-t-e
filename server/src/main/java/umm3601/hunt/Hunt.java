@@ -17,7 +17,6 @@ public class Hunt {
   public String hostid;
   public String title;
   public String description;
-  public ArrayList<String> tasks;
 
   @Override
   public boolean equals(Object obj) {

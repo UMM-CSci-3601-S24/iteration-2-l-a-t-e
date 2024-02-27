@@ -357,8 +357,8 @@ class HuntControllerSpec {
     // MongoDB ID for that hunt.
 
     assertNotEquals("", addedHunt.get("_id"));
-    assertEquals("Test title", addedHunt.get(HuntController.TITLE_KEY));
-    assertEquals("Test description for hunt", addedHunt.get(HuntController.DESCRIPTION_KEY));
+    assertEquals("Test title", addedHunt.get("title"));
+    assertEquals("Test description for hunt", addedHunt.get("description"));
   }
 
 
