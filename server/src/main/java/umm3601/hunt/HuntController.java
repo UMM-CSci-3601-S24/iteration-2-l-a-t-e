@@ -162,7 +162,7 @@ public void getAllHunts(Context ctx) {
     // of the HTTP request.
     server.post(API_HUNTS, this::addNewHunt);
     // // Delete the specified hunt.
-    // server.delete(API_HUNTS_BY_ID, this::deleteHunt);
+    server.delete(API_HUNTS_BY_ID, this::deleteHunt);
   }
 
   /**
@@ -190,8 +190,10 @@ public void getAllHunts(Context ctx) {
      *
      */
     Hunt newHunt = ctx.bodyValidator(Hunt.class)
-      .check(hnt -> hnt.title != null && hnt.title.length() > 0, "Hunt must have non-empty title")
-      .check(hnt -> hnt.description != null && hnt.description.length() > 0, "Hunt must have non-empty description")
+      .check(hnt -> hnt.title != null, "Hunt must have non-empty title")
+      .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
+      .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
+      .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
       .get();
 
     // Add new hunt to the database.
