@@ -128,11 +128,13 @@ class HuntControllerSpec {
           .append("hostid", "1234567")
           .append("title", "CSCI3601Hunt")
           .append("description", "teamAkaHunt"));
+
     testHunts.add(
       new Document()
           .append("hostid", "1234567")
           .append("title", "KKHunt")
           .append("description", "for event test"));
+
     testHunts.add(
       new Document()
           .append("hostid", "1234567")
@@ -302,7 +304,7 @@ class HuntControllerSpec {
       assertEquals("This is test hunt for KK", hunt.description);
     }
   }
-
+  
   /**
    * Test for adding new hunt
    */

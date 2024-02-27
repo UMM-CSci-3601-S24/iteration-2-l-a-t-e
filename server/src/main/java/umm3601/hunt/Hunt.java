@@ -1,7 +1,5 @@
 package umm3601.hunt;
 
-// import java.util.ArrayList;
-
 import org.mongojack.Id;
 import org.mongojack.ObjectId;
 
