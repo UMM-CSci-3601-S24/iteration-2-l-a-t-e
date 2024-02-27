@@ -1,6 +1,8 @@
 package umm3601.hunt;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -40,6 +42,7 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.json.JavalinJackson;
+import io.javalin.validation.BodyValidator;
 
 /**
  * Tests the logic of the HuntController
@@ -325,4 +328,40 @@ class HuntControllerSpec {
       assertEquals((List<String>) Arrays.asList("18", "19"), hunt.tasks);
     }
   }
+
+  /**
+   * Test for adding new hunt
+   */
+  @Test
+  void addHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "title:" "Test title for hunt",
+          "description:" "this is just a test description"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    huntController.addNewHunt(ctx);
+    verify(ctx).json(mapCaptor.capture());
+
+    // Our status should be 201, our new hunt was successfully created.
+    verify(ctx).status(HttpStatus.CREATED);
+
+    // Verify that the hunt was added to the database with correct ID.
+    Document addedHunt = db.getCollection("hunts")
+        .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+    // Successfully adding the hunt should return newly generated, non-empty
+    // MongoDB ID for that hunt.
+
+    assertNotEquals("", addedHunt.get("_id"));
+    assertEquals("Test title", addedHunt.get(HuntController.TITLE_KEY));
+    assertEquals("Test description for hunt", addedHunt.get(HuntController.DESCRIPTION_KEY));
+  }
+
+
+
+
 }
