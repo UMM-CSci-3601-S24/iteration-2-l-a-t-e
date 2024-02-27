@@ -10,11 +10,7 @@ import { MatInputModule } from "@angular/material/input";
 @Component({
   selector: 'app-add-hunt',
   standalone: true,
-  imports: [ReactiveFormsModule, NgFor,  MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatIconModule ],
+  imports: [ReactiveFormsModule, NgFor,  MatInputModule, MatButtonModule, MatFormFieldModule, MatCardModule, MatIconModule,],
   templateUrl: './add-hunt.component.html',
   styleUrl: './add-hunt.component.scss'
 })
@@ -36,7 +32,7 @@ export class AddHuntComponent {
     this.tasks.push(this.formBuilder.control('',Validators.required));
   }
 
-  deleteTask(index: number) { // Modified to accept an index parameter for specific task deletion
+  deleteTask(index: number) {
     this.tasks.removeAt(index);
   }
 }

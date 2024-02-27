@@ -1,43 +1,42 @@
 <div class="flex-row">
   <div class="flex-1">
     <mat-card style="padding: 20px;">
-  <form [formGroup]="huntForm">
-    <mat-card-title>Create Hunt</mat-card-title>
+      <form [formGroup]="huntForm">
+        <mat-card-title>Create Hunt</mat-card-title>
 
-    <mat-form-field appearance="fill" style="width: 30%;" >
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title">
-    </mat-form-field>
-
-    <br>
-
-    <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description">
-      <!-- <textarea matInput></textarea> -->
-    </mat-form-field>
-
-    <div formArrayName="tasks">
-      <mat-card-title>Tasks</mat-card-title>
-
-      <div *ngFor="let task of tasks.controls; let i=index" style="width: 100%;">
-        <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
-          <mat-label>Task {{ i + 1 }}</mat-label>
-          <input matInput [formControlName]="i">
+        <mat-form-field appearance="fill" style="width: 30%;">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title">
         </mat-form-field>
-        <button mat-icon-button color="warn" (click)="deleteTask(i)">
-          <mat-icon>remove_circle_outline</mat-icon>
-        </button>
-      </div>
-      <button mat-flat-button color="primary" (click)="addTask()">
-        <mat-icon>add_task</mat-icon>Add Task
-      </button>
-    </div>
 
-    <br>
+        <br>
 
-    <button mat-raised-button color="accent" type="button" [disabled]="!huntForm.valid">Create Hunt</button>
-  </form>
-</mat-card>
-</div>
+        <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description">
+        </mat-form-field>
+
+        <div formArrayName="tasks">
+          <mat-card-title>Tasks</mat-card-title>
+
+          <div *ngFor="let task of tasks.controls; let i=index" style="width: 100%;">
+            <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
+              <mat-label>Task {{ i + 1 }}</mat-label>
+              <input matInput [formControlName]="i">
+            </mat-form-field>
+            <button mat-icon-button color="warn" (click)="deleteTask(i)">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </div>
+          <button mat-flat-button color="primary" (click)="addTask()">
+            <mat-icon>add_task</mat-icon>Add Task
+          </button>
+        </div>
+
+        <br>
+
+        <button mat-raised-button color="accent" type="button" [disabled]="!huntForm.valid">Create Hunt</button>
+      </form>
+    </mat-card>
+  </div>
 </div>
