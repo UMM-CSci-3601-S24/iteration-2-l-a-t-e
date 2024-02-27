@@ -1,24 +1,18 @@
 [
   {
-    "_id": {
-      "$oid": "5b5f3e3e3f3f3f3f3f3f3f3f"
-    },
+    "_id": "35",
     "hostid": "generic",
     "title": "Generic-Classic",
     "description": "This is a classic scavenger hunt that will apply to most towns"
   },
   {
-    "_id": {
-      "$oid": "5b5f3e3e3f3f3f3f3f3f3f3g"
-    },
+    "_id": "36",
     "hostid": "generic",
     "title": "Generic-Nature",
     "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild"
   },
   {
-    "_id": {
-      "$oid": "5b5f3e3e3f3f3f3f3f3f3f3h"
-    },
+    "_id": "37",
     "hostid": "generic",
     "title": "Generic-College",
     "description": "This is a scavenger hunt that will allow hunters to explore a college campus"
