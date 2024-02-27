@@ -18,6 +18,8 @@
       <!-- The repeated alias template -->
       <label for="task-{{ i }}">Task:</label>
       <input id="task-{{ i }}" type="text" [formControlName]="i">
+      <button type="button" (click)="deleteTask(i)">X</button>
+
     </div>
     <button type="button" (click)="addTask()">+</button>
 

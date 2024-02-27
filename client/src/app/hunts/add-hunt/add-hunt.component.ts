@@ -26,4 +26,8 @@ export class AddHuntComponent {
   addTask() {
     this.tasks.push(this.formBuilder.control('',Validators.required));
   }
+
+  deleteTask(index: number) { // Modified to accept an index parameter for specific task deletion
+    this.tasks.removeAt(index);
+  }
 }
