@@ -304,7 +304,7 @@ class HuntControllerSpec {
       assertEquals("This is test hunt for KK", hunt.description);
     }
   }
-  
+
   /**
    * Test for adding new hunt
    */
