@@ -1,31 +1,41 @@
-<form [formGroup]="huntForm">
-  <h2>Create Hunt</h2>
+<div class="flex-row">
+  <div class="flex-1">
+    <mat-card style="padding: 20px;">
+  <form [formGroup]="huntForm">
+    <mat-card-title>Create Hunt</mat-card-title>
 
-  <div>
-    <label for="title">Title: </label>
-    <input id="title" type="text" formControlName="title">
-  </div>
-
-  <div>
-    <label for="description">Description: </label>
-    <input id="description" type="text" formControlName="description">
-  </div>
-  <br>
-  <div formArrayName="tasks">
-    <h2>Tasks</h2>
-
-    <div *ngFor="let task of tasks.controls; let i=index">
-      <!-- The repeated alias template -->
-      <label for="task-{{ i }}">Task:</label>
-      <input id="task-{{ i }}" type="text" [formControlName]="i">
-      <button type="button" (click)="deleteTask(i)">X</button>
-
-    </div>
-    <button type="button" (click)="addTask()">+</button>
-
+    <mat-form-field appearance="fill" >
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
 
     <br>
-    <button type="button"> Create Hunt</button>
-  </div>
 
-</form>
+    <mat-form-field appearance="fill" style="width: 50%;">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description">
+      <!-- <textarea matInput></textarea> -->
+    </mat-form-field>
+
+    <div formArrayName="tasks">
+      <mat-card-title>Tasks</mat-card-title>
+
+      <div *ngFor="let task of tasks.controls; let i=index" style="width: 100%;">
+        <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
+          <mat-label>Task {{ i + 1 }}</mat-label>
+          <input matInput [formControlName]="i">
+        </mat-form-field>
+        <button mat-icon-button color="warn" (click)="deleteTask(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <button mat-flat-button color="primary" (click)="addTask()">Add Task</button>
+    </div>
+
+    <br>
+
+    <button mat-raised-button color="primary" type="button" [disabled]="!huntForm.valid">Create Hunt</button>
+  </form>
+</mat-card>
+</div>
+</div>
