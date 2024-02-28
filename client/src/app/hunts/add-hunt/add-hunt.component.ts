@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { Validators, FormArray, FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-hunt',
@@ -28,7 +28,7 @@ export class AddHuntComponent {
   addHuntForm = this.formBuilder.group({
     title: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
     description: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
-    tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([Validators.required, Validators.maxLength(100)]))]),
+    tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([Validators.required, Validators.maxLength(50)]))]),
   });
 
   get tasks() {
@@ -38,7 +38,7 @@ export class AddHuntComponent {
   addTask() {
     this.tasks.push(this.formBuilder.control('', Validators.compose([
       Validators.required,
-      Validators.maxLength(100)])));
+      Validators.maxLength(50)])));
   }
 
   deleteTask(index: number) {
@@ -58,7 +58,7 @@ export class AddHuntComponent {
 
     task: [
       { type: 'required', message: 'Task is required' },
-      { type: 'maxlength', message: 'Task cannot be more than 200 characters long' }
+      { type: 'maxlength', message: 'Task cannot be more than 50 characters long' }
     ]
   };
 
@@ -66,6 +66,17 @@ export class AddHuntComponent {
     return this.addHuntForm.get(controlName).invalid &&
       (this.addHuntForm.get(controlName).dirty || this.addHuntForm.get(controlName).touched);
   }
+
+  getTaskErrorMessage(index: number): string {
+    const taskControl = this.tasks.at(index);
+    for (const error of this.addHuntValidationMessages.task) {
+      if (taskControl.hasError(error.type)) {
+        return error.message;
+      }
+    }
+    return '';
+  }
+
 
   getErrorMessage(name: keyof typeof this.addHuntValidationMessages): string {
     for (const { type, message } of this.addHuntValidationMessages[name]) {
