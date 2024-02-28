@@ -7,6 +7,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { AddHuntComponent } from "./add-hunt.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 describe('AddHuntComponent', () => {
@@ -21,6 +23,7 @@ describe('AddHuntComponent', () => {
         MatButtonModule,
         MatFormFieldModule,
         MatCardModule,
+        BrowserAnimationsModule,
         MatIconModule]
     })
     .compileComponents();
@@ -30,9 +33,10 @@ describe('AddHuntComponent', () => {
     fixture.detectChanges();
   });
 
-  /* it('should create', () => {
-    expect(component).toBeTruthy();
-  }); */
+  it('should create', () => {
+    expect(AddHuntComponent).toBeTruthy();
+/*     expect(addHuntForm).toBeTruthy();
+ */  });
 
   describe('addTask', () => {
     it('should add a new task to tasks array', () => {
