@@ -17,4 +17,24 @@ export class HuntCardComponent {
 
   @Input() hunt: Hunt;
   @Input() simple?: boolean = false;
+
+  onPlayClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to play hunt
+  }
+
+  onEditClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to edit hunt
+  }
+
+  onInspectClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to inspect hunt
+  }
+
+  onDeleteClick(event: Event) {
+    event.stopPropagation();
+    // Delete hunt
+  }
 }

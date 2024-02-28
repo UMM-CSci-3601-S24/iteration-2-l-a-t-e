@@ -4,9 +4,26 @@
   flex-wrap: wrap;
 }
 
+.banner {
+  --banner-color: rgb(65, 155, 113); /* Replace with your desired color */
+  background-color: var(--banner-color);
+  color: #fff; /* Replace with your desired text color */
+  padding: 20px;
+  text-align: center;
+  font-size: 200%;
+  font-weight: 500;
+}
+
+
 .add-hunt-button-container {
   position: absolute;
   right: 0;
   bottom: 0;
-  padding: 20px
+  padding: 20px;
+  background-color: var(--banner-color);
 }
+
+.add-hunt-button {
+  background-color: rgb(65, 155, 113);
+}
+
