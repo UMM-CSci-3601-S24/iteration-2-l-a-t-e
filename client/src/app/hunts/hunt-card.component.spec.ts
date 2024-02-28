@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HuntCardComponent } from './hunt-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('HuntCardComponent', () => {
   let component: HuntCardComponent;
@@ -10,10 +12,14 @@ describe('HuntCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      declarations: [HuntCardComponent],
       imports: [
         HuntCardComponent,
         MatCardModule,
         BrowserAnimationsModule
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: {paramMap: of({ get: () => '123' }) } }
       ]
     })
       .compileComponents();
