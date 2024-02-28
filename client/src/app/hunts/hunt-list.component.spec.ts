@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockHuntService } from 'src/testing/hunt.service.mock';
 import { HuntService } from './hunt.service';
+import { Observable } from 'rxjs';
+import { Hunt } from './hunt';
 
 const COMMON_IMPORTS: unknown[] = [
   FormsModule,
@@ -69,3 +71,53 @@ describe('Hunt list', () => {
     expect(huntList.serverFilteredHunts.some((hunt: { hostid: string; }) => hunt.hostid === 'chris')).toBe(true);
   });
 });
+
+describe('Misbehaving Hunt List', () => {
+  let huntList: HuntListComponent;
+  let fixture: ComponentFixture<HuntListComponent>;
+
+  let huntServiceStub: {
+    getHunts: () => Observable<Hunt[]>;
+  };
+
+  beforeEach(() => {
+    // stub HuntService for test purposes
+    huntServiceStub = {
+      getHunts: () => new Observable(observer => {
+        observer.error('getHunts() Observer generates an error');
+      }),
+    };
+
+    TestBed.configureTestingModule({
+      imports: [COMMON_IMPORTS, HuntListComponent],
+      providers: [{ provide: HuntService, useValue: huntServiceStub }]
+    });
+  });
+
+  beforeEach(waitForAsync(() => {
+    TestBed.compileComponents().then(() => {
+      fixture = TestBed.createComponent(HuntListComponent);
+      huntList = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+  }));
+
+  it('generates an error if we don\'t set up a HuntListService', () => {
+    const mockedMethod = spyOn(huntList, 'getHuntsFromServer').and.callThrough();
+    expect(huntList.serverFilteredHunts)
+      .withContext('no hunts when service fails')
+      .toBeUndefined();
+    expect(huntList.getHuntsFromServer)
+      .withContext('service method is called')
+      .toThrow();
+    expect(mockedMethod)
+      .withContext('service method is called')
+      .toHaveBeenCalled();
+    expect(huntList.errMsg)
+      .withContext('the error message will be')
+      .toMatch(/^Problem on the server - Error Code:/);
+    console.log(huntList.errMsg);
+  });
+});
+
+

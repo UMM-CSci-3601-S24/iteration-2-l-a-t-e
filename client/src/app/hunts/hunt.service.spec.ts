@@ -65,4 +65,22 @@ describe('HuntService', () => {
       });
     }));
   });
+
+  describe('When getHunts() is called with parameters', () => {
+
+    it('correctly calls `api/hunts` with parameters', () => {
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testHunts));
+
+      huntService.getHunts({ hostid: 'chris' }).subscribe(() => {
+
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(huntService.huntUrl, { params: new HttpParams().set('hostid', 'chris') });
+        });
+    });
+  });
 });

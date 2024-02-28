@@ -12,15 +12,15 @@ describe('HuntCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HuntCardComponent],
+      // declarations: [HuntCardComponent],
       imports: [
         HuntCardComponent,
         MatCardModule,
         BrowserAnimationsModule
       ],
       providers: [
-        { provide: ActivatedRoute, useValue: {paramMap: of({ get: () => '123' }) } }
-      ]
+       { provide: ActivatedRoute, useValue: {paramMap: of({ get: () => '123' }) } }
+     ]
     })
       .compileComponents();
 
@@ -43,5 +43,41 @@ describe('HuntCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should stop event propagation when onPlayClick is called', () => {
+    const event = new Event('click');
+    spyOn(event, 'stopPropagation');
+
+    component.onPlayClick(event);
+
+    expect(event.stopPropagation).toHaveBeenCalled();
+  });
+
+  it('should stop event propagation when onEditClick is called', () => {
+    const event = new Event('click');
+    spyOn(event, 'stopPropagation');
+
+    component.onEditClick(event);
+
+    expect(event.stopPropagation).toHaveBeenCalled();
+  });
+
+  it('should stop event propagation when onInspectClick is called', () => {
+    const event = new Event('click');
+    spyOn(event, 'stopPropagation');
+
+    component.onInspectClick(event);
+
+    expect(event.stopPropagation).toHaveBeenCalled();
+  });
+
+  it('should stop event propagation when onDeleteClick is called', () => {
+    const event = new Event('click');
+    spyOn(event, 'stopPropagation');
+
+    component.onDeleteClick(event);
+
+    expect(event.stopPropagation).toHaveBeenCalled();
   });
 });
