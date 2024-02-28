@@ -55,4 +55,19 @@ describe('AddHuntComponent', () => {
     });
   });
 
+  describe('removeTask', () => {
+    it('should remove a task from tasks array', () => {
+      component.addTask(); // Ensure there is a task to remove
+      const initialTasksLength = component.tasks.length;
+      component.deleteTask(0); // Remove the first task
+      expect(component.tasks.length).toBe(initialTasksLength - 1);
+    });
+
+    it('should not fail when trying to remove a task from an empty array', () => {
+      component.tasks.controls = []; // Ensure tasks array is empty
+      expect(() => component.deleteTask(0)).not.toThrow();
+    });
+  });
+
+
 });
