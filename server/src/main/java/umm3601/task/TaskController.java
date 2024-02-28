@@ -40,7 +40,7 @@ public class TaskController implements Controller {
   private final JacksonMongoCollection<Task> taskCollection;
 
  /**
-   * Construct a controller for hunts.
+   * Construct a controller for tasks.
    *
    * @param database the database containing task data
    */
@@ -80,7 +80,7 @@ public void getTask(Context ctx) {
    */
 
 public void getAllTasks(Context ctx) {
-  Bson combinedFilter = constructFilter(ctx); // Not sure if needed.
+  Bson combinedFilter = constructFilter(ctx);
   Bson sortingOrder = constructSortingOrder(ctx);
 
   ArrayList<Task> matchingTasks = taskCollection
@@ -96,8 +96,6 @@ public void getAllTasks(Context ctx) {
   // Explicitly set the context status to OK
   ctx.status(HttpStatus.OK);
 }
-
-// Not sure if needed.
 
 /**
  * @param ctx
