@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-hunt',
@@ -22,8 +24,11 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddHuntComponent {
 
+
   constructor(
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private router: Router) { }
 
   addHuntForm = this.formBuilder.group({
     title: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
@@ -85,5 +90,14 @@ export class AddHuntComponent {
       }
     }
     return 'Unknown error';
+  }
+
+  submitForm() {
+    this.snackBar.open(
+      `Added hunt ${this.addHuntForm.value.title}`,
+      null,
+      { duration: 2000 }
+    );
+    this.router.navigate(['']);
   }
 }
