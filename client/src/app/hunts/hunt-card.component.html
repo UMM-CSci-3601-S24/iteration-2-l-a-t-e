@@ -7,20 +7,20 @@
       <mat-card-subtitle>{{ hunt.description }}</mat-card-subtitle>
     </mat-card-header>
 
-<mat-card-actions class="card-actions">
-  <button mat-icon-button matTooltip="Play Hunt" routerLink="/hunts/start" data-test="playHuntButton">
-    <mat-icon aria-label="Play Hunt">play_arrow</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="Edit Hunt" data-test="editHuntButton">
-    <mat-icon aria-label="Edit Hunt">edit</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="Inspect Hunt" data-test="inspectHuntButton">
-    <mat-icon aria-label="Inspect Hunt">search</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="Delete Hunt" data-test="deleteHuntButton">
-    <mat-icon aria-label="Delete Hunt">delete</mat-icon>
-  </button>
-</mat-card-actions>
+    <mat-card-actions class="card-actions">
+      <button mat-icon-button matTooltip="Play Hunt" (click)="onPlayClick($event)" data-test="playHuntButton">
+        <mat-icon class="play-button-icon" aria-label="Play Hunt">play_arrow</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Edit Hunt" (click)="onEditClick($event)" data-test="editHuntButton">
+        <mat-icon class="edit-button-icon" aria-label="Edit Hunt">edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Inspect Hunt" (click)="onInspectClick($event)" data-test="inspectHuntButton">
+        <mat-icon class="inspect-button-icon" aria-label="Inspect Hunt">search</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Delete Hunt" (click)="onDeleteClick($event)" data-test="deleteHuntButton">
+        <mat-icon class="delete-button-icon" aria-label="Delete Hunt">delete</mat-icon>
+      </button>
+    </mat-card-actions>
   </mat-card>
 </a>
 }
