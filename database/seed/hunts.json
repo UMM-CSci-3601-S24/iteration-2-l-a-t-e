@@ -78,5 +78,29 @@
     "hostid": "kk",
     "title": "Science",
     "description": "Discover the wonders of science in an interactive way with this KK-hosted scavenger hunt."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1411"
+    },
+    "hostid": "generic",
+    "title": "Generic-Classic",
+    "description": "This is a classic scavenger hunt that will apply to most towns"
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1412"
+    },
+    "hostid": "generic",
+    "title": "Generic-Nature",
+    "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild"
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1413"
+    },
+    "hostid": "generic",
+    "title": "Generic-College",
+    "description": "This is a scavenger hunt that will allow hunters to explore a college campus"
   }
  ]

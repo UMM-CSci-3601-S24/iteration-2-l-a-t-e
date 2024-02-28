@@ -1,6 +1,8 @@
 package umm3601.hunt;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+// import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,8 @@ import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.json.JavalinJackson;
+import io.javalin.validation.BodyValidator;
+import io.javalin.validation.ValidationException;
 
 /**
  * Tests the logic of the HuntController
@@ -156,8 +161,8 @@ class HuntControllerSpec {
     Javalin mockServer = mock(Javalin.class);
     huntController.addRoutes(mockServer);
     verify(mockServer, Mockito.atLeast(2)).get(any(), any());
-    // verify(mockServer, Mockito.atLeastOnce()).post(any(), any());
-    // verify(mockServer, Mockito.atLeastOnce()).delete(any(), any());
+    verify(mockServer, Mockito.atLeastOnce()).post(any(), any());
+    verify(mockServer, Mockito.atLeastOnce()).delete(any(), any());
   }
 
   /**
@@ -299,4 +304,185 @@ class HuntControllerSpec {
       assertEquals("This is test hunt for KK", hunt.description);
     }
   }
+
+  /**
+   * Test for adding new hunt
+   */
+  @Test
+  void addHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "Test title for hunt",
+          "description": "this is just a test description"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    huntController.addNewHunt(ctx);
+    verify(ctx).json(mapCaptor.capture());
+
+    // Our status should be 201, our new hunt was successfully created.
+    verify(ctx).status(HttpStatus.CREATED);
+
+    // Verify that the hunt was added to the database with correct ID.
+    Document addedHunt = db.getCollection("hunts")
+        .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+    // Successfully adding the hunt should return newly generated, non-empty
+    // MongoDB ID for that hunt.
+
+    assertNotEquals("", addedHunt.get("_id"));
+    assertEquals("1234567", addedHunt.get(HuntController.HOST_KEY));
+    assertEquals("Test title for hunt", addedHunt.get(HuntController.TITLE_KEY));
+    assertEquals("this is just a test description", addedHunt.get(HuntController.DESCRIPTION_KEY));
+  }
+
+
+  /**
+   * Test for blank title that throws Exception
+   *
+   * @throws IOException
+   */
+
+  @Test
+  void addInvalidTitleHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": "",
+          "description": "This is description of the test"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+  }
+
+  /**
+   *
+   * Test for blank description that throws Exception
+   * @throws IOException
+   */
+
+   @Test
+   void addInvalidDescriptionHunt() throws IOException {
+     String testNewHunt = """
+         {
+           "hostid": "345678",
+           "title": "TEST TITLE",
+           "description": ""
+         }
+         """;
+     when(ctx.bodyValidator(Hunt.class))
+         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+     assertThrows(ValidationException.class, () -> {
+       huntController.addNewHunt(ctx);
+     });
+    }
+
+
+
+  /**
+   *
+   * Test for deleting existence hunt
+  */
+
+  @Test
+  void deleteFoundHunt() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    // Hunt exits before deletion
+    assertEquals(1, db.getCollection("hunts").countDocuments(eq("_id", new ObjectId(testID))));
+
+    huntController.deleteHunt(ctx);
+
+    verify(ctx).status(HttpStatus.OK);
+
+    // Hunt is no longer in the database
+    assertEquals(0, db.getCollection("hunts").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+
+  @Test
+  void deleteNotFoundHunt() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    huntController.deleteHunt(ctx);
+
+    // Hunt is no longer in the database
+    assertEquals(0, db.getCollection("users").countDocuments(eq("_id", new ObjectId(testID))));
+
+    assertThrows(NotFoundResponse.class, () -> {
+      huntController.deleteHunt(ctx);
+    });
+
+    verify(ctx).status(HttpStatus.NOT_FOUND);
+
+    // Hunt is still not in the database
+    assertEquals(0, db.getCollection("hunts").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+
+  /**
+   * Test for too short title that throws Exception
+   *
+   * @throws IOException
+   */
+
+   @Test
+   void addTooShortTitleHunt() throws IOException {
+     String testNewHunt = """
+         {
+           "hostid": "345678",
+           "title": "T",
+           "description": "This is description of the test"
+         }
+         """;
+     when(ctx.bodyValidator(Hunt.class))
+         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+     assertThrows(ValidationException.class, () -> {
+       huntController.addNewHunt(ctx);
+     });
+   }
+
+   @Test
+   void addNullTitleHunt() throws IOException {
+     String testNewHunt = """
+         {
+           "hostid": "345678",
+           "title": null,
+           "description": "This is description of the test"
+         }
+         """;
+     when(ctx.bodyValidator(Hunt.class))
+         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+     assertThrows(NullPointerException.class, () -> {
+       huntController.addNewHunt(ctx);
+     });
+   }
+
+   @Test
+   void addNullDescriptionHunt() throws IOException {
+     String testNewHunt = """
+         {
+           "hostid": "345678",
+           "title": "Tutu",
+           "description": null
+         }
+         """;
+     when(ctx.bodyValidator(Hunt.class))
+         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+     assertThrows(NullPointerException.class, () -> {
+       huntController.addNewHunt(ctx);
+     });
+   }
 }
