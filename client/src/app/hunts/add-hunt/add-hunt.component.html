@@ -38,11 +38,12 @@
                     {{ getTaskErrorMessage(i) }}
                   </mat-error>
                 </mat-form-field>
-                <button mat-icon-button color="warn" (click)="deleteTask(i)">
+                <button type="button" mat-icon-button color="warn" (click)="deleteTask(i)" *ngIf="tasks.controls.length > 1">
                   <mat-icon>remove_circle_outline</mat-icon>
                 </button>
+
               </div>
-              <button mat-flat-button color="primary" (click)="addTask()">
+              <button type="button" mat-flat-button color="primary" (click)="addTask()">
                 <mat-icon>add_task</mat-icon>Add Task
               </button>
             </div>

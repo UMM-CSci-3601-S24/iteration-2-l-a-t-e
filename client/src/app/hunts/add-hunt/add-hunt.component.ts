@@ -47,7 +47,15 @@ export class AddHuntComponent {
   }
 
   deleteTask(index: number) {
-    this.tasks.removeAt(index);
+    if (this.tasks.length > 1) {
+      this.tasks.removeAt(index);
+    } else {
+      this.snackBar.open(
+        'At least one task is required.',
+        null,
+        { duration: 2000 }
+      );
+    }
   }
 
   readonly addHuntValidationMessages = {
