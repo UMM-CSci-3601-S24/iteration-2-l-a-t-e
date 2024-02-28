@@ -17,6 +17,7 @@ export class HuntCardComponent {
 
   @Input() hunt: Hunt;
   @Input() simple?: boolean = false;
+  @Input() editable: boolean = true;
 
   onPlayClick(event: Event) {
     event.stopPropagation();
