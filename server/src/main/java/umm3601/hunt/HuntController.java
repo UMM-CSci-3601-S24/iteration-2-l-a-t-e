@@ -6,6 +6,7 @@ import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
 
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
@@ -33,7 +35,7 @@ public class HuntController implements Controller {
   static final String HOST_KEY = "hostid";
   static final String TITLE_KEY = "title";
   static final String DESCRIPTION_KEY = "description";
-  static final String TASK_KEY = "tasks";
+
   static final String SORT_ORDER_KEY = "sortorder";
 
   private final JacksonMongoCollection<Hunt> huntCollection;
@@ -156,6 +158,75 @@ public void getAllHunts(Context ctx) {
     server.get(API_HUNTS_BY_ID, this::getHunt);
     // List hunts, filtered using query parameters
     server.get(API_HUNTS, this::getAllHunts);
+    // Add new hunt with hunt info being in JSON body
+    // of the HTTP request.
+    server.post(API_HUNTS, this::addNewHunt);
+    // // Delete the specified hunt.
+    server.delete(API_HUNTS_BY_ID, this::deleteHunt);
   }
 
+  /**
+   * Add a new Hunt using information from the context
+   * (as long as the information being put in is "legals" to Hunt field)
+   *
+   * @param ctx a Javalin HTTP context that provides the hunt info
+   * in the JSON body of the request.
+   *
+   */
+
+  public void addNewHunt(Context ctx) {
+    /**
+     * Follow chain of statements uses the Javalin validator system
+     * to verify that instance of `Hunt` provided in this context is
+     * a legal hunt. Check following things ( in order ):
+     *
+     * - The hunt has a value title (not null)
+     * - The hunt title is not blank
+     * - The hunt has a value description (not null)
+     * - The hunt description is not blank
+     *
+     * If any of these checks fail, the Javalin system will
+     * throw a `BadRequestResponse` with an appropriate error message.
+     *
+     */
+    Hunt newHunt = ctx.bodyValidator(Hunt.class)
+      .check(hnt -> hnt.title != null, "Hunt must have non-empty title")
+      .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
+      .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
+      .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
+      .get();
+
+    // Add new hunt to the database.
+    huntCollection.insertOne(newHunt);
+
+    // Set the JSON response to be the `_id` of the newly created hunt.
+    // This gives the client the opportunity to know the ID of the new hunt,
+    // which it can then use to perform further operation.
+    ctx.json(Map.of("id", newHunt._id));
+
+    // 201 (`HttpStatus.CREATED`) is the HTTP code for when we
+    // successfully create a new resource ( a hunt ).
+    ctx.status(HttpStatus.CREATED);
+  }
+
+  /**
+   * Delete a hunt by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   *
+   */
+
+  public void deleteHunt(Context ctx) {
+    String id = ctx.pathParam("id");
+    DeleteResult deleteResult = huntCollection.deleteOne(eq("_id", new ObjectId(id)));
+    // we should deleted 1 or 0 users, depend on whether `id` is a valid hunt ID.
+    if (deleteResult.getDeletedCount() != 1) {
+      ctx.status(HttpStatus.NOT_FOUND);
+      throw new NotFoundResponse(
+        "Was unable to delete ID "
+          + id
+          + "; perhaps illegal ID or an ID for an item not in the system?");
+    }
+    ctx.status(HttpStatus.OK);
+  }
 }
