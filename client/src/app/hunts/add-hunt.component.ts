@@ -33,9 +33,17 @@ export class AddHuntComponent {
     private router: Router) { }
 
   addHuntForm = this.formBuilder.group({
-    title: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
-    description: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
-    tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([Validators.required, Validators.maxLength(50)]))]),
+    title: ['', Validators.compose([
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(30)])],
+    description: ['', Validators.compose([
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50)])],
+    tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([
+      Validators.required,
+      Validators.maxLength(50)]))]),
   });
 
   get tasks() {
@@ -63,17 +71,20 @@ export class AddHuntComponent {
   readonly addHuntValidationMessages = {
     title: [
       { type: 'required', message: 'Title is required' },
-      { type: 'maxlength', message: 'Title cannot be more than 30 characters long' }
+      { type: 'maxlength', message: 'Title cannot be more than 30 characters long' },
+      { type: 'minlength', message: 'Title must be more than 2 characters long' }
+
     ],
 
     description: [
       { type: 'required', message: 'Description is required' },
-      { type: 'maxlength', message: 'Description cannot be more than 50 characters long' }
+      { type: 'maxlength', message: 'Description cannot be more than 50 characters long' },
+      { type: 'minlength', message: 'Description must be more than 2 characters long' }
     ],
 
     task: [
       { type: 'required', message: 'Task is required' },
-      { type: 'maxlength', message: 'Task cannot be more than 50 characters long' }
+      { type: 'maxlength', message: 'Task cannot be more than 50 characters long' },
     ]
   };
 
