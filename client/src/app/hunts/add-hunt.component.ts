@@ -106,6 +106,6 @@ export class AddHuntComponent {
       null,
       { duration: 2000 }
     );
-    this.router.navigate(['']);
+    this.router.navigate(['/hunts/']);
   }
 }
