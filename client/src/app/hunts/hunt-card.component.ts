@@ -1,0 +1,41 @@
+import { Component, Input } from '@angular/core';
+import { Hunt } from './hunt';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-hunt-card',
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
+  templateUrl: './hunt-card.component.html',
+  styleUrl: './hunt-card.component.scss'
+})
+export class HuntCardComponent {
+
+  @Input() hunt: Hunt;
+  @Input() simple?: boolean = false;
+  @Input() editable: boolean = true;
+
+  onPlayClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to play hunt
+  }
+
+  onEditClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to edit hunt
+  }
+
+  onInspectClick(event: Event) {
+    event.stopPropagation();
+    // Navigate to inspect hunt
+  }
+
+  onDeleteClick(event: Event) {
+    event.stopPropagation();
+    // Delete hunt
+  }
+}
