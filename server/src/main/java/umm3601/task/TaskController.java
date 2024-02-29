@@ -6,6 +6,7 @@ import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
 
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
@@ -147,10 +149,56 @@ public void getAllTasks(Context ctx) {
     server.get(API_TASKS, this::getAllTasks);
     // Add new task with task info being in JSON body
     // of the HTTP request.
-    // server.post(API_HUNTS, this::addNewTask);
+    server.post(API_TASKS, this::addNewTask);
     // Delete the specified task.
-    // server.delete(API_HUNTS_BY_ID, this::deleteTask);
+    server.delete(API_TASKS_BY_ID, this::deleteTask);
   }
 
+  /**
+   * Add new Task using information from the context
+   * (as long as the information being put in is "legals" to Task field)
+   *
+   *  @param ctx a Javalin HTTP context that provides the hunt info
+   * in the JSON body of the request.
+   */
+
+  public void addNewTask(Context ctx) {
+    Task newTask = ctx.bodyValidator(Task.class)
+      .check(tsk -> tsk.huntid != null, "Task must have non-empty huntid")
+      .check(tsk -> tsk.description != null, "Task must have non-empty description")
+      .check(tsk -> tsk.description.length() > 2, "Task must not have description shorter than 2 characters")
+      .get();
+
+    // Add new task to the database.
+    taskCollection.insertOne(newTask);
+
+    // Set the JSON response to be the `_id` of the newly created task.
+    // This gives the client the opportunity to know the ID of the new task,
+    // which it can then use to perform further operation.
+    ctx.json(Map.of("id",newTask._id));
+
+    ctx.status(HttpStatus.CREATED);
+  }
+
+/**
+   * Delete a task by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   *
+   */
+
+   public void deleteTask(Context ctx) {
+    String id = ctx.pathParam("id");
+    DeleteResult deleteResult = taskCollection.deleteOne(eq("_id", new ObjectId(id)));
+    // we should deleted 1 or 0 tasks, depend on whether `id` is a valid task ID.
+    if (deleteResult.getDeletedCount() != 1) {
+      ctx.status(HttpStatus.NOT_FOUND);
+      throw new NotFoundResponse(
+        "Was unable to delete ID "
+          + id
+          + "; perhaps illegal ID or an ID for an item not in the system?");
+    }
+    ctx.status(HttpStatus.OK);
+  }
 }
 
