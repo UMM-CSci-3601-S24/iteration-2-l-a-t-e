@@ -28,6 +28,7 @@
       "KINETICUT",
       "kklamberty",
       "Lamberty",
+      "membername",
       "MOMENTIA",
       "mongoseed",
       "Moonan",
@@ -41,6 +42,7 @@
       "sidenav",
       "sortorder",
       "todos",
+      "visibilitymodifier",
       "Walbran"
     ],
     "angular.enable-experimental-ivy-prompt": false,
