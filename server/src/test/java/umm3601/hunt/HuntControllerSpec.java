@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
-// import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,7 +115,7 @@ class HuntControllerSpec {
   @BeforeEach
   void setupEach() throws IOException {
     // reset our mock context and argument captor (declared with Mockito
-    // anotations @Mock and @Captor).
+    // annotations @Mock and @Captor).
     MockitoAnnotations.openMocks(this);
 
     // Setup Database

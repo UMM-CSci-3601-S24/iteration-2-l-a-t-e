@@ -1,8 +1,6 @@
 package umm3601.task;
 
-// import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -19,7 +17,6 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
-// import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,9 +39,7 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
-import io.javalin.json.JavalinJackson;
-// import io.javalin.validation.BodyValidator;
-// import io.javalin.validation.ValidationException;
+
 
 /**
  * Tests the logic of the TaskController
@@ -66,9 +61,6 @@ class TaskControllerSpec {
   // for al the tests in this spec file.
   private static MongoClient mongoClient;
   private static MongoDatabase db;
-
-  // Used to translate between JSON and POJOs.
-  private static JavalinJackson javalinJackson = new JavalinJackson();
 
   @Mock
   private Context ctx;
@@ -116,7 +108,7 @@ class TaskControllerSpec {
   @BeforeEach
   void setupEach() throws IOException {
     // reset our mock context and argument captor (declared with Mockito
-    // anotations @Mock and @Captor).
+    // annotations @Mock and @Captor).
     MockitoAnnotations.openMocks(this);
 
     // Setup Database
@@ -238,10 +230,10 @@ class TaskControllerSpec {
   @Test
   void canGetTasksWithHunt() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(TaskController.TASK_KEY, Arrays.asList(new String[] {"1234567"}));
+    queryParams.put(TaskController.HUNTID_KEY, Arrays.asList(new String[] {"1234567"}));
     queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
-    when(ctx.queryParam(TaskController.TASK_KEY)).thenReturn("1234567");
+    when(ctx.queryParam(TaskController.HUNTID_KEY)).thenReturn("1234567");
     when(ctx.queryParam(TaskController.SORT_ORDER_KEY)).thenReturn("desc");
 
     taskController.getAllTasks(ctx);

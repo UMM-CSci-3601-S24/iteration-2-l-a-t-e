@@ -6,7 +6,6 @@ import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
 import java.util.List;
-// import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -18,7 +17,6 @@ import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
-// import com.mongodb.client.result.DeleteResult;
 
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
@@ -32,7 +30,7 @@ public class TaskController implements Controller {
   private static final String API_TASKS = "/api/tasks";
   private static final String API_TASKS_BY_ID = "/api/tasks/{id}";
 
-  static final String TASK_KEY = "huntid";
+  static final String HUNTID_KEY = "huntid";
   static final String DESCRIPTION_KEY = "description";
 
   static final String SORT_ORDER_KEY = "sortorder";
@@ -52,7 +50,6 @@ public TaskController(MongoDatabase database) {
   UuidRepresentation.STANDARD);
 }
 
-// Might not needed.
 public void getTask(Context ctx) {
   String id = ctx.pathParam("id");
   Task task;
@@ -72,7 +69,7 @@ public void getTask(Context ctx) {
 }
 
  /**
-   * Set the JSON body of the response to be a list of all the hunts returned from the database
+   * Set the JSON body of the response to be a list of all the tasks returned from the database
    * that match any requested filters and ordering
    *
    * @param ctx a Javalin HTTP context
@@ -106,9 +103,9 @@ public void getAllTasks(Context ctx) {
   List<Bson> filters = new ArrayList<>();
   // starts with an empty list of filer.
 
-  if (ctx.queryParamMap().containsKey(TASK_KEY)) {
-    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASK_KEY)), Pattern.CASE_INSENSITIVE);
-    filters.add(regex(TASK_KEY, pattern));
+  if (ctx.queryParamMap().containsKey(HUNTID_KEY)) {
+    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(HUNTID_KEY)), Pattern.CASE_INSENSITIVE);
+    filters.add(regex(HUNTID_KEY, pattern));
     }
 
   if (ctx.queryParamMap().containsKey(DESCRIPTION_KEY)) {
@@ -144,15 +141,15 @@ public void getAllTasks(Context ctx) {
 
   public void addRoutes(Javalin server) {
 
-    // get the specified Hunt
+    // get the specified Task
     server.get(API_TASKS_BY_ID, this::getTask);
-    // List hunts, filtered using query parameters
+    // List tasks, filtered using query parameters
     server.get(API_TASKS, this::getAllTasks);
-    // Add new hunt with hunt info being in JSON body
+    // Add new task with task info being in JSON body
     // of the HTTP request.
-    // server.post(API_HUNTS, this::addNewHunt);
-    // Delete the specified hunt.
-    // server.delete(API_HUNTS_BY_ID, this::deleteHunt);
+    // server.post(API_HUNTS, this::addNewTask);
+    // Delete the specified task.
+    // server.delete(API_HUNTS_BY_ID, this::deleteTask);
   }
 
 }
