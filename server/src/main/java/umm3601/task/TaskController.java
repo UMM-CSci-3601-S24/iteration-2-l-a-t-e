@@ -41,7 +41,6 @@ public class TaskController implements Controller {
 
  /**
    * Construct a controller for tasks.
-   *
    * @param database the database containing task data
    */
 

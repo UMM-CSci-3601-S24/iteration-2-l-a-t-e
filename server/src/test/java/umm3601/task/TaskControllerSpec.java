@@ -235,8 +235,7 @@ class TaskControllerSpec {
   /**
    * Test for filter getTasksByHuntid
    */
-
-   @Test
+  @Test
   void canGetTasksWithHunt() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put(TaskController.TASK_KEY, Arrays.asList(new String[] {"1234567"}));
