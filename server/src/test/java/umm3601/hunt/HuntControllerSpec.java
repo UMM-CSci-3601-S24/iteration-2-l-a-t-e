@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
-// import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,7 +115,7 @@ class HuntControllerSpec {
   @BeforeEach
   void setupEach() throws IOException {
     // reset our mock context and argument captor (declared with Mockito
-    // anotations @Mock and @Captor).
+    // annotations @Mock and @Captor).
     MockitoAnnotations.openMocks(this);
 
     // Setup Database
@@ -253,7 +252,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for id.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("1234567", hunt.hostid);
     }
@@ -276,7 +275,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for title.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("KKTestHunt", hunt.title);
     }
@@ -299,7 +298,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for description.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("This is test hunt for KK", hunt.description);
     }

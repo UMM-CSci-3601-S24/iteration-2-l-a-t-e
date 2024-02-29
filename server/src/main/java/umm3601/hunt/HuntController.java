@@ -53,7 +53,6 @@ public HuntController(MongoDatabase database) {
   UuidRepresentation.STANDARD);
 }
 
-// Might not needed.
 public void getHunt(Context ctx) {
   String id = ctx.pathParam("id");
   Hunt hunt;
@@ -80,7 +79,7 @@ public void getHunt(Context ctx) {
    */
 
 public void getAllHunts(Context ctx) {
-  Bson combinedFilter = constructFilter(ctx); // Not sure if needed.
+  Bson combinedFilter = constructFilter(ctx);
   Bson sortingOrder = constructSortingOrder(ctx);
 
   ArrayList<Hunt> matchingHunts = huntCollection
@@ -97,8 +96,6 @@ public void getAllHunts(Context ctx) {
   ctx.status(HttpStatus.OK);
 }
 
-// Not sure if needed.
-
 /**
  * @param ctx
  * @return
@@ -107,7 +104,7 @@ public void getAllHunts(Context ctx) {
 
  private Bson constructFilter(Context ctx) {
   List<Bson> filters = new ArrayList<>();
-  // starts with an empty list of filer.
+  // starts with an empty list of filter.
 
   if (ctx.queryParamMap().containsKey(HOST_KEY)) {
     Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(HOST_KEY)), Pattern.CASE_INSENSITIVE);
