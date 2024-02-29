@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Hunt } from './hunt';
 
@@ -36,5 +37,15 @@ export class HuntService {
     return this.httpClient.get<Hunt[]>(this.huntUrl, {
       params: httpParams
     });
+  }
+
+  /* getHuntById(hostid: string): Observable<Hunt> {
+    // The input to get could also be written as (this.userUrl + '/' + id)
+    return this.httpClient.get<Hunt>(`${this.huntUrl}/${hostid}`);
+  } */
+
+  addHunt(newHunt: Partial<Hunt>): Observable<string> {
+    // Send post request to add a new hunt with the user data as the body.
+    return this.httpClient.post<{hostid: string}>(this.huntUrl, newHunt).pipe(map(res => res.hostid));
   }
 }

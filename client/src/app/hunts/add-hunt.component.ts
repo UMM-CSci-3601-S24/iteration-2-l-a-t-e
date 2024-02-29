@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { HuntService } from './hunt.service';
 
 @Component({
   selector: 'app-add-hunt',
@@ -26,6 +27,7 @@ export class AddHuntComponent {
 
 
   constructor(
+    private huntService: HuntService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router) { }
@@ -101,11 +103,22 @@ export class AddHuntComponent {
   }
 
   submitForm() {
-    this.snackBar.open(
-      `Added hunt ${this.addHuntForm.value.title}`,
-      null,
-      { duration: 2000 }
-    );
-    this.router.navigate(['/hunts/']);
+    this.huntService.addHunt(this.addHuntForm.value).subscribe({
+      next: () => {
+        this.snackBar.open(
+          `Added Hunt ${this.addHuntForm.value.title}`,
+          null,
+          { duration: 2000 }
+        );
+        this.router.navigate(['/hunts/']);
+      },
+      error: err => {
+        this.snackBar.open(
+          `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`,
+          'OK',
+          { duration: 5000 }
+        );
+      },
+    });
   }
 }

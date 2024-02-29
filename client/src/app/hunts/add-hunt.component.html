@@ -42,8 +42,8 @@
                 type="button"
                 mat-icon-button
                 color="warn"
-                (click)="deleteTask(i)" >
-                <!-- *ngIf="tasks.controls.length > 1"> -->
+                (click)="deleteTask(i)"
+                *ngIf="tasks.controls.length > 1">
                   <mat-icon>remove_circle_outline</mat-icon>
                 </button>
 
