@@ -1,0 +1,106 @@
+[
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de7c"
+    },
+    "hostid": "kk",
+    "title": "Classic",
+    "description": "A classic scavenger hunt with a twist, suitable for various locations."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5597715f06f3e8f6c"
+    },
+    "hostid": "kk",
+    "title": "Adventure",
+    "description": "An adventurous scavenger hunt that will lead participants through exciting challenges."
+  },
+  {
+    "_id": {
+      "$oid": "588935f51c55b55c75a84848"
+    },
+    "hostid": "kk",
+    "title": "Cultural",
+    "description": "Explore the cultural aspects of a location with this unique scavenger hunt hosted by KK."
+  },
+  {
+    "_id": {
+      "$oid": "588935f52787254123f71fed"
+    },
+    "hostid": "kk",
+    "title": "City",
+    "description": "Navigate through the bustling streets of a city in this urban scavenger hunt experience."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5de613130e931ffd5"
+    },
+    "hostid": "kk",
+    "title": "Mystery",
+    "description": "Unravel the mysteries hidden within your surroundings with this intriguing scavenger hunt by KK."
+  },
+  {
+    "_id": {
+      "$oid": "588935f55b432bb2ff322160"
+    },
+    "hostid": "kk",
+    "title": "Historic",
+    "description": "Embark on a journey through history with this scavenger hunt, exploring historic landmarks."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5556f992bf8f37c01"
+    },
+    "hostid": "kk",
+    "title": "Beach",
+    "description": "Enjoy the sun and sand while participating in this beach-themed scavenger hunt hosted by KK."
+  },
+  {
+    "_id": {
+      "$oid": "588935f560065a428bf9d835"
+    },
+    "hostid": "kk",
+    "title": "Tech",
+    "description": "A tech-inspired scavenger hunt that challenges participants with puzzles and digital clues."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1410"
+    },
+    "hostid": "kk",
+    "title": "Fantasy",
+    "description": "Immerse yourself in a fantasy world with this scavenger hunt designed by KK for the imaginative."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5c668650dc77df581"
+    },
+    "hostid": "kk",
+    "title": "Science",
+    "description": "Discover the wonders of science in an interactive way with this KK-hosted scavenger hunt."
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1411"
+    },
+    "hostid": "generic",
+    "title": "Generic-Classic",
+    "description": "This is a classic scavenger hunt that will apply to most towns"
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1412"
+    },
+    "hostid": "generic",
+    "title": "Generic-Nature",
+    "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild"
+  },
+  {
+    "_id": {
+      "$oid": "588935f5236b2d4ad76a1413"
+    },
+    "hostid": "generic",
+    "title": "Generic-College",
+    "description": "This is a scavenger hunt that will allow hunters to explore a college campus"
+  }
+ ]
