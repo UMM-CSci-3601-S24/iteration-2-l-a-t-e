@@ -250,55 +250,32 @@ class TaskControllerSpec {
     verify(ctx).json(taskArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the tasks passed to `json` work for huntid.
     for (Task task : taskArrayListCaptor.getValue()) {
       assertEquals("1234567", task.huntid);
     }
   }
 
-  // /**
-  //  * Test for filter getHuntsByTitle
-  //  */
-  // @Test
-  // void canGetHuntsWithTitle() throws IOException {
-  //   Map<String, List<String>> queryParams = new HashMap<>();
-  //   queryParams.put(HuntController.TITLE_KEY, Arrays.asList(new String[] {"KKTestHunt"}));
-  //   queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
-  //   when(ctx.queryParamMap()).thenReturn(queryParams);
-  //   when(ctx.queryParam(HuntController.TITLE_KEY)).thenReturn("KKTestHunt");
-  //   when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
+  /**
+   * Test for filter getTasksByDescription
+   */
+  @Test
+  void canGetHuntsWithDescription() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TaskController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test task for KK"}));
+    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TaskController.DESCRIPTION_KEY)).thenReturn("This is test task for KK");
+    when(ctx.queryParam(TaskController.SORT_ORDER_KEY)).thenReturn("desc");
 
-  //   huntController.getAllHunts(ctx);
+    taskController.getAllTasks(ctx);
 
-  //   verify(ctx).json(huntArrayListCaptor.capture());
-  //   verify(ctx).status(HttpStatus.OK);
+    verify(ctx).json(taskArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
 
-  //   // Confirm that all the users passed to `json` work for OHMNET.
-  //   for (Hunt hunt : huntArrayListCaptor.getValue()) {
-  //     assertEquals("KKTestHunt", hunt.title);
-  //   }
-  // }
-
-  // /**
-  //  * Test for filter getHuntsByDescription
-  //  */
-  // @Test
-  // void canGetHuntsWithDescription() throws IOException {
-  //   Map<String, List<String>> queryParams = new HashMap<>();
-  //   queryParams.put(HuntController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test hunt for KK"}));
-  //   queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
-  //   when(ctx.queryParamMap()).thenReturn(queryParams);
-  //   when(ctx.queryParam(HuntController.DESCRIPTION_KEY)).thenReturn("This is test hunt for KK");
-  //   when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
-
-  //   huntController.getAllHunts(ctx);
-
-  //   verify(ctx).json(huntArrayListCaptor.capture());
-  //   verify(ctx).status(HttpStatus.OK);
-
-  //   // Confirm that all the users passed to `json` work for OHMNET.
-  //   for (Hunt hunt : huntArrayListCaptor.getValue()) {
-  //     assertEquals("This is test hunt for KK", hunt.description);
-  //   }
-  // }
+    // Confirm that all the tasks passed to `json` work for description.
+    for (Task task : taskArrayListCaptor.getValue()) {
+      assertEquals("This is test task for KK", task.description);
+    }
+  }
 }

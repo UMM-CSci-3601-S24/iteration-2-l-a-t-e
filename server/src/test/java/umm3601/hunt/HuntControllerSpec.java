@@ -253,7 +253,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for id.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("1234567", hunt.hostid);
     }
@@ -276,7 +276,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for title.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("KKTestHunt", hunt.title);
     }
@@ -299,7 +299,7 @@ class HuntControllerSpec {
     verify(ctx).json(huntArrayListCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
 
-    // Confirm that all the users passed to `json` work for OHMNET.
+    // Confirm that all the hunts passed to `json` work for description.
     for (Hunt hunt : huntArrayListCaptor.getValue()) {
       assertEquals("This is test hunt for KK", hunt.description);
     }
