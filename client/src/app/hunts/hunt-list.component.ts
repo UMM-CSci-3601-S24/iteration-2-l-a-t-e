@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { Hunt } from './hunt';
@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { HuntCardComponent } from "./hunt-card.component";
+import { HuntGroup } from './huntgroup';
 
 @Component({
     selector: 'app-hunt-list',
@@ -26,12 +27,17 @@ import { HuntCardComponent } from "./hunt-card.component";
 })
 export class HuntListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
+
+  @Input() editable: boolean = true;
+  @Input() hunt: Hunt;
+
   public serverFilteredHunts: Hunt[];
 
   public huntHost: string;
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
+
 
   /**
    * This constructor injects both an instance of `HuntService`
@@ -73,8 +79,17 @@ export class HuntListComponent implements OnInit, OnDestroy {
     });
   }
 
+  huntsByHost: HuntGroup[];
+
+  getHuntsByHostid(): void {
+    this.huntService.getHuntsGroupedByHost().subscribe(huntsByHost => {
+      this.huntsByHost = huntsByHost;
+    });
+  }
+
   ngOnInit(): void {
     this.getHuntsFromServer();
+    this.getHuntsByHostid();
   }
 
   ngOnDestroy(): void {

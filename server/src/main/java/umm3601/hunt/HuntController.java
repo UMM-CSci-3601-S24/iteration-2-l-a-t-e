@@ -5,6 +5,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,6 +18,8 @@ import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 
@@ -159,6 +162,8 @@ public void getAllHunts(Context ctx) {
     server.post(API_HUNTS, this::addNewHunt);
     // // Delete the specified hunt.
     server.delete(API_HUNTS_BY_ID, this::deleteHunt);
+
+    server.get(API_HUNTS + "/grouped", this::getHuntsGroupedByHost);
   }
 
   /**
@@ -225,4 +230,21 @@ public void getAllHunts(Context ctx) {
     }
     ctx.status(HttpStatus.OK);
   }
+
+  public void getHuntsGroupedByHost(Context ctx) {
+  // Create an aggregation pipeline that groups hunts by hostid
+  List<Bson> pipeline = Arrays.asList(
+    Aggregates.group("$" + HOST_KEY, Accumulators.sum("count", 1))
+  );
+
+  // Execute the aggregation
+  ArrayList<Hunt> results = huntCollection.aggregate(pipeline).into(new ArrayList<>());
+
+  // Return the results
+  ctx.json(results);
+  ctx.status(HttpStatus.OK);
+}
+
+
+
 }

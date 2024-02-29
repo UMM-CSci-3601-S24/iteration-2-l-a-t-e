@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Hunt } from './hunt';
+import { HuntGroup } from './huntgroup';
 
 
 @Injectable({
@@ -36,5 +37,9 @@ export class HuntService {
     return this.httpClient.get<Hunt[]>(this.huntUrl, {
       params: httpParams
     });
+  }
+
+  getHuntsGroupedByHost(): Observable<HuntGroup[]> {
+    return this.httpClient.get<HuntGroup[]>(`${this.huntUrl}/grouped`);
   }
 }

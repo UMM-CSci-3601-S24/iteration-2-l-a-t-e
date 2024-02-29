@@ -1,0 +1,7 @@
+@for (group in this.hunt_groups; track by group._id) {
+  <app-hunt-list
+  [host]="group.hostname"
+  [hunts]="group.hunts"
+  [editable]="group.hostId != 'generic'"
+  />
+}
