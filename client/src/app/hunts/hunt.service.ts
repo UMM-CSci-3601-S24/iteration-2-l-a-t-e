@@ -38,7 +38,4 @@ export class HuntService {
     });
   }
 
-  getHuntById(hostid: string): Observable<Hunt> {
-    return this.httpClient.get<Hunt>(`${this.huntUrl}/$(hostid)`);
-  }
 }
