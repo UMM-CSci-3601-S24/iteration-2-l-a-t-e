@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-// import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,23 +125,23 @@ class TaskControllerSpec {
     List<Document> testTasks = new ArrayList<>();
     testTasks.add(
       new Document()
-          .append("taskhuntid", "1234567")
+          .append("huntid", "1234567")
           .append("description", "teamAkaHunt"));
 
     testTasks.add(
       new Document()
-          .append("taskhuntid", "1234567")
+          .append("huntid", "1234567")
           .append("description", "for event test"));
 
     testTasks.add(
       new Document()
-          .append("taskhuntid", "1234567")
+          .append("huntid", "1234567")
           .append("description", "for even test 2"));
 
     kkTaskId = new ObjectId();
     Document kk = new Document()
         .append("_id", kkTaskId)
-        .append("taskhuntid", "1234567")
+        .append("huntid", "1234567")
         .append("description", "This is test task for KK");
 
     taskDocuments.insertMany(testTasks);
@@ -232,28 +232,29 @@ class TaskControllerSpec {
         taskArrayListCaptor.getValue().size());
   }
 
-  // /**
-  //  * Test for filter getHuntsByHost
-  //  */
-  //  @Test
-  // void canGetHuntsWithHost() throws IOException {
-  //   Map<String, List<String>> queryParams = new HashMap<>();
-  //   queryParams.put(HuntController.HOST_KEY, Arrays.asList(new String[] {"1234567"}));
-  //   queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
-  //   when(ctx.queryParamMap()).thenReturn(queryParams);
-  //   when(ctx.queryParam(HuntController.HOST_KEY)).thenReturn("1234567");
-  //   when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
+  /**
+   * Test for filter getTasksByHuntid
+   */
 
-  //   huntController.getAllHunts(ctx);
+   @Test
+  void canGetTasksWithHunt() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TaskController.TASK_KEY, Arrays.asList(new String[] {"1234567"}));
+    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TaskController.TASK_KEY)).thenReturn("1234567");
+    when(ctx.queryParam(TaskController.SORT_ORDER_KEY)).thenReturn("desc");
 
-  //   verify(ctx).json(huntArrayListCaptor.capture());
-  //   verify(ctx).status(HttpStatus.OK);
+    taskController.getAllTasks(ctx);
 
-  //   // Confirm that all the users passed to `json` work for OHMNET.
-  //   for (Hunt hunt : huntArrayListCaptor.getValue()) {
-  //     assertEquals("1234567", hunt.hostid);
-  //   }
-  // }
+    verify(ctx).json(taskArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    // Confirm that all the users passed to `json` work for OHMNET.
+    for (Task task : taskArrayListCaptor.getValue()) {
+      assertEquals("1234567", task.huntid);
+    }
+  }
 
   // /**
   //  * Test for filter getHuntsByTitle

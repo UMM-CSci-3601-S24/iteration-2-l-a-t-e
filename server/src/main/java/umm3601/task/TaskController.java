@@ -32,7 +32,7 @@ public class TaskController implements Controller {
   private static final String API_TASKS = "/api/tasks";
   private static final String API_TASKS_BY_ID = "/api/tasks/{id}";
 
-  static final String TASKHUNT_KEY = "taskhuntid";
+  static final String TASK_KEY = "huntid";
   static final String DESCRIPTION_KEY = "description";
 
   static final String SORT_ORDER_KEY = "sortorder";
@@ -107,9 +107,9 @@ public void getAllTasks(Context ctx) {
   List<Bson> filters = new ArrayList<>();
   // starts with an empty list of filer.
 
-  if (ctx.queryParamMap().containsKey(TASKHUNT_KEY)) {
-    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASKHUNT_KEY)), Pattern.CASE_INSENSITIVE);
-    filters.add(regex(TASKHUNT_KEY, pattern));
+  if (ctx.queryParamMap().containsKey(TASK_KEY)) {
+    Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TASK_KEY)), Pattern.CASE_INSENSITIVE);
+    filters.add(regex(TASK_KEY, pattern));
     }
 
   if (ctx.queryParamMap().containsKey(DESCRIPTION_KEY)) {
@@ -131,7 +131,7 @@ public void getAllTasks(Context ctx) {
    */
 
    private Bson constructSortingOrder(Context ctx) {
-    String sortBy = Objects.requireNonNullElse(ctx.queryParam("sortby"), "title");
+    String sortBy = Objects.requireNonNullElse(ctx.queryParam("sortby"), "huntid");
     String sortOrder = Objects.requireNonNullElse(ctx.queryParam("sortorder"), "asc");
     Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
     return sortingOrder;
