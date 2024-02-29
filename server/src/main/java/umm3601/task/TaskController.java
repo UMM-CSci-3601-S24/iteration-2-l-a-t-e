@@ -164,8 +164,7 @@ public void getAllTasks(Context ctx) {
 
   public void addNewTask(Context ctx) {
     Task newTask = ctx.bodyValidator(Task.class)
-      .check(tsk -> tsk.huntid != null, "Task must have non-empty huntid")
-      .check(tsk -> tsk.description != null, "Task must have non-empty description")
+      .check(tsk -> tsk.huntid.length() > 0, "Task must have huntid")
       .check(tsk -> tsk.description.length() > 2, "Task must not have description shorter than 2 characters")
       .get();
 
@@ -175,7 +174,7 @@ public void getAllTasks(Context ctx) {
     // Set the JSON response to be the `_id` of the newly created task.
     // This gives the client the opportunity to know the ID of the new task,
     // which it can then use to perform further operation.
-    ctx.json(Map.of("id",newTask._id));
+    ctx.json(Map.of("id", newTask._id));
 
     ctx.status(HttpStatus.CREATED);
   }

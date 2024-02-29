@@ -416,7 +416,7 @@ class HuntControllerSpec {
     huntController.deleteHunt(ctx);
 
     // Hunt is no longer in the database
-    assertEquals(0, db.getCollection("users").countDocuments(eq("_id", new ObjectId(testID))));
+    assertEquals(0, db.getCollection("hunts").countDocuments(eq("_id", new ObjectId(testID))));
 
     assertThrows(NotFoundResponse.class, () -> {
       huntController.deleteHunt(ctx);
