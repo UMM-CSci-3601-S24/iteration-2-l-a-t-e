@@ -215,7 +215,7 @@ public void getAllHunts(Context ctx) {
   public void deleteHunt(Context ctx) {
     String id = ctx.pathParam("id");
     DeleteResult deleteResult = huntCollection.deleteOne(eq("_id", new ObjectId(id)));
-    // we should deleted 1 or 0 users, depend on whether `id` is a valid hunt ID.
+    // we should deleted 1 or 0 tasks, depend on whether `id` is a valid task ID.
     if (deleteResult.getDeletedCount() != 1) {
       ctx.status(HttpStatus.NOT_FOUND);
       throw new NotFoundResponse(

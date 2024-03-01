@@ -1,6 +1,8 @@
 package umm3601.task;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -39,6 +41,9 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.json.JavalinJackson;
+import io.javalin.validation.BodyValidator;
+import io.javalin.validation.ValidationException;
 
 
 /**
@@ -57,6 +62,8 @@ class TaskControllerSpec {
   // A Mongo object ID that is initialized in `setupEach()` and used in few of tests
   private ObjectId kkTaskId;
 
+  private static JavalinJackson javalinJackson = new JavalinJackson();
+
   // The client and database that will be used
   // for al the tests in this spec file.
   private static MongoClient mongoClient;
@@ -73,6 +80,7 @@ class TaskControllerSpec {
 
   @Captor
   private ArgumentCaptor<Map<String, String>> mapCaptor;
+
 
   /**
    * Sets up (the connection to the) DB once; that connection and DB will
@@ -251,7 +259,7 @@ class TaskControllerSpec {
    * Test for filter getTasksByDescription
    */
   @Test
-  void canGetHuntsWithDescription() throws IOException {
+  void canGetTasksWithDescription() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put(TaskController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test task for KK"}));
     queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
@@ -269,4 +277,125 @@ class TaskControllerSpec {
       assertEquals("This is test task for KK", task.description);
     }
   }
+
+  /**
+   * Test for adding new task
+   */
+  @Test
+  void addTask() throws IOException {
+    String testNewTask = """
+        {
+          "huntid": "1234567",
+          "description": "this is just a test description"
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+    taskController.addNewTask(ctx);
+    verify(ctx).json(mapCaptor.capture());
+
+    // Our status should be 201, our new task was successfully created.
+    verify(ctx).status(HttpStatus.CREATED);
+
+    // Verify that the task was added to the database with correct ID.
+    Document addedTask = db.getCollection("tasks")
+        .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+    // Successfully adding the task should return newly generated, non-empty
+    // MongoDB ID for that task.
+
+    assertNotEquals("", addedTask.get("_id"));
+    assertEquals("1234567", addedTask.get(TaskController.HUNTID_KEY));
+    assertEquals("this is just a test description", addedTask.get(TaskController.DESCRIPTION_KEY));
+  }
+
+
+  /**
+   * Test for blank huntid that throws Exception
+   *
+   * @throws IOException
+   */
+
+  @Test
+  void addInvalidHuntidTask() throws IOException {
+    String testNewTask = """
+        {
+          "huntid": "",
+          "description": "This is description of the test"
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      taskController.addNewTask(ctx);
+    });
+  }
+
+  /**
+   *
+   * Test for blank description that throws Exception
+   * @throws IOException
+   */
+
+   @Test
+   void addInvalidDescriptionTask() throws IOException {
+     String testNewTask = """
+         {
+           "huntid": "345678",
+           "description": ""
+         }
+         """;
+     when(ctx.bodyValidator(Task.class))
+         .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+     assertThrows(ValidationException.class, () -> {
+       taskController.addNewTask(ctx);
+     });
+    }
+
+
+
+  /**
+   *
+   * Test for deleting existence task
+  */
+
+  @Test
+  void deleteFoundTask() throws IOException {
+    String testID = kkTaskId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    // Task exits before deletion
+    assertEquals(1, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
+
+    taskController.deleteTask(ctx);
+
+    verify(ctx).status(HttpStatus.OK);
+
+    // Task is no longer in the database
+    assertEquals(0, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+
+  @Test
+  void deleteNotFoundHunt() throws IOException {
+    String testID = kkTaskId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    taskController.deleteTask(ctx);
+
+    // Task is no longer in the database
+    assertEquals(0, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
+
+    assertThrows(NotFoundResponse.class, () -> {
+      taskController.deleteTask(ctx);
+    });
+
+    verify(ctx).status(HttpStatus.NOT_FOUND);
+
+    // Hunt is still not in the database
+    assertEquals(0, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+
 }
