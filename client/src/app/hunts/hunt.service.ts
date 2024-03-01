@@ -37,4 +37,5 @@ export class HuntService {
       params: httpParams
     });
   }
+
 }
