@@ -15,11 +15,11 @@ describe('HuntProfileComponent', () => {
   let component: HuntProfileComponent;
   let fixture: ComponentFixture<HuntProfileComponent>;
   const mockHuntService = new MockHuntService();
-  const kkId = 'kk_id';
+  const patId = 'hunt2_id';
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub({
     // Using the constructor here lets us try that branch in `activated-route-stub.ts`
     // and then we can choose a new parameter map in the tests if we choose
-    id : kkId
+    id : patId
   });
 
  beforeEach(waitForAsync(() => {
@@ -81,7 +81,7 @@ describe('HuntProfileComponent', () => {
  });
 
  it('should set error data on observable error', () => {
-  activatedRoute.setParamMap({ id: kkId });
+  activatedRoute.setParamMap({ id: patId });
 
   const mockError = { message: 'Test Error', error: { title: 'Error Title' }};
 
@@ -100,6 +100,6 @@ describe('HuntProfileComponent', () => {
     httpResponse: mockError.message,
     message: mockError.error.title,
   });
-  expect(getHuntSpy).toHaveBeenCalledWith(kkId);
+  expect(getHuntSpy).toHaveBeenCalledWith(patId);
  });
 });

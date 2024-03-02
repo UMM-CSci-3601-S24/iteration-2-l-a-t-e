@@ -38,4 +38,19 @@ export class MockHuntService extends HuntService {
   getHunts(_filters: { hostid?: string }): Observable<Hunt[]> {
     return of(MockHuntService.testHunts);
   }
+
+  // skipcq: JS-0105
+  getHuntById(id: string): Observable<Hunt> {
+    // If the specified ID is for one of the first two test users,
+    // return that user, otherwise return `null` so
+    // we can test illegal user requests.
+    // If you need more, just add those in too.
+    if (id === MockHuntService.testHunts[0]._id) {
+      return of(MockHuntService.testHunts[0]);
+    } else if (id === MockHuntService.testHunts[1]._id) {
+      return of(MockHuntService.testHunts[1]);
+    } else {
+      return of(null);
+    }
+  }
 }
