@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
+import { environment } from "src/environments/environment";
+import { Task } from "./task";
 
 
 @Injectable({
@@ -8,7 +10,7 @@ import { Observable, map } from "rxjs";
 })
 export class TaskService {
 
-  readonly taskUrl: string = '${environment.apiUrl}tasks';
+  readonly taskUrl: string = `${environment.apiUrl}tasks`;
 
   private readonly huntKey = 'huntid';
 

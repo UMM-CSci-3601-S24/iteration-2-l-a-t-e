@@ -29,7 +29,6 @@ describe('TaskService', () => {
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    // Set up the mock handling of the HTTP requests
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule]
     });
@@ -74,44 +73,43 @@ describe('TaskService', () => {
     });
   });
 
-  describe('TaskService', () => {
 
-    let httpTestingController: HttpTestingController;
-    let taskService: TaskService;
+  it('should delete a task', () => {
+    taskService.deleteTask('test_task_id').subscribe();
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [TaskService]
-      });
-
-      httpClient = TestBed.inject(HttpClient);
-      httpTestingController = TestBed.inject(HttpTestingController);
-      taskService = TestBed.inject(TaskService);
-    });
-
-    afterEach(() => {
-      httpTestingController.verify(); // Ensure that there are no outstanding requests.
-    });
-
-    it('should add a task', () => {
-      taskService.addTask({ description: 'test_task', huntid: 'test_hunt_id' }).subscribe(taskId => {
-        expect(taskId).toBe('test_task_id');
-      });
-
-      const req = httpTestingController.expectOne(taskService.taskUrl);
-      expect(req.request.method).toEqual('POST');
-      req.flush({ taskId: 'test_task_id' });
-
-    })
-
-    it('should delete a task', () => {
-      taskService.deleteTask('test_task_id').subscribe();
-
-      const req = httpTestingController.expectOne(`${taskService.taskUrl}/test_task_id`);
-      expect(req.request.method).toEqual('DELETE');
-      req.flush({});
-    });
+    const req = httpTestingController.expectOne(`${taskService.taskUrl}/test_task_id`);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush({});
   });
 
+  it('should add a task', () => {
+    const newTask = { description: 'Test task', huntid: 'hunt1_id' };
+    const expectedResponse = { taskId: 'test_task_id' };
+
+    taskService.addTask(newTask).subscribe(taskId => {
+      expect(taskId).toEqual(expectedResponse.taskId);
+    });
+
+    const req = httpTestingController.expectOne(taskService.taskUrl);
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(newTask);
+
+    req.flush(expectedResponse);
+  });
+
+  it('should update a task', () => {
+    const taskId = 'test_task_id';
+    const updatedTask = { description: 'Updated task', huntid: 'hunt1_id' };
+
+    taskService.updateTask(taskId, updatedTask).subscribe(() => {
+      // If the request completes successfully, we don't need to do anything here
+    });
+
+    const req = httpTestingController.expectOne(`${taskService.taskUrl}/${taskId}`);
+    expect(req.request.method).toEqual('PUT');
+    expect(req.request.body).toEqual(updatedTask);
+
+    req.flush(null);
+  });
 });
+
