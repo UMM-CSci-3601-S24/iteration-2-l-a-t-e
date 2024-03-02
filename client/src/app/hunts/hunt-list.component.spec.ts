@@ -19,8 +19,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockHuntService } from 'src/testing/hunt.service.mock';
 import { HuntService } from './hunt.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Hunt } from './hunt';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const COMMON_IMPORTS: unknown[] = [
   FormsModule,
@@ -118,6 +119,53 @@ describe('Misbehaving Hunt List', () => {
       .toMatch(/^Problem on the server - Error Code:/);
     console.log(huntList.errMsg);
   });
+
+  it('sets errMsg when getHuntsFromServer fails', () => {
+    // Arrange
+    const errorResponse = new HttpErrorResponse({
+      error: 'Http failure response for (unknown url): 500 Internal Server Error',
+      status: 500,
+      statusText: 'Internal Server Error'
+    });
+
+    spyOn(huntServiceStub, 'getHunts').and.returnValue(throwError(errorResponse));
+
+    // Act
+    huntList.getHuntsFromServer();
+
+    // Assert
+    expect(huntList.errMsg).toBe('Problem on the server - Error Code: 500\nMessage: Http failure response for (unknown url): 500 Internal Server Error');
+  });
+
+  it('sets errMsg when getHuntsFromServer fails with a client-side error', () => {
+    // Arrange
+    const errorEvent = new ErrorEvent('Client error', { message: 'test client error' });
+    const errorResponse = new HttpErrorResponse({ error: errorEvent });
+
+    spyOn(huntServiceStub, 'getHunts').and.returnValue(throwError(errorResponse));
+
+    // Act
+    huntList.getHuntsFromServer();
+
+    // Assert
+    expect(huntList.errMsg).toBe('Problem in the client - Error: test client error');
+  });
+
+  it('sets errMsg when getGenericHuntsFromServer fails with a client-side error', () => {
+    // Arrange
+    const errorEvent = new ErrorEvent('Client error', { message: 'test client error' });
+    const errorResponse = new HttpErrorResponse({ error: errorEvent });
+
+    spyOn(huntServiceStub, 'getHunts').and.returnValue(throwError(errorResponse));
+
+    // Act
+    huntList.getGenericHuntsFromServer();
+
+    // Assert
+    expect(huntList.errMsg).toBe('Problem in the client - Error: test client error');
+  });
+
 });
+
 
 
