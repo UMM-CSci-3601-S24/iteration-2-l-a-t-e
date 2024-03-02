@@ -38,4 +38,16 @@ export class MockHuntService extends HuntService {
   getHunts(_filters: { hostid?: string }): Observable<Hunt[]> {
     return of(MockHuntService.testHunts);
   }
+
+  addHunt(huntDetails: Partial<Hunt>): Observable<string> {
+    const newHunt: Hunt = {
+      _id: `hunt${MockHuntService.testHunts.length + 1}_id`,
+      hostid: huntDetails.hostid,
+      title: huntDetails.title,
+      description: huntDetails.description,
+    };
+    MockHuntService.testHunts.push(newHunt);
+
+    return of(newHunt._id);
+  }
 }
