@@ -5,18 +5,23 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { Hunt } from './hunt';
+import { Task } from './task';
 import { HuntCardComponent } from './hunt-card.component';
 import { HuntService } from './hunt.service';
+import { TaskService } from './task.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-hunt-profile',
   standalone: true,
-  imports: [HuntCardComponent, MatCardModule],
+  imports: [HuntCardComponent, MatCardModule, CommonModule],
   templateUrl: './hunt-profile.component.html',
   styleUrl: './hunt-profile.component.scss'
 })
 export class HuntProfileComponent implements OnInit, OnDestroy {
   hunt: Hunt;
+  tasks: Task[] = [];
   error: { help: string, httpResponse: string, message: string };
 
   // This `Subject` will only ever emit one (empty) value when
@@ -25,18 +30,21 @@ export class HuntProfileComponent implements OnInit, OnDestroy {
   // terminate, allowing the system to free up their resources (like memory).
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private huntService: HuntService) { }
+  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private huntService: HuntService, private taskService: TaskService) { }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
       map((paramMap: ParamMap) => paramMap.get('id')),
       switchMap((id: string) => this.huntService.getHuntById(id)),
+      switchMap((hunt: Hunt) => {
+        this.hunt = hunt;
+        return this.taskService.getTasks({ huntid: hunt._id });
+      }),
       takeUntil(this.ngUnsubscribe)
     ).subscribe({
-        next: hunt => {
-          this.hunt = hunt;
-          return hunt;
-        },
+      next: (tasks: Task[]) => {
+        this.tasks = tasks;
+      },
         error: _err => {
           this.error = {
             help: 'There was a problem loading the hunt - try again.',
