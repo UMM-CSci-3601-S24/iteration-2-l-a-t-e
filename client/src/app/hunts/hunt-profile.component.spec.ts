@@ -96,7 +96,7 @@ describe('HuntProfileComponent', () => {
   component.ngOnInit();
 
   expect(component.error).toEqual({
-    help: 'THere was a problem loading the hunt - try again.',
+    help: 'There was a problem loading the hunt - try again.',
     httpResponse: mockError.message,
     message: mockError.error.title,
   });
