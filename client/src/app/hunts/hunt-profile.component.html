@@ -1,7 +1,20 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
 <div class="flex-row">
   <div class="flex-1">
     @if (hunt) {
-      <app-hunt-card [hunt]="this.hunt"></app-hunt-card>
+      <mat-card class="hunt-card-wrapper">
+        <div class="banner">This Hunt Details <i class="fa-solid fa-circle-info"></i></div>
+        <div class="flex-1">
+          <div class="hunt-cards-container flex-row gap-8 flex-wrap">
+            <mat-card-header>
+                <mat-card-title class="hunt-title">{{ hunt.title }}</mat-card-title>
+                <mat-card-subtitle>{{ hunt.description }}</mat-card-subtitle>
+        </mat-card-header>
+          </div>
+        </div>
+      </mat-card>
+
     } @else if (error) {
       <mat-card class="error-card">
         <mat-card-content>
