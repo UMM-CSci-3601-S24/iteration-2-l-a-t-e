@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { /* FormArray,  */FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,12 +41,12 @@ export class AddHuntComponent {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(50)])],
-    tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([
+    /* tasks: this.formBuilder.array([this.formBuilder.control('', Validators.compose([
       Validators.required,
-      Validators.maxLength(50)]))]),
+      Validators.maxLength(50)]))]), */
   });
 
-  get tasks() {
+  /* get tasks() {
     return this.addHuntForm.get('tasks') as FormArray;
   }
 
@@ -66,7 +66,7 @@ export class AddHuntComponent {
         { duration: 2000 }
       );
     }
-  }
+  } */
 
   readonly addHuntValidationMessages = {
     title: [
@@ -82,10 +82,10 @@ export class AddHuntComponent {
       { type: 'minlength', message: 'Description must be more than 2 characters long' }
     ],
 
-    task: [
+    /* task: [
       { type: 'required', message: 'Task is required' },
       { type: 'maxlength', message: 'Task cannot be more than 50 characters long' },
-    ]
+    ] */
   };
 
   formControlHasError(controlName: string): boolean {
@@ -93,7 +93,7 @@ export class AddHuntComponent {
       (this.addHuntForm.get(controlName).dirty || this.addHuntForm.get(controlName).touched);
   }
 
-  getTaskErrorMessage(index: number): string {
+  /* getTaskErrorMessage(index: number): string {
     const taskControl = this.tasks.at(index);
     for (const error of this.addHuntValidationMessages.task) {
       if (taskControl.hasError(error.type)) {
@@ -101,7 +101,7 @@ export class AddHuntComponent {
       }
     }
     return '';
-  }
+  } */
 
 
   getErrorMessage(name: keyof typeof this.addHuntValidationMessages): string {
