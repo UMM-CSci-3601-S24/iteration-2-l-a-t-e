@@ -4,26 +4,27 @@ import { AppComponent } from "src/app/app.component";
 import { Task } from "src/app/hunts/task";
 import { TaskService } from "src/app/hunts/task.service";
 
-
 @Injectable({
   providedIn: AppComponent
 })
 export class MockTaskService extends TaskService {
   static testTasks: Task[] = [
     {
-      _id: 'hunt1_id',
+      _id: 'task1_id',
       huntid: 'chris',
-      description: 'Chris\'s test hunt',
+      description: 'Chris\'s test task',
+
     },
     {
-      _id: 'hunt2_id',
+      _id: 'task2_id',
       huntid: 'pat',
-      description: 'Pat\'s test hunt',
+      description: 'Pat\'s test task',
+
     },
     {
-      _id: 'hunt3_id',
+      _id: 'task3_id',
       huntid: 'jamie',
-      description: 'Jamie\'s test hunt',
+      description: 'Jamie\'s test task',
     }
   ];
 
@@ -35,5 +36,4 @@ export class MockTaskService extends TaskService {
   getTasks(_filters: { huntid?: string }): Observable<Task[]> {
     return of(MockTaskService.testTasks);
   }
-
 }
