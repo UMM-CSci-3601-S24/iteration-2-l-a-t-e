@@ -1,18 +1,18 @@
 <div class="flex-row">
-  <div class = "flex-1">
+  <div class="flex-1">
     <mat-card class="task-card-wrapper">
-      <div class ="flex-1">
+      <div class="flex-1">
         <div class="task-list-container flex-row gap-8 flex-wrap">
-          <ol>
-          @for (task of serverFilteredTasks; track task._id) {
+          <ol class="task-list-item">
+            @for (task of serverFilteredTasks; track task._id) {
 
 
-              <li mat-line>{{ task.description }}</li>
+            <li mat-line>{{ task.description }}</li>
 
 
             }
           </ol>
-      </div>
+        </div>
       </div>
     </mat-card>
   </div>

@@ -15,13 +15,14 @@ import { Subject, takeUntil } from "rxjs";
 import { TaskService } from "./task.service";
 import { Task } from "./task";
 import { CommonModule } from "@angular/common";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
-  imports: [CommonModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, MatListModule, MatButtonModule, MatIconModule, MatTooltipModule, TaskListComponent]
+  imports: [RouterLink, CommonModule, MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, MatListModule, MatButtonModule, MatIconModule, MatTooltipModule, TaskListComponent]
 })
 export class TaskListComponent implements OnInit, OnDestroy {
   public serverFilteredTasks: Task[];
@@ -51,14 +52,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
           this.errMsg = `Problem in the client: ${err.error.message}`;
         } else {
           this.errMsg = `Problem on the server - Error Code: ${err.status}\nMessage: ${err.message}`;
-      }
-      this.snackBar.open(
-        this.errMsg,
-        'OK',
-        { duration: 6000 });
+        }
+        this.snackBar.open(
+          this.errMsg,
+          'OK',
+          { duration: 6000 });
       },
-  });
-}
+    });
+  }
 
 
   ngOnInit(): void {

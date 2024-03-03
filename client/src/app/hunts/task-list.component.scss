@@ -1,0 +1,32 @@
+.task-list-item li {
+  padding: 2%;
+  justify-items: center;
+  font: sans-serif;
+}
+
+.task-list-item {
+  justify-content: center;
+}
+
+.task-list-container ol {
+  list-style-position: inside;
+  justify-content: center;
+  list-style-type: none;
+}
+
+.task-list-container li {
+  border: 1px solid rgb(194, 192, 192);
+  border-radius: 10px;
+  padding: 2%;
+  justify-items: center;
+  font-size: 1.2em;
+  font: sans-serif;
+}
+
+.flex-1 {
+  justify-content: center;
+}
+
+.flex-row {
+  justify-content: center;
+}
