@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'users/:id', component: UserProfileComponent, title: 'User Profile'},
   {path: 'companies', component: CompanyListComponent, title: 'Companies'},
   {path: 'hunts', component: HuntListComponent, title: 'My Hunts'},
-  {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'}
+  {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
 ];
