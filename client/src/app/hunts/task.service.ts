@@ -30,6 +30,10 @@ export class TaskService {
     });
   }
 
+  getTaskById(taskId: string): Observable<Task> {
+    return this.httpClient.get<Task>(`${this.taskUrl}/${taskId}`);
+  }
+
   addTask(newTask: Partial<Task>): Observable<string> {
     return this.httpClient.post<{ taskId: string }>(this.taskUrl, newTask).pipe(map(res => res.taskId));
   }

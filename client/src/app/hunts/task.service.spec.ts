@@ -58,6 +58,21 @@ describe('TaskService', () => {
     });
   });
 
+  describe('When getTaskById() is called with a taskid', () => {
+
+    it('calls `api/tasks` with the taskid as a parameter', () => {
+
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testTasks[0]));
+
+      taskService.getTaskById('task1_id').subscribe(() => {
+
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
   describe('When getTasks() is called with a huntid', () => {
 
     it('calls `api/tasks` with the huntid as a parameter', () => {
