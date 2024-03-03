@@ -1,20 +1,25 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { throwError } from 'rxjs';
 import { ActivatedRouteStub } from '../../testing/activated-route-stub';
 
+// import { Task } from './task';
+import { TaskService } from './task.service';
 import { MockHuntService } from 'src/testing/hunt.service.mock';
+
 import { Hunt } from './hunt';
 import { HuntCardComponent } from './hunt-card.component';
 import { HuntService } from './hunt.service';
 import { HuntProfileComponent } from './hunt-profile.component';
+import { MockTaskService } from 'src/testing/task.service.mock';
 
 describe('HuntProfileComponent', () => {
   let component: HuntProfileComponent;
   let fixture: ComponentFixture<HuntProfileComponent>;
   const mockHuntService = new MockHuntService();
+  const mockTaskService = new MockTaskService();
   const patId = 'hunt2_id';
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub({
     // Using the constructor here lets us try that branch in `activated-route-stub.ts`
@@ -32,6 +37,7 @@ describe('HuntProfileComponent', () => {
 
     providers: [
       { provide: HuntService, useValue: mockHuntService },
+      { provide: TaskService, useValue: mockTaskService },
       { provide: ActivatedRoute, useValue: activatedRoute }
     ]
 })
@@ -48,30 +54,34 @@ describe('HuntProfileComponent', () => {
     expect(component).toBeTruthy();
  });
 
- it('should navigate to a specific hunt profile', () => {
-    const expectedHunt: Hunt = MockHuntService.testHunts[0];
-    // Setting this should cause anyone subscribing to the paramMap
-    // to update. Our `HuntProfileComponent` subscribes to that, so
-    // it should update right away.
-    activatedRoute.setParamMap({ id: expectedHunt._id });
-    expect(component.hunt).toEqual(expectedHunt);
- });
+//  it('should navigate to a specific hunt profile, load tasks', () => {
+//     const expectedHunt: Hunt = MockHuntService.testHunts[0];
+//     // Setting this should cause anyone subscribing to the paramMap
+//     // to update. Our `HuntProfileComponent` subscribes to that, so
+//     // it should update right away.
+//     activatedRoute.setParamMap({ id: expectedHunt._id });
+//     expect(component.hunt).toEqual(expectedHunt);
+//  });
 
- it('should navigate to correct hunt when the id parameter changes', () => {
+ it('should navigate to correct hunt when the id parameter changes', fakeAsync(() => {
   let expectedHunt: Hunt = MockHuntService.testHunts[0];
   // Setting this should cause anyone subscribing to the paramMap
   // to update. Our `HuntProfileComponent` subscribes to that, so
   // it should update right away.
   activatedRoute.setParamMap({ id: expectedHunt._id });
+  tick();
+  fixture.detectChanges();
   expect(component.hunt).toEqual(expectedHunt);
 
   // Changing the paramMap should update the displayed hunt profile.
   expectedHunt = MockHuntService.testHunts[1];
   activatedRoute.setParamMap({ id: expectedHunt._id });
+  tick();
+  fixture.detectChanges();
   expect(component.hunt).toEqual(expectedHunt);
- });
+ }));
 
- it('should have `null` fro the hunt for a bad ID', () => {
+ it('should have `null` for the hunt for a bad ID', () => {
   activatedRoute.setParamMap({ id: 'badID' });
 
   // If the given ID doesn't map to a hunt, we expect the service
