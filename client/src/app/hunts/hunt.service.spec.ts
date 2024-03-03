@@ -83,4 +83,49 @@ describe('HuntService', () => {
         });
     });
   });
+
+  describe('When getHuntById() is given an ID', () => {
+    /* We really don't care what `getHuntById()` returns. Since all the
+     * interesting work is happening on the server, `getHuntById()`
+     * is really just a "pass through" that returns whatever it receives,
+     * without any "post processing" or manipulation. The test in this
+     * `describe` confirms that the HTTP request is properly formed
+     * and sent out in the world, but we don't _really_ care about
+     * what `getHuntById()` returns as long as it's what the HTTP
+     * request returns.
+     *
+     * So in this test, we'll keep it simple and have
+     * the (mocked) HTTP request return the `targetHunt`
+     * Furthermore, we won't actually check what got returned (there won't be an `expect`
+     * about the returned value). Since we don't use the returned value in this test,
+     * It might also be fine to not bother making the mock return it.
+     */
+     it('calls api/hunts/id with the correct ID', waitForAsync(() => {
+       // We're just picking a User "at random" from our little
+       // set of Hunts up at the top.
+       const targetHunt: Hunt = testHunts[1];
+       const targetId: string = targetHunt._id;
+
+       // Mock the `httpClient.get()` method so that instead of making an HTTP request
+       // it just returns one hunt from our test data
+       const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(targetHunt));
+
+       // Call `huntService.getHunt()` and confirm that the correct call has
+       // been made with the correct arguments.
+       //
+       // We have to `subscribe()` to the `Observable` returned by `getHuntById()`.
+       // The `hunt` argument in the function below is the thing of type Hunt returned by
+       // the call to `getHuntById()`.
+       huntService.getHuntById(targetId).subscribe(() => {
+         // The `Hunt` returned by `getHuntById()` should be targetHunt, but
+         // we don't bother with an `expect` here since we don't care what was returned.
+         expect(mockedMethod)
+           .withContext('one call')
+           .toHaveBeenCalledTimes(1);
+         expect(mockedMethod)
+           .withContext('talks to the correct endpoint')
+           .toHaveBeenCalledWith(`${huntService.huntUrl}/${targetId}`);
+       });
+     }));
+   });
 });
