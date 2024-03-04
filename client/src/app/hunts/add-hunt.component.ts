@@ -95,7 +95,7 @@ export class AddHuntComponent {
   }
 
 
-  submitForm() {
+  submitAll() {
     const huntData = {
       ...this.addHuntForm.value,
       hostid: this.currentHost
@@ -113,6 +113,34 @@ export class AddHuntComponent {
           null,
           { duration: 2000 }
         );
+
+        // Now submit tasks
+        const tasks = this.tasks.value;
+        console.log('Tasks:', tasks); // Log tasks
+        tasks.forEach(taskDescription => {
+          const task: Partial<Task> = {
+            description: taskDescription.taskInput,
+            huntid: this.currentHuntId
+          };
+          console.log('Current Task:', task); // Log current task
+          this.taskService.addTask(task).subscribe({
+            next: () => {
+              this.snackBar.open(
+                `Added Task to Hunt ${this.addHuntForm.value.title}`,
+                null,
+                { duration: 2000 }
+              );
+            },
+            error: err => {
+              console.log('Error:', err); // Log error
+              this.snackBar.open(
+                `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`,
+                'OK',
+                { duration: 5000 }
+              );
+            },
+          });
+        });
       },
       error: err => {
         console.log('Error occurred:', err); // Log the error
@@ -123,39 +151,6 @@ export class AddHuntComponent {
         );
       },
     });
-  }
-
-  submitTasks() {
-    if (this.isHuntCreated) {
-      const tasks = this.tasks.value;
-      console.log('Tasks:', tasks); // Log tasks
-      tasks.forEach(taskDescription => {
-        const task: Partial<Task> = {
-          description: taskDescription.taskInput,
-          huntid: this.currentHuntId
-        };
-        console.log('Current Task:', task); // Log current task
-        this.taskService.addTask(task).subscribe({
-          next: () => {
-            this.snackBar.open(
-              `Added Task to Hunt ${this.addHuntForm.value.title}`,
-              null,
-              { duration: 2000 }
-            );
-          },
-          error: err => {
-            console.log('Error:', err); // Log error
-            this.snackBar.open(
-              `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`,
-              'OK',
-              { duration: 5000 }
-            );
-          },
-        });
-      });
-    } else {
-      console.log('Hunt is not created yet.'); // Log when hunt is not created
-    }
   }
 
 

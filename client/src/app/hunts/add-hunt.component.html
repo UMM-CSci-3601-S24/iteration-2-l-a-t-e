@@ -1,6 +1,6 @@
 <div class="flex-row">
   <div class="flex-1">
-    <form [formGroup]="addHuntForm" (ngSubmit)="submitForm();">
+    <form [formGroup]="addHuntForm">
       <mat-card class="add-hunt-card" style="padding: 20px;">
         <mat-card-header>
           <mat-card-title>Create Hunt</mat-card-title>
@@ -23,21 +23,10 @@
             </mat-form-field>
           </div>
         </mat-card-content>
-        <mat-card-actions align="end">
-          <button
-          mat-raised-button
-          type="button"
-          color="accent"
-          [disabled]="!addHuntForm.valid"
-          type="submit"
-          data-test="confirmAddHuntButton">
-          Create Hunt
-          </button>
-        </mat-card-actions>
       </mat-card>
     </form>
 
-    <form [formGroup]="addTaskForm" (ngSubmit)="submitTasks();">
+    <form [formGroup]="addTaskForm">
       <mat-card class="add-task-card" style="padding: 20px;">
         <mat-card-header>
           <mat-card-title>Create Tasks</mat-card-title>
@@ -78,10 +67,10 @@
           mat-raised-button
           type="button"
           color="accent"
-          [disabled]="!addTaskForm.valid || !isHuntCreated"
-          (click)="submitTasks()"
+          [disabled]="!addHuntForm.valid || !addTaskForm.valid"
+          (click)="submitAll()"
           data-test="confirmAddTasksButton">
-          Create Tasks
+          Create Hunt
           </button>
         </mat-card-actions>
       </mat-card>
