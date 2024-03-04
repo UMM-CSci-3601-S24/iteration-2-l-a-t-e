@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { AppComponent } from "src/app/app.component";
-import { TaskService } from "src/app/hunts/task.service";
-import { Task } from "src/app/hunts/task";
 import { Observable, of } from "rxjs";
+import { AppComponent } from "src/app/app.component";
+import { Task } from "src/app/hunts/task";
+import { TaskService } from "src/app/hunts/task.service";
 
 @Injectable({
   providedIn: AppComponent
@@ -25,7 +25,6 @@ export class MockTaskService extends TaskService {
       _id: 'task3_id',
       huntid: 'jamie',
       description: 'Jamie\'s test task',
-
     }
   ];
 

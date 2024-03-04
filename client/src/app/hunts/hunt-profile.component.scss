@@ -1,0 +1,61 @@
+.error-card {
+  background-color: #b00020;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.banner {
+  font-size: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  color: yellowgreen;
+}
+
+.hunt-title {
+  font-size: 30px;
+  color: #707070;
+}
+
+.hunt-cards-container {
+  display: flex;
+  flex-direction: column;
+}
+
+h3 {
+  font-size: 30px;
+  color: red;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+li {
+  font-size: 20px;
+  color: #707070;
+  margin-top: 10px;
+  padding-right: 20px;
+}
+
+.hunt-description {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 20px;
+  color: #707070;
+  padding-left: 20px;
+}
+
+.task-wrapper li {
+  padding: 10px 20px;
+}
+
+.task-wrapper li {
+
+  border-top: 1px solid #ccc;
+}
+
+.task-wrapper li {
+  margin-top: 0;
+}

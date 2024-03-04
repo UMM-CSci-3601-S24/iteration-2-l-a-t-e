@@ -38,4 +38,16 @@ export class HuntService {
     });
   }
 
+   /**
+   * Get the `Hunt` with the specified ID.
+   *
+   * @param id the ID of the desired user
+   * @returns an `Observable` containing the resulting hunt.
+   */
+
+   getHuntById(id: string): Observable<Hunt> {
+    // The input to get could also be written as (this.huntUrl + '/' + id)
+    return this.httpClient.get<Hunt>(`${this.huntUrl}/${id}`);
+  }
+
 }
