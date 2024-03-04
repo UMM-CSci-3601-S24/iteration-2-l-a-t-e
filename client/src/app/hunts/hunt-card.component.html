@@ -17,7 +17,7 @@
       </button>
       }
       <button mat-icon-button matTooltip="Inspect Hunt" (click)="onInspectClick($event)" data-test="inspectHuntButton" [routerLink]="['/hunts',this.hunt._id]">
-        <mat-icon class="inspect-button-icon" aria-label="Inspect Hunt">view</mat-icon>
+        <mat-icon class="inspect-button-icon" aria-label="Inspect Hunt">search</mat-icon>
       </button>
       @if (editable) {
       <button mat-icon-button matTooltip="Delete Hunt" (click)="onDeleteClick($event)" data-test="deleteHuntButton">
