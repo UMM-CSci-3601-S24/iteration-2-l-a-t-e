@@ -125,11 +125,7 @@ export class AddHuntComponent {
           console.log('Current Task:', task); // Log current task
           this.taskService.addTask(task).subscribe({
             next: () => {
-              this.snackBar.open(
-                `Added Task to Hunt ${this.addHuntForm.value.title}`,
-                null,
-                { duration: 2000 }
-              );
+              console.log('Task added:', taskDescription); // Log the added task
               if (tasks[tasks.length - 1] === taskDescription) {
                 this.router.navigate(['/hunts']);
               }
