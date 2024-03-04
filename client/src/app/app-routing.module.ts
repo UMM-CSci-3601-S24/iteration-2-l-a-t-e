@@ -23,6 +23,7 @@ const routes: Routes = [
   {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'},
   {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
+  {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
 ];
 

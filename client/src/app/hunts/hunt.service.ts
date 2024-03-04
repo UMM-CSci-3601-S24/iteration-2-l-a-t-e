@@ -39,26 +39,20 @@ export class HuntService {
     });
   }
 
-   /**
-   * Get the `Hunt` with the specified ID.
-   *
-   * @param id the ID of the desired user
-   * @returns an `Observable` containing the resulting hunt.
-   */
+  /**
+  * Get the `Hunt` with the specified ID.
+  *
+  * @param id the ID of the desired user
+  * @returns an `Observable` containing the resulting hunt.
+  */
 
-   getHuntById(id: string): Observable<Hunt> {
+  getHuntById(id: string): Observable<Hunt> {
     // The input to get could also be written as (this.huntUrl + '/' + id)
     return this.httpClient.get<Hunt>(`${this.huntUrl}/${id}`);
   }
 
-
-  /* getHuntById(hostid: string): Observable<Hunt> {
-    // The input to get could also be written as (this.userUrl + '/' + id)
-    return this.httpClient.get<Hunt>(`${this.huntUrl}/${hostid}`);
-  } */
-
   addHunt(newHunt: Partial<Hunt>): Observable<string> {
     // Send post request to add a new hunt with the user data as the body.
-    return this.httpClient.post<{hostid: string}>(this.huntUrl, newHunt).pipe(map(res => res.hostid));
+    return this.httpClient.post<{ id: string }>(this.huntUrl, newHunt).pipe(map(res => res.id));
   }
 }

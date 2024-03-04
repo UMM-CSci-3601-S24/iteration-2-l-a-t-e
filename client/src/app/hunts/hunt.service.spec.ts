@@ -128,4 +128,26 @@ describe('HuntService', () => {
        });
      }));
    });
+
+   describe('When addHunt() is called', () => {
+      it('calls `api/hunts` with the correct body', waitForAsync(() => {
+        const newHunt: Partial<Hunt> = {
+          hostid: 'chris',
+          title: 'Chris\'s Hunt',
+          description: 'Chris\'s test hunt',
+        };
+
+        const mockedMethod = spyOn(httpClient, 'post').and.returnValue(of({ hostid: 'chris' }));
+
+        huntService.addHunt(newHunt).subscribe(() => {
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(huntService.huntUrl, newHunt);
+        });
+      }));
+    });
+
 });

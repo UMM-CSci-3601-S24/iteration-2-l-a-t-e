@@ -35,7 +35,7 @@ export class TaskService {
   }
 
   addTask(newTask: Partial<Task>): Observable<string> {
-    return this.httpClient.post<{ taskId: string }>(this.taskUrl, newTask).pipe(map(res => res.taskId));
+    return this.httpClient.post<{ id: string }>(this.taskUrl, newTask).pipe(map(res => res.id));
   }
 
   updateTask(taskId: string, updatedTask: Partial<Task>): Observable<void> {
