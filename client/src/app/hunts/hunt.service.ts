@@ -50,4 +50,8 @@ export class HuntService {
     return this.httpClient.get<Hunt>(`${this.huntUrl}/${id}`);
   }
 
+  updateHunt(huntId: string, updatedHunt: Partial<Hunt>): Observable<void> {
+    return this.httpClient.put<void>(`${this.huntUrl}/${huntId}`, updatedHunt);
+  }
+
 }

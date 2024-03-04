@@ -157,8 +157,10 @@ public void getAllHunts(Context ctx) {
     // Add new hunt with hunt info being in JSON body
     // of the HTTP request.
     server.post(API_HUNTS, this::addNewHunt);
-    // // Delete the specified hunt.
+    // Delete the specified hunt.
     server.delete(API_HUNTS_BY_ID, this::deleteHunt);
+    // Update the specified hunt.
+    server.put(API_HUNTS_BY_ID, this::updateHunt);
   }
 
   /**
@@ -223,6 +225,33 @@ public void getAllHunts(Context ctx) {
           + id
           + "; perhaps illegal ID or an ID for an item not in the system?");
     }
+    ctx.status(HttpStatus.OK);
+  }
+
+  /**
+   * Update the hunt with the specified `id` using the
+   * information provided in the request body.
+   *
+   * @param ctx a Javalin HTTP context
+   *
+   */
+  public void updateHunt (Context ctx) {
+    String id = ctx.pathParam("id");
+    Hunt hunt = ctx.bodyValidator(Hunt.class)
+      .check(hnt -> hnt.title != null, "Hunt must have non-empty title")
+      .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
+      .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
+      .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
+      .get();
+
+    Document huntDoc = new Document();
+    huntDoc.append("title", hunt.title);
+    huntDoc.append("description", hunt.description);
+    huntDoc.append("hostid", hunt.hostid);
+
+    Document updateDoc = new Document("$set", huntDoc);
+    huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+
     ctx.status(HttpStatus.OK);
   }
 }

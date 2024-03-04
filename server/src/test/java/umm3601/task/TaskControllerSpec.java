@@ -398,4 +398,29 @@ class TaskControllerSpec {
     assertEquals(0, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
   }
 
+  // Test for updating a task description
+  @Test
+  void updateTaskDescription() throws IOException {
+    String testID = kkTaskId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewTask = """
+        {
+          "huntid": "1234567",
+          "description": "This is updated description"
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+    taskController.updateTask(ctx);
+
+    verify(ctx).status(HttpStatus.OK);
+
+    Document updatedTask = db.getCollection("tasks")
+        .find(eq("_id", new ObjectId(testID))).first();
+
+    assertEquals("1234567", updatedTask.get(TaskController.HUNTID_KEY));
+    assertEquals("This is updated description", updatedTask.get(TaskController.DESCRIPTION_KEY));
+  }
 }
