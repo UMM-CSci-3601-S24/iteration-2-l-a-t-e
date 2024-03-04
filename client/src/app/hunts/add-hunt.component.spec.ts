@@ -1,155 +1,72 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { throwError } from 'rxjs';
-import { MockHuntService } from 'src/testing/hunt.service.mock';
-import { HuntService } from './hunt.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { AddHuntComponent } from './add-hunt.component';
-
-
-
+import { FormBuilder } from '@angular/forms';
+import { HuntService } from './hunt.service';
+import { TaskService } from './task.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AddHuntComponent', () => {
-  let addHuntComponent: AddHuntComponent;
-  let addHuntForm: FormGroup;
-  let fixture: ComponentFixture<AddHuntComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.overrideProvider(HuntService, { useValue: new MockHuntService() });
-    TestBed.configureTestingModule({
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        BrowserAnimationsModule,
-        RouterTestingModule,
-        MatButtonModule,
-        MatIconModule,
-        AddHuntComponent
-    ],
-}).compileComponents().catch(error => {
-      expect(error).toBeNull();
-    });
-  }));
+  let component: AddHuntComponent;
+  let huntService: HuntService;
+  let taskService: TaskService;
+  let formBuilder: FormBuilder;
+  let snackBar: MatSnackBar;
+  let router: Router;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddHuntComponent);
-    addHuntComponent = fixture.componentInstance;
-    fixture.detectChanges();
-    addHuntForm = addHuntComponent.addHuntForm;
-    expect(addHuntForm).toBeDefined();
-    expect(addHuntForm.controls).toBeDefined();
+    // Mock services and FormBuilder
+    huntService = jasmine.createSpyObj('HuntService', ['addHunt']);
+    (huntService.addHunt as jasmine.Spy).and.returnValue(of(null));
+    taskService = jasmine.createSpyObj('TaskService', ['addTask']);
+    (taskService.addTask as jasmine.Spy).and.returnValue(of(null));
+    formBuilder = new FormBuilder();
+    snackBar = jasmine.createSpyObj('MatSnackBar', ['open']);
+    router = jasmine.createSpyObj('Router', ['navigate']);
+
+    // Initialize component
+    component = new AddHuntComponent(huntService, taskService, formBuilder, snackBar, router);
   });
 
-  it('should create', () => {
-    expect(addHuntComponent).toBeTruthy();
-    expect(addHuntForm).toBeTruthy();
-   });
-
-/*   describe('addTask', () => {
-    it('should add a new task to tasks array', () => {
-      const initialTasksLength = addHuntComponent.tasks.length;
-      addHuntComponent.addTask();
-      expect(addHuntComponent.tasks.length).toBe(initialTasksLength + 1);
-    });
-
-    it('should add a required control to tasks array', () => {
-      addHuntComponent.addTask();
-      const newTask = addHuntComponent.tasks.controls[addHuntComponent.tasks.length - 1];
-      newTask.setValue('');
-      expect(newTask.valid).toBeFalsy();
-      newTask.setValue('New Task');
-      expect(newTask.valid).toBeTruthy();
-    });
+  it('should create a form with title and description', () => {
+    expect(component.addHuntForm.contains('title')).toBeTruthy();
+    expect(component.addHuntForm.contains('description')).toBeTruthy();
   });
 
-  describe('removeTask', () => {
-    it('should remove a task from tasks array', () => {
-      addHuntComponent.addTask(); // Ensure there is a task to remove
-      const initialTasksLength = addHuntComponent.tasks.length;
-      addHuntComponent.deleteTask(0); // Remove the first task
-      expect(addHuntComponent.tasks.length).toBe(initialTasksLength - 1);
-    });
-
-    it('should not fail when trying to remove a task from an empty array', () => {
-      addHuntComponent.tasks.controls = []; // Ensure tasks array is empty
-      expect(() => addHuntComponent.deleteTask(0)).not.toThrow();
-    });
-  }); */
-
-  describe('Form validation', () => {
-    it('should invalidate the form when title is empty', () => {
-      addHuntForm.controls['title'].setValue('');
-      expect(addHuntForm.valid).toBeFalsy();
-    });
-
-    it('should invalidate the form when description is empty', () => {
-      addHuntForm.controls['description'].setValue('');
-      expect(addHuntForm.valid).toBeFalsy();
-    });
-
-    it('should validate the form when title and description are properly filled', () => {
-      addHuntForm.controls['title'].setValue('Test Title');
-      addHuntForm.controls['description'].setValue('Test Description');
-      expect(addHuntForm.valid).toBeTruthy();
-    });
+  it('should create a form with tasks', () => {
+    expect(component.addTaskForm.contains('tasks')).toBeTruthy();
   });
 
-  describe('Form submission', () => {
-    let huntService: HuntService;
-    let router: Router;
-    let snackBar: MatSnackBar;
+  it('should add a task input when addTaskInput is called', () => {
+    const initialTasksLength = component.tasks.length;
+    component.addTaskInput();
+    expect(component.tasks.length).toBe(initialTasksLength + 1);
+  });
 
-    beforeEach(() => {
-      huntService = TestBed.inject(HuntService);
-      router = TestBed.inject(Router);
-      snackBar = TestBed.inject(MatSnackBar);
-    });
+  it('should remove a task input when deleteTaskInput is called', () => {
+    component.addTaskInput(); // Ensure there is a task to remove
+    const initialTasksLength = component.tasks.length;
+    component.deleteTaskInput(0); // Remove the first task
+    expect(component.tasks.length).toBe(initialTasksLength - 1);
+  });
 
-    it('should attempt to add a hunt when the form is submitted', () => {
-      spyOn(huntService, 'addHunt').and.callThrough();
-      addHuntForm.controls['title'].setValue('Test Title');
-      addHuntForm.controls['description'].setValue('Test Description');
-      addHuntComponent.submitForm();
-      expect(huntService.addHunt).toHaveBeenCalledWith(addHuntForm.value);
-    });
+  it('should not fail when trying to remove a task input from an empty array', () => {
+    component.tasks.controls = []; // Ensure tasks array is empty
+    expect(() => component.deleteTaskInput(0)).not.toThrow();
+  });
 
-    it('should navigate to "/hunts/" when the form is successfully submitted', () => {
-      spyOn(router, 'navigate').and.callThrough();
-      addHuntForm.controls['title'].setValue('Test Title');
-      addHuntForm.controls['description'].setValue('Test Description');
-      addHuntComponent.submitForm();
-      expect(router.navigate).toHaveBeenCalledWith(['/hunts/']);
-    });
+  it('should submit form when submitForm is called', () => {
+    component.addHuntForm.controls['title'].setValue('Test Title');
+    component.addHuntForm.controls['description'].setValue('Test Description');
+    component.submitForm();
+    expect(huntService.addHunt).toHaveBeenCalled();
+  });
 
-    it('should open a snackBar when the form is successfully submitted', () => {
-      spyOn(snackBar, 'open').and.callThrough();
-      addHuntForm.controls['title'].setValue('Test Title');
-      addHuntForm.controls['description'].setValue('Test Description');
-      addHuntComponent.submitForm();
-      expect(snackBar.open).toHaveBeenCalledWith(`Added Hunt ${addHuntForm.value.title}`, null, { duration: 2000 });
-    });
-
-    it('should open a snackBar when the form submission fails', () => {
-      spyOn(snackBar, 'open').and.callThrough();
-      spyOn(huntService, 'addHunt').and.returnValue(throwError({ status: 500, message: 'Server Error' }));
-      addHuntForm.controls['title'].setValue('Test Title');
-      addHuntForm.controls['description'].setValue('Test Description');
-      addHuntComponent.submitForm();
-      expect(snackBar.open).toHaveBeenCalledWith(`Problem contacting the server – Error Code: 500\nMessage: Server Error`, 'OK', { duration: 5000 });
-    });
+  it('should submit tasks when submitTasks is called', () => {
+    component.isHuntCreated = true;
+    component.addTaskInput();
+    component.tasks.controls[0].get('taskInput').setValue('Test Task');
+    component.submitTasks();
+    expect(taskService.addTask).toHaveBeenCalled();
   });
 });

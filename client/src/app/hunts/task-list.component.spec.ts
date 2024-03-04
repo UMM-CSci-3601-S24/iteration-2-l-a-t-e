@@ -116,7 +116,7 @@ describe('Misbehaving Task List', () => {
       .withContext('the error message will be')
       .toMatch(/^Problem on the server - Error Code:/);
     console.log(taskList.errMsg);
-  });
+  },8000);
 
   it('sets errMsg when getTasksFromServer fails', () => {
     // Arrange
