@@ -3,56 +3,56 @@
 <div class="flex-row">
   <div class="flex-1">
     @if (hunt) {
-      <mat-card class="hunt-card-wrapper">
-        <div class="banner">Hunt Details <i class="fa-solid fa-circle-info"></i></div>
-          <div class="hunt-cards-container flex-row gap-8 flex-wrap">
-            <mat-card-header>
-                <mat-card-title class="hunt-title">{{ hunt.title }} <i class="fa-solid fa-signature"></i></mat-card-title>
-                <mat-card-subtitle class="hunt-description">{{ hunt.description }}</mat-card-subtitle>
+    <mat-card class="hunt-card-wrapper">
+      <div class="banner">Hunt Details <i class="fa-solid fa-circle-info"></i></div>
+      <div class="hunt-cards-container flex-row gap-8 flex-wrap">
+        <mat-card-header>
+          <mat-card-title class="hunt-title">{{ hunt.title }} <i class="fa-solid fa-signature"></i></mat-card-title>
+          <mat-card-subtitle class="hunt-description">{{ hunt.description }}</mat-card-subtitle>
 
         </mat-card-header>
 
-        <div class ="task-description">
+        <div class="task-description">
           <h3> Tasks List <i class="fa-solid fa-file-signature"></i></h3>
-        <div *ngIf="tasks && tasks.length > 0; else noTasks">
-          <div class="task-wrapper">
-            <li *ngFor="let task of tasks" class="task-wrapper">
-              {{ task.description }}
-            </li>
-          </div>
+          <div *ngIf="tasks && tasks.length > 0; else noTasks">
+            <div class="task-wrapper">
+              <li *ngFor="let task of tasks" class="task-wrapper">
+                {{ task.description }}
+              </li>
+            </div>
           </div>
         </div>
 
         <ng-template #noTasks>
           <h4>No tasks available for this hunt yet.</h4>
         </ng-template>
-          </div>
+      </div>
 
-      </mat-card>
+    </mat-card>
 
     } @else if (error) {
-      <mat-card class="error-card">
-        <mat-card-content>
-          <h2>
-            {{ error.help }}
-          </h2>
-          <p>
-            {{ error.message }}
-          </p>
-          <p>
-            {{ error.httpResponse }}
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button color=primary mat-raised-button routerLink="/hunts">Back to Hunts List</button>
-        </mat-card-actions>
-      </mat-card>
+    <mat-card class="error-card">
+      <mat-card-content>
+        <h2>
+          {{ error.help }}
+        </h2>
+        <p>
+          {{ error.message }}
+        </p>
+        <p>
+          {{ error.httpResponse }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button color=primary mat-raised-button routerLink="/hunts">Back to Hunts List</button>
+      </mat-card-actions>
+    </mat-card>
     } @else {
-      <mat-card>
-        <mat-card-content>
-          <p>Loading Hunt Profile data...</p>
-        </mat-card-content>
-      </mat-card>
+    <mat-card>
+      <mat-card-content>
+        <p>Loading Hunt Profile data...</p>
+      </mat-card-content>
+    </mat-card>
     }
   </div>
 </div>

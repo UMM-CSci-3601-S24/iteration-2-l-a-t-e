@@ -45,13 +45,13 @@ export class HuntProfileComponent implements OnInit, OnDestroy {
       next: (tasks: Task[]) => {
         this.tasks = tasks;
       },
-        error: _err => {
-          this.error = {
-            help: 'There was a problem loading the hunt - try again.',
-            httpResponse: _err.message,
-            message: _err.error?.title,
-          };
-        }
+      error: _err => {
+        this.error = {
+          help: 'There was a problem loading the hunt - try again.',
+          httpResponse: _err.message,
+          message: _err.error?.title,
+        };
+      }
     });
   }
 
