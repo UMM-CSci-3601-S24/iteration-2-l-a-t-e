@@ -1,10 +1,11 @@
 <div class="flex-row">
   <div class="flex-1">
-    <form [formGroup]="addHuntForm">
-      <mat-card class="add-hunt-card" style="padding: 20px;">
-        <mat-card-header>
-          <mat-card-title>Create Hunt</mat-card-title>
-        </mat-card-header>
+    <mat-card class="add-hunt-card" style="padding: 20px;">
+      <mat-card-header>
+        <mat-card-title>Create Hunt</mat-card-title>
+      </mat-card-header>
+
+      <form [formGroup]="addHuntForm">
         <mat-card-content>
           <div class="flex-col">
             <mat-form-field appearance="fill" style="width: 35%;">
@@ -23,14 +24,9 @@
             </mat-form-field>
           </div>
         </mat-card-content>
-      </mat-card>
-    </form>
+      </form>
 
-    <form [formGroup]="addTaskForm">
-      <mat-card class="add-task-card" style="padding: 20px;">
-        <mat-card-header>
-          <mat-card-title>Create Tasks</mat-card-title>
-        </mat-card-header>
+      <form [formGroup]="addTaskForm">
         <mat-card-content>
           <div class="flex-col">
             <div formArrayName="tasks">
@@ -73,7 +69,7 @@
           Create Hunt
           </button>
         </mat-card-actions>
-      </mat-card>
-    </form>
+      </form>
+    </mat-card>
   </div>
 </div>
