@@ -130,6 +130,9 @@ export class AddHuntComponent {
                 null,
                 { duration: 2000 }
               );
+              if (tasks[tasks.length - 1] === taskDescription) {
+                this.router.navigate(['/hunts']);
+              }
             },
             error: err => {
               console.log('Error:', err); // Log error
