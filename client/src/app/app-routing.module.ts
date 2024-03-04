@@ -8,6 +8,7 @@ import { TaskListComponent } from './hunts/task-list.component';
 // Note that the 'hunts/new' route needs to come before 'hunts/:id'.
 // If 'hunts/:id' came first, it would accidentally catch requests to
 // 'hunts/new'; the router would just think that the string 'new' is a hunt ID.
+
 const routes: Routes = [
   {path: '', component: HomeComponent, title: 'Home'},
   {path: 'hunts', component: HuntListComponent, title: 'My Hunts'},
