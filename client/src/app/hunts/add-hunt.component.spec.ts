@@ -55,18 +55,18 @@ describe('AddHuntComponent', () => {
     expect(() => component.deleteTaskInput(0)).not.toThrow();
   });
 
-  it('should submit form when submitForm is called', () => {
+  it('should submit form and tasks when submitAll is called', () => {
+    // Set up the form and tasks
     component.addHuntForm.controls['title'].setValue('Test Title');
     component.addHuntForm.controls['description'].setValue('Test Description');
-    component.submitForm();
-    expect(huntService.addHunt).toHaveBeenCalled();
-  });
-
-  it('should submit tasks when submitTasks is called', () => {
-    component.isHuntCreated = true;
     component.addTaskInput();
     component.tasks.controls[0].get('taskInput').setValue('Test Task');
-    component.submitTasks();
+
+    // Call the new method
+    component.submitAll();
+
+    // Check that the services were called
+    expect(huntService.addHunt).toHaveBeenCalled();
     expect(taskService.addTask).toHaveBeenCalled();
   });
 });
