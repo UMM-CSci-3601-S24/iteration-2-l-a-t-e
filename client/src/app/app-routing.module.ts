@@ -6,6 +6,8 @@ import { UserListComponent } from './users/user-list.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { HuntListComponent } from './hunts/hunt-list.component';
+import { HuntProfileComponent } from './hunts/hunt-profile.component';
+import { TaskListComponent } from './hunts/task-list.component';
 import { AddHuntComponent } from './hunts/add-hunt.component';
 
 // Note that the 'users/new' route needs to come before 'users/:id'.
@@ -18,7 +20,10 @@ const routes: Routes = [
   {path: 'users/:id', component: UserProfileComponent, title: 'User Profile'},
   {path: 'companies', component: CompanyListComponent, title: 'Companies'},
   {path: 'hunts', component: HuntListComponent, title: 'My Hunts'},
-  {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'}
+  {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'},
+  {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
+  {path: 'tasks', component: TaskListComponent, title: 'Task List'},
+  {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
 ];
 
 @NgModule({

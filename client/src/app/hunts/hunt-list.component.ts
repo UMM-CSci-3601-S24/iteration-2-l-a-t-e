@@ -27,8 +27,11 @@ import { HuntCardComponent } from "./hunt-card.component";
 export class HuntListComponent implements OnInit, OnDestroy {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredHunts: Hunt[];
+  public serverGenericHunts: Hunt[];
 
   public huntHost: string;
+  public currentHost = 'kk';
+  public genericHost = 'generic';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
@@ -50,7 +53,7 @@ export class HuntListComponent implements OnInit, OnDestroy {
    */
   getHuntsFromServer(): void {
     this.huntService.getHunts({
-      hostid: this.huntHost,
+      hostid: this.currentHost,
 
     }).pipe(
       takeUntil(this.ngUnsubscribe)
@@ -73,8 +76,34 @@ export class HuntListComponent implements OnInit, OnDestroy {
     });
   }
 
+  getGenericHuntsFromServer(): void {
+    this.huntService.getHunts({
+      hostid: this.genericHost,
+
+    }).pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe({
+      next: (returnedHunts) => {
+        this.serverGenericHunts = returnedHunts;
+      },
+      error: (err) => {
+        if (err.error instanceof ErrorEvent) {
+          // A client-side or network error occurred. Handle it accordingly.
+          this.errMsg = `Problem in the client - Error: ${err.error.message}`;
+        } else {
+          this.errMsg = `Problem on the server - Error Code: ${err.status}\nMessage: ${err.message}`;
+        }
+        this.snackBar.open(
+          this.errMsg,
+          'OK',
+          { duration: 6000 });
+      },
+    });
+  }
+
   ngOnInit(): void {
     this.getHuntsFromServer();
+    this.getGenericHuntsFromServer();
   }
 
   ngOnDestroy(): void {
