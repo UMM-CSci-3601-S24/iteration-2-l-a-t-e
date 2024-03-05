@@ -4,7 +4,7 @@ export class AddHuntPage {
 
   private readonly url = '/hunts/new';
   private readonly title = '.add-hunt-title';
-  private readonly button = '[data-test=confirmAddHuntButton]';
+  private readonly button = '[data-test=confirmAddTasksButton]';
   private readonly snackBar = '.mat-mdc-simple-snack-bar';
   private readonly titleFieldName = 'title';
   private readonly descriptionFieldName = 'description';
@@ -31,6 +31,10 @@ export class AddHuntPage {
 
   getFormField(fieldName: string) {
     return cy.get(`${this.formFieldSelector} [formcontrolname=${fieldName}]`);
+  }
+
+  getFormFieldError(fieldName: string) {
+    return cy.get(`[data-test=${fieldName}Error]`);
   }
 
   getSnackBar() {
