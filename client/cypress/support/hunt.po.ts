@@ -1,7 +1,7 @@
 export class HuntPage {
   private readonly baseUrl = '/hunts';
   private readonly pageTitle = '.hunt-title';
-  private readonly huntCardSelector = '.hunt-cards-container app-hunt-card';
+  private readonly huntCardSelector = '.hunt-card';
   private readonly addHuntButtonSelector = '[data-test=addHuntButton]';
   private readonly sideNavButton = '.sidenav-button';
   private readonly sideNav = '.sidenav';
@@ -16,9 +16,9 @@ export class HuntPage {
   }
 
   /**
-   * Gets the title of the app when visiting the `/todos` page.
+   * Gets the title of the app when visiting the `/hunts` page.
    *
-   * @returns the value of the element with the ID `.todo-list-title`
+   * @returns the value of the element with the ID `.hunt-list-title`
    */
   getPageTitle() {
     return cy.title();
