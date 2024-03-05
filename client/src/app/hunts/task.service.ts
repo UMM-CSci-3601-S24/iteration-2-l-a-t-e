@@ -38,7 +38,7 @@ export class TaskService {
     return this.httpClient.post<{ taskId: string }>(this.taskUrl, newTask).pipe(map(res => res.taskId));
   }
 
-  updateTask(taskId: string, updatedTask: Partial<Task>): Observable<void> {
+  updateTask(taskId: string, updatedTask: { description: string }): Observable<void> {
     return this.httpClient.put<void>(`${this.taskUrl}/${taskId}`, updatedTask);
   }
 

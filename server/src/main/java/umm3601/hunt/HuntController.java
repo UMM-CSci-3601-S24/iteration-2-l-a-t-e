@@ -149,7 +149,7 @@ public void getAllHunts(Context ctx) {
    */
 
   public void addRoutes(Javalin server) {
-
+    server.put(API_HUNTS_BY_ID, this::updateHunt);
     // get the specified Hunt
     server.get(API_HUNTS_BY_ID, this::getHunt);
     // List hunts, filtered using query parameters
@@ -160,7 +160,7 @@ public void getAllHunts(Context ctx) {
     // Delete the specified hunt.
     server.delete(API_HUNTS_BY_ID, this::deleteHunt);
     // Update the specified hunt.
-    server.put(API_HUNTS_BY_ID, this::updateHunt);
+
   }
 
   /**
@@ -247,7 +247,6 @@ public void getAllHunts(Context ctx) {
     Document huntDoc = new Document();
     huntDoc.append("title", hunt.title);
     huntDoc.append("description", hunt.description);
-    huntDoc.append("hostid", hunt.hostid);
 
     Document updateDoc = new Document("$set", huntDoc);
     huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);

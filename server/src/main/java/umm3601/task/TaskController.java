@@ -213,12 +213,10 @@ public void getAllTasks(Context ctx) {
    public void updateTask(Context ctx) {
     String id = ctx.pathParam("id");
     Task task = ctx.bodyValidator(Task.class)
-      .check(tsk -> tsk.huntid.length() > 0, "Task must have huntid")
       .check(tsk -> tsk.description.length() > 2, "Task must not have description shorter than 2 characters")
       .get();
 
     Document taskDoc = new Document();
-    taskDoc.append("huntid", task.huntid);
     taskDoc.append("description", task.description);
 
     Document updateDoc = new Document("$set", taskDoc);

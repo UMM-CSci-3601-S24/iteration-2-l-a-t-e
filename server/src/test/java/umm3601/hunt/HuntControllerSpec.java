@@ -51,14 +51,15 @@ import io.javalin.validation.ValidationException;
  * @throws IOException
  *
  */
-@SuppressWarnings({"MagicNumber"})
+@SuppressWarnings({ "MagicNumber" })
 class HuntControllerSpec {
 
   // An instance of the controller we're testing that is prepared in
   // `setupEach()`, and then exercised in the various tests below.
   private HuntController huntController;
 
-  // A Mongo object ID that is initialized in `setupEach()` and used in few of tests
+  // A Mongo object ID that is initialized in `setupEach()` and used in few of
+  // tests
   private ObjectId kkHuntId;
 
   // The client and database that will be used
@@ -86,7 +87,7 @@ class HuntControllerSpec {
    * then be (re)used for all the tests, and closed in the `teardown()`
    * method.
    *
-   *  It's somewhat expensive to establish a connection to the
+   * It's somewhat expensive to establish a connection to the
    * database, and there are usually limits to how many connections
    * a database will support at once. Limiting ourselves to a single
    * connection that will be shared across all the tests in this spec
@@ -95,14 +96,14 @@ class HuntControllerSpec {
    *
    */
 
-   @BeforeAll
-   static void setupAll() {
+  @BeforeAll
+  static void setupAll() {
     String mongoAddr = System.getenv().getOrDefault("MONGO_ADDR", "localhost");
 
     mongoClient = MongoClients.create(
-      MongoClientSettings.builder()
-        .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
-        .build());
+        MongoClientSettings.builder()
+            .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
+            .build());
     db = mongoClient.getDatabase("test");
   }
 
@@ -123,22 +124,22 @@ class HuntControllerSpec {
     huntDocuments.drop();
     List<Document> testHunts = new ArrayList<>();
     testHunts.add(
-      new Document()
-          .append("hostid", "1234567")
-          .append("title", "CSCI3601Hunt")
-          .append("description", "teamAkaHunt"));
+        new Document()
+            .append("hostid", "1234567")
+            .append("title", "CSCI3601Hunt")
+            .append("description", "teamAkaHunt"));
 
     testHunts.add(
-      new Document()
-          .append("hostid", "1234567")
-          .append("title", "KKHunt")
-          .append("description", "for event test"));
+        new Document()
+            .append("hostid", "1234567")
+            .append("title", "KKHunt")
+            .append("description", "for event test"));
 
     testHunts.add(
-      new Document()
-          .append("hostid", "1234567")
-          .append("title", "NicHunt")
-          .append("description", "for even test 2"));
+        new Document()
+            .append("hostid", "1234567")
+            .append("title", "NicHunt")
+            .append("description", "for even test 2"));
 
     kkHuntId = new ObjectId();
     Document kk = new Document()
@@ -152,9 +153,10 @@ class HuntControllerSpec {
 
     huntController = new HuntController(db);
   }
- /**
-  * Test for addRoutes method in HuntController.
-  */
+
+  /**
+   * Test for addRoutes method in HuntController.
+   */
   @Test // Still failed
   void addRoutes() {
     Javalin mockServer = mock(Javalin.class);
@@ -238,11 +240,11 @@ class HuntControllerSpec {
   /**
    * Test for filter getHuntsByHost
    */
-   @Test
+  @Test
   void canGetHuntsWithHost() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.HOST_KEY, Arrays.asList(new String[] {"1234567"}));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+    queryParams.put(HuntController.HOST_KEY, Arrays.asList(new String[] { "1234567" }));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.HOST_KEY)).thenReturn("1234567");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -264,8 +266,8 @@ class HuntControllerSpec {
   @Test
   void canGetHuntsWithTitle() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.TITLE_KEY, Arrays.asList(new String[] {"KKTestHunt"}));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+    queryParams.put(HuntController.TITLE_KEY, Arrays.asList(new String[] { "KKTestHunt" }));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.TITLE_KEY)).thenReturn("KKTestHunt");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -287,8 +289,8 @@ class HuntControllerSpec {
   @Test
   void canGetHuntsWithDescription() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test hunt for KK"}));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+    queryParams.put(HuntController.DESCRIPTION_KEY, Arrays.asList(new String[] { "This is test hunt for KK" }));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.DESCRIPTION_KEY)).thenReturn("This is test hunt for KK");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -338,7 +340,6 @@ class HuntControllerSpec {
     assertEquals("this is just a test description", addedHunt.get(HuntController.DESCRIPTION_KEY));
   }
 
-
   /**
    * Test for blank title that throws Exception
    *
@@ -365,32 +366,31 @@ class HuntControllerSpec {
   /**
    *
    * Test for blank description that throws Exception
+   *
    * @throws IOException
    */
 
-   @Test
-   void addInvalidDescriptionHunt() throws IOException {
-     String testNewHunt = """
-         {
-           "hostid": "345678",
-           "title": "TEST TITLE",
-           "description": ""
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+  @Test
+  void addInvalidDescriptionHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": "TEST TITLE",
+          "description": ""
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     assertThrows(ValidationException.class, () -> {
-       huntController.addNewHunt(ctx);
-     });
-    }
-
-
+    assertThrows(ValidationException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+  }
 
   /**
    *
    * Test for deleting existence hunt
-  */
+   */
 
   @Test
   void deleteFoundHunt() throws IOException {
@@ -434,173 +434,213 @@ class HuntControllerSpec {
    * @throws IOException
    */
 
-   @Test
-   void addTooShortTitleHunt() throws IOException {
-     String testNewHunt = """
-         {
-           "hostid": "345678",
-           "title": "T",
-           "description": "This is description of the test"
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+  @Test
+  void addTooShortTitleHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": "T",
+          "description": "This is description of the test"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     assertThrows(ValidationException.class, () -> {
-       huntController.addNewHunt(ctx);
-     });
-   }
+    assertThrows(ValidationException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+  }
 
-   @Test
-   void addNullTitleHunt() throws IOException {
-     String testNewHunt = """
-         {
-           "hostid": "345678",
-           "title": null,
-           "description": "This is description of the test"
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+  @Test
+  void addNullTitleHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": null,
+          "description": "This is description of the test"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     assertThrows(NullPointerException.class, () -> {
-       huntController.addNewHunt(ctx);
-     });
-   }
+    assertThrows(NullPointerException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+  }
 
-   @Test
-   void addNullDescriptionHunt() throws IOException {
-     String testNewHunt = """
-         {
-           "hostid": "345678",
-           "title": "Tutu",
-           "description": null
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+  @Test
+  void addNullDescriptionHunt() throws IOException {
+    String testNewHunt = """
+        {
+          "hostid": "345678",
+          "title": "Tutu",
+          "description": null
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     assertThrows(NullPointerException.class, () -> {
-       huntController.addNewHunt(ctx);
-     });
-   }
+    assertThrows(NullPointerException.class, () -> {
+      huntController.addNewHunt(ctx);
+    });
+  }
 
-   @Test
-   void updateAhuntDescription() throws IOException {
-     String testID = kkHuntId.toHexString();
-     when(ctx.pathParam("id")).thenReturn(testID);
+  @Test
+  void updateAhuntDescription() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
 
-     String testNewHunt = """
-         {
-           "hostid": "1234567",
-           "title": "KKTestHunt",
-           "description": "This is test hunt for KK"
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "KKTestHunt",
+          "description": "This is test hunt for KK"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     huntController.updateHunt(ctx);
+    huntController.updateHunt(ctx);
 
-     verify(ctx).status(HttpStatus.OK);
+    verify(ctx).status(HttpStatus.OK);
 
-     Document updatedHunt = db.getCollection("hunts")
-         .find(eq("_id", new ObjectId(testID))).first();
+    Document updatedHunt = db.getCollection("hunts")
+        .find(eq("_id", new ObjectId(testID))).first();
 
-     assertEquals("1234567", updatedHunt.get(HuntController.HOST_KEY));
-     assertEquals("KKTestHunt", updatedHunt.get(HuntController.TITLE_KEY));
-     assertEquals("This is test hunt for KK", updatedHunt.get(HuntController.DESCRIPTION_KEY));
-   }
+    assertEquals("1234567", updatedHunt.get(HuntController.HOST_KEY));
+    assertEquals("KKTestHunt", updatedHunt.get(HuntController.TITLE_KEY));
+    assertEquals("This is test hunt for KK", updatedHunt.get(HuntController.DESCRIPTION_KEY));
+  }
 
-   // update a hunt title in testHunts
-   @Test
-   void updateAhuntTitle() throws IOException {
-     String testID = kkHuntId.toHexString();
-     when(ctx.pathParam("id")).thenReturn(testID);
+  // update a hunt title in testHunts
+  @Test
+  void updateAhuntTitle() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
 
-     String testNewHunt = """
-         {
-           "hostid": "1234567",
-           "title": "KKTestHunt",
-           "description": "This is test hunt for KK"
-         }
-         """;
-     when(ctx.bodyValidator(Hunt.class))
-         .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "KKTestHunt",
+          "description": "This is test hunt for KK"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-     huntController.updateHunt(ctx);
+    huntController.updateHunt(ctx);
 
-     verify(ctx).status(HttpStatus.OK);
+    verify(ctx).status(HttpStatus.OK);
 
-     Document updatedHunt = db.getCollection("hunts")
-         .find(eq("_id", new ObjectId(testID))).first();
+    Document updatedHunt = db.getCollection("hunts")
+        .find(eq("_id", new ObjectId(testID))).first();
 
-     assertEquals("1234567", updatedHunt.get(HuntController.HOST_KEY));
-     assertEquals("KKTestHunt", updatedHunt.get(HuntController.TITLE_KEY));
-     assertEquals("This is test hunt for KK", updatedHunt.get(HuntController.DESCRIPTION_KEY));
-   }
+    assertEquals("1234567", updatedHunt.get(HuntController.HOST_KEY));
+    assertEquals("KKTestHunt", updatedHunt.get(HuntController.TITLE_KEY));
+    assertEquals("This is test hunt for KK", updatedHunt.get(HuntController.DESCRIPTION_KEY));
+  }
 
-   //Check that a hunt title is not updated to an empty string
-    @Test
-    void updateHuntTitleToEmptyString() throws IOException {
-      String testID = kkHuntId.toHexString();
-      when(ctx.pathParam("id")).thenReturn(testID);
+  // Check that a hunt title is not updated to an empty string
+  @Test
+  void updateHuntTitleToEmptyString() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
 
-      String testNewHunt = """
-          {
-            "hostid": "1234567",
-            "title": "",
-            "description": "This is test hunt for KK"
-          }
-          """;
-      when(ctx.bodyValidator(Hunt.class))
-          .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "",
+          "description": "This is test hunt for KK"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-      assertThrows(ValidationException.class, () -> {
-        huntController.updateHunt(ctx);
-      });
-    }
+    assertThrows(ValidationException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
 
-    //Check that a hunt title is not updated to a null string
-    @Test
-    void updateHuntTitleToNull() throws IOException {
-      String testID = kkHuntId.toHexString();
-      when(ctx.pathParam("id")).thenReturn(testID);
+  // Check that a hunt title is not updated to a null string
+  @Test
+  void updateHuntTitleToNull() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
 
-      String testNewHunt = """
-          {
-            "hostid": "1234567",
-            "title": null,
-            "description": "This is test hunt for KK"
-          }
-          """;
-      when(ctx.bodyValidator(Hunt.class))
-          .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": null,
+          "description": "This is test hunt for KK"
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-      assertThrows(NullPointerException.class, () -> {
-        huntController.updateHunt(ctx);
-      });
-    }
+    assertThrows(NullPointerException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
 
-    //Check that a hunt description is not updated to a too long string
-    @Test
-    void updateHuntDescriptionToTooLong() throws IOException {
-      String testID = kkHuntId.toHexString();
-      when(ctx.pathParam("id")).thenReturn(testID);
+  // Check that a hunt description is not updated to a too long string
+  @Test
+  void updateHuntDescriptionToTooLong() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
 
-      String testNewHunt = """
-          {
-            "hostid": "1234567",
-            "title": "KKTestHunt",
-            "description": "
-          }
-          """;
-      when(ctx.bodyValidator(Hunt.class))
-          .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "KKTestHunt",
+          "description": "
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
 
-      assertThrows(ValidationException.class, () -> {
-        huntController.updateHunt(ctx);
-      });
-    }
+    assertThrows(ValidationException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
+
+  // Check that a hunt description is not updated to a null string
+  @Test
+  void updateHuntDescriptionToNull() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+
+          "description": null
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(NullPointerException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
+
+  // Check that a hunt description is not updated to an empty string
+  @Test
+  void updateHuntDescriptionToEmptyString() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewHunt = """
+        {
+          "title": "Test Hunt",
+          "description": ""
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
 }
-
