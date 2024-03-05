@@ -103,7 +103,7 @@ export class HuntEditComponent implements OnInit {
       };
 
       this.huntService.updateHunt(this.hunt._id, updatedHunt).subscribe(() => {
-        // handle successful update
+        this.router.navigate(['/hunts', this.hunt._id]);
       }, error => {
         console.error('An error occurred:', error);
       });

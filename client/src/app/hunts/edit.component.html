@@ -1,5 +1,6 @@
-<div class="flex-column">
+<div class="flex-row">
   <mat-card class="edit-hunt-wrapper">
+    <div class="banner">Edit Hunt</div>
     <form [formGroup]="editHuntForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="flex-1">
         <input matInput placeholder="Title" formControlName="title">
@@ -16,8 +17,9 @@
           </mat-form-field>
         </div>
       </div>
-
+      <mat-card-actions align="end">
       <button type="submit" mat-raised-button color="accent" [disabled]="!editHuntForm.valid">Update Hunt</button>
+    </mat-card-actions>
     </form>
   </mat-card>
 </div>

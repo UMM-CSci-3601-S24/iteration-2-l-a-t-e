@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10%;
+  padding: 2%;
   width: 120%;
 }
 
@@ -27,4 +27,14 @@
   margin-top: 20px;
   justify-content: center;
   width: 100%;
+}
+
+.banner {
+  --banner-color: rgb(65, 155, 113);
+  background-color: var(--banner-color);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-size: 200%;
+  font-weight: 500;
 }
