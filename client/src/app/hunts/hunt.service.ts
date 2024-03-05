@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Hunt } from './hunt';
 
@@ -38,16 +39,24 @@ export class HuntService {
     });
   }
 
-   /**
-   * Get the `Hunt` with the specified ID.
-   *
-   * @param id the ID of the desired user
-   * @returns an `Observable` containing the resulting hunt.
-   */
+  /**
+  * Get the `Hunt` with the specified ID.
+  *
+  * @param id the ID of the desired user
+  * @returns an `Observable` containing the resulting hunt.
+  */
 
-   getHuntById(id: string): Observable<Hunt> {
+  getHuntById(id: string): Observable<Hunt> {
     // The input to get could also be written as (this.huntUrl + '/' + id)
     return this.httpClient.get<Hunt>(`${this.huntUrl}/${id}`);
   }
 
+  addHunt(newHunt: Partial<Hunt>): Observable<string> {
+    // Send post request to add a new hunt with the user data as the body.
+    return this.httpClient.post<{ id: string }>(this.huntUrl, newHunt).pipe(map(res => res.id));
+  }
+
+  updateHunt(huntId: string, updatedHunt: { title?: string, description?: string }): Observable<void> {
+    return this.httpClient.put<void>(`${this.huntUrl}/${huntId}`, updatedHunt);
+  }
 }

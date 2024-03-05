@@ -1,26 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { AddUserComponent } from './users/add-user.component';
-import { UserListComponent } from './users/user-list.component';
-import { UserProfileComponent } from './users/user-profile.component';
-import { CompanyListComponent } from './company-list/company-list.component';
 import { HuntListComponent } from './hunts/hunt-list.component';
 import { HuntProfileComponent } from './hunts/hunt-profile.component';
 import { TaskListComponent } from './hunts/task-list.component';
+import { AddHuntComponent } from './hunts/add-hunt.component';
 
-// Note that the 'users/new' route needs to come before 'users/:id'.
-// If 'users/:id' came first, it would accidentally catch requests to
-// 'users/new'; the router would just think that the string 'new' is a user ID.
+// Note that the 'hunts/new' route needs to come before 'hunts/:id'.
+// If 'hunts/:id' came first, it would accidentally catch requests to
+// 'hunts/new'; the router would just think that the string 'new' is a hunt ID.
+
 const routes: Routes = [
   {path: '', component: HomeComponent, title: 'Home'},
-  {path: 'users', component: UserListComponent, title: 'Users'},
-  {path: 'users/new', component: AddUserComponent, title: 'Add User'},
-  {path: 'users/:id', component: UserProfileComponent, title: 'User Profile'},
-  {path: 'companies', component: CompanyListComponent, title: 'Companies'},
   {path: 'hunts', component: HuntListComponent, title: 'My Hunts'},
+  {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'},
   {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
+  {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
 ];
 

@@ -152,6 +152,8 @@ public void getAllTasks(Context ctx) {
     server.post(API_TASKS, this::addNewTask);
     // Delete the specified task.
     server.delete(API_TASKS_BY_ID, this::deleteTask);
+    // Update the specified task.
+    server.put(API_TASKS_BY_ID, this::updateTask);
   }
 
   /**
@@ -199,5 +201,30 @@ public void getAllTasks(Context ctx) {
     }
     ctx.status(HttpStatus.OK);
   }
+
+  /**
+   * Update the task with the specified `id` using the
+   * information provided in the request body.
+   *
+   * @param ctx a Javalin HTTP context
+   *
+   */
+
+   public void updateTask(Context ctx) {
+    String id = ctx.pathParam("id");
+    Task task = ctx.bodyValidator(Task.class)
+      .check(tsk -> tsk.description.length() > 2, "Task must not have description shorter than 2 characters")
+      .get();
+
+    Document taskDoc = new Document();
+    taskDoc.append("description", task.description);
+
+    Document updateDoc = new Document("$set", taskDoc);
+
+    taskCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+
+    ctx.status(HttpStatus.OK);
+  }
+
 }
 
