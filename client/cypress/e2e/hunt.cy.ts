@@ -2,7 +2,7 @@ import { HuntPage } from "cypress/support/hunt.po";
 
 const page = new HuntPage();
 
-describe('Todo List', () => {
+describe('My Hunt Page', () => {
   beforeEach(() => {
     page.navigateTo();
   });
@@ -12,6 +12,7 @@ describe('Todo List', () => {
   });
 
   it('Should click on card to navigate to detailed Hunt page, then go back to My Hunt page', () => {
+    cy.wait(1000);
     cy.get('.hunt-card').first().click();
     cy.get('.hunt-title').first().should('have.length', 1);
 
