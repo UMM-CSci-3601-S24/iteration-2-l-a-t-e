@@ -59,14 +59,8 @@ export class HuntEditComponent implements OnInit {
 
 
   get tasks() {
-    return this.editTaskForm.get('tasks') as FormArray;
+    return this.editTaskForm as FormArray;
   }
-
-  // createTaskFormGroup(): FormGroup {
-  //   return this.formBuilder.group({
-  //     taskInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(140)]]
-  //   });
-  // }
 
   ngOnInit(): void {
     this.route.params.pipe(
@@ -108,23 +102,25 @@ export class HuntEditComponent implements OnInit {
         console.error('An error occurred:', error);
       });
 
-      this.editTaskForm.controls.forEach((taskFormGroup, index) => {
-        console.log('taskFormGroup:', taskFormGroup);
-        console.log('index:', index);
-        if (taskFormGroup.valid) {
-          const updatedTask = { description: taskFormGroup.value.taskInput };
-          console.log('updatedTask:', updatedTask);
-          console.log('Task ID:', this.tasks[index]._id);
-          // Only update if the task description has changed
-          if (this.tasks[index] && this.tasks[index].description !== updatedTask.description) {
-            this.taskService.updateTask(this.tasks[index]._id, updatedTask).subscribe(() => {
-              this.router.navigate(['/hunts', this.hunt._id]);
-            }, error => {
-              console.error('An error occurred:', error);
-            });
-          }
-        }
-      });
+      // this.editTaskForm.controls.forEach((taskFormGroup, index) => {
+      //   console.log('taskFormGroup:', taskFormGroup);
+      //   console.log('index:', index);
+      //   if (taskFormGroup.valid) {
+      //     const updatedTask = { description: taskFormGroup.value.taskInput };
+      //     console.log('updatedTask:', updatedTask);
+      //     if (this.tasks.at(index)) { // Check if the task exists at this index
+      //       console.log('Task ID:', this.tasks[index]._id);
+      //       // Only update if the task description has changed
+      //       if (this.tasks.at(index).value !== updatedTask.description) {
+      //         this.taskService.updateTask(this.tasks[index]._id, updatedTask).subscribe(() => {
+      //           this.router.navigate(['/hunts', this.hunt._id]);
+      //         }, error => {
+      //           console.error('An error occurred:', error);
+      //         });
+      //       }
+      //     }
+      //   }
+      // });
     }
   }
 
