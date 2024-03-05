@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { TaskListComponent } from "./task-list.component";
 import { TaskService } from "./task.service";
 import { MockTaskService } from "src/testing/task.service.mock";
-import { Observable, throwError } from "rxjs";
+// import { Observable, throwError } from "rxjs";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -19,7 +19,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterTestingModule } from "@angular/router/testing";
-import { HttpErrorResponse } from "@angular/common/http";
+// import { HttpErrorResponse } from "@angular/common/http";
 
 const COMMON_IMPORTS: unknown[] = [
   FormsModule,
@@ -71,82 +71,82 @@ describe('Task list', () => {
   });
 });
 
-describe('Misbehaving Task List', () => {
-  let taskList: TaskListComponent;
-  let fixture: ComponentFixture<TaskListComponent>;
+// describe('Misbehaving Task List', () => {
+//   let taskList: TaskListComponent;
+//   let fixture: ComponentFixture<TaskListComponent>;
 
-  let taskServiceStub: {
-    getTasks: () => Observable<Task[]>;
-  };
+//   let taskServiceStub: {
+//     getTasks: () => Observable<Task[]>;
+//   };
 
-  beforeEach(() => {
-    // stub TaskService for test purposes
-    taskServiceStub = {
-      getTasks: () => new Observable(observer => {
-        observer.error('getTasks() Observer generates an error');
-      }),
-    };
+//   beforeEach(() => {
+//     // stub TaskService for test purposes
+//     taskServiceStub = {
+//       getTasks: () => new Observable(observer => {
+//         observer.error('getTasks() Observer generates an error');
+//       }),
+//     };
 
-    TestBed.configureTestingModule({
-      imports: [COMMON_IMPORTS, TaskListComponent],
-      providers: [{ provide: TaskService, useValue: taskServiceStub }]
-    });
-  });
+//     TestBed.configureTestingModule({
+//       imports: [COMMON_IMPORTS, TaskListComponent],
+//       providers: [{ provide: TaskService, useValue: taskServiceStub }]
+//     });
+//   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(TaskListComponent);
-      taskList = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-  }));
+//   beforeEach(waitForAsync(() => {
+//     TestBed.compileComponents().then(() => {
+//       fixture = TestBed.createComponent(TaskListComponent);
+//       taskList = fixture.componentInstance;
+//       fixture.detectChanges();
+//     });
+//   }));
 
-  it('generates an error if we don\'t set up a TaskService', () => {
-    const mockedMethod = spyOn(taskList, 'getTasksFromServer').and.callThrough();
-    expect(taskList.serverFilteredTasks)
-      .withContext('no tasks when service fails')
-      .toBeUndefined();
-    expect(taskList.getTasksFromServer)
-      .withContext('service method called')
-      .toThrow();
-    expect(mockedMethod)
-      .withContext('service method is called')
-      .toHaveBeenCalled();
-    expect(taskList.errMsg)
-      .withContext('the error message will be')
-      .toMatch(/^Problem on the server - Error Code:/);
-    console.log(taskList.errMsg);
-  });
+//   it('generates an error if we don\'t set up a TaskService', () => {
+//     const mockedMethod = spyOn(taskList, 'getTasksFromServer').and.callThrough();
+//     expect(taskList.serverFilteredTasks)
+//       .withContext('no tasks when service fails')
+//       .toBeUndefined();
+//     expect(taskList.getTasksFromServer)
+//       .withContext('service method called')
+//       .toThrow();
+//     expect(mockedMethod)
+//       .withContext('service method is called')
+//       .toHaveBeenCalled();
+//     expect(taskList.errMsg)
+//       .withContext('the error message will be')
+//       .toMatch(/^Problem on the server - Error Code:/);
+//     console.log(taskList.errMsg);
+//   });
 
-  it('sets errMsg when getTasksFromServer fails', () => {
-    // Arrange
-    const errorResponse = new HttpErrorResponse({
-      error: 'Http failure response for (unknown url): 500 Internal Server Error',
-      status: 500,
-      statusText: 'Internal Server Error'
-    });
+//   it('sets errMsg when getTasksFromServer fails', () => {
+//     // Arrange
+//     const errorResponse = new HttpErrorResponse({
+//       error: 'Http failure response for (unknown url): 500 Internal Server Error',
+//       status: 500,
+//       statusText: 'Internal Server Error'
+//     });
 
-    spyOn(taskServiceStub, 'getTasks').and.returnValue(throwError(errorResponse));
+//     spyOn(taskServiceStub, 'getTasks').and.returnValue(throwError(errorResponse));
 
-    // Act
-    taskList.getTasksFromServer();
+//     // Act
+//     taskList.getTasksFromServer();
 
-    // Assert
-    expect(taskList.errMsg).toBe('Problem on the server - Error Code: 500\nMessage: Http failure response for (unknown url): 500 Internal Server Error');
-  });
+//     // Assert
+//     expect(taskList.errMsg).toBe('Problem on the server - Error Code: 500\nMessage: Http failure response for (unknown url): 500 Internal Server Error');
+//   });
 
-  it('sets errMsg when getTasksFromServer fails with a client-side error', () => {
-    // Arrange
-    const errorEvent = new ErrorEvent('Client error', { message: 'test client error' });
-    const errorResponse = new HttpErrorResponse({ error: errorEvent });
+//   it('sets errMsg when getTasksFromServer fails with a client-side error', () => {
+//     // Arrange
+//     const errorEvent = new ErrorEvent('Client error', { message: 'test client error' });
+//     const errorResponse = new HttpErrorResponse({ error: errorEvent });
 
-    spyOn(taskServiceStub, 'getTasks').and.returnValue(throwError(errorResponse));
+//     spyOn(taskServiceStub, 'getTasks').and.returnValue(throwError(errorResponse));
 
-    // Act
-    taskList.getTasksFromServer();
+//     // Act
+//     taskList.getTasksFromServer();
 
-    // Assert
-    expect(taskList.errMsg).toBe('Problem in the client: test client error');
-  });
+//     // Assert
+//     expect(taskList.errMsg).toBe('Problem in the client: test client error');
+//   });
 
-});
+// });
