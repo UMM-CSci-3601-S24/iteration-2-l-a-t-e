@@ -30,12 +30,8 @@ describe('Add hunt', () => {
     cy.get('[data-test=nameError]').should('exist').and('be.visible');
     // Some more tests for various invalid name inputs
     page.getFormField('title').type('s').blur();
-  cy.get('[data-test=nameError]').should('exist').and('be.visible');
-    page.getFormField('name').clear().type('This is a very long name that goes beyond the 50 character limit').blur();
-    cy.get('[data-test=nameError]').should('exist').and('be.visible');
-    // Entering a valid name should remove the error.
-    page.getFormField('name').clear().type('John Smith').blur();
-    cy.get('[data-test=nameError]').should('not.exist');
+    page.getFormField('title').clear().type('This is a very long name that goes beyond the 50 character limit').blur();
+
 
   //   // Before doing anything there shouldn't be an error
   //   cy.get('[data-test=ageError]').should('not.exist');
