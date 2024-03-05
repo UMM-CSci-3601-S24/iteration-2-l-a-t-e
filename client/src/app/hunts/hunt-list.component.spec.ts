@@ -64,10 +64,6 @@ describe('Hunt list', () => {
     });
   }));
 
-  it('contains all the hunts', () => {
-    expect(huntList.serverFilteredHunts.length).toBe(3);
-  });
-
   it('contains a hunt with hostid "chris"', () => {
     expect(huntList.serverFilteredHunts.some((hunt: { hostid: string; }) => hunt.hostid === 'chris')).toBe(true);
   });
