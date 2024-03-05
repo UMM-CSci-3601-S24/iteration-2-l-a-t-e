@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { HuntService } from './hunt.service';
 
 @Component({
   selector: 'app-hunt-card',
@@ -18,7 +19,7 @@ export class HuntCardComponent {
   @Input() simple?: boolean = false;
   @Input() editable: boolean = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private huntService: HuntService) { }
 
   onCardClick() {
     this.router.navigate(['/hunts', this.hunt._id]);
@@ -36,11 +37,18 @@ export class HuntCardComponent {
 
   onInspectClick(event: Event) {
     event.stopPropagation();
-    // Navigate to inspect hunt
+    this.router.navigate(['/hunts', this.hunt._id]);
   }
 
   onDeleteClick(event: Event) {
     event.stopPropagation();
-    // Delete hunt
+    // Confirm deletion
+    if (window.confirm('Are you sure you want to delete this hunt?')) {
+      // Delete hunt
+      this.huntService.deleteHunt(this.hunt._id).subscribe(() => {
+        this.router.navigate(['/hunts']);
+      });
+    }
   }
+
 }
