@@ -12,8 +12,7 @@ describe('My Hunt Page', () => {
   });
 
   it('Should click on card to navigate to detailed Hunt page, then go back to My Hunt page', () => {
-    cy.wait(1000);
-    cy.get('.hunt-card').first().click();
+    cy.get('.hunt-card').wait(1000).first().click();
     cy.get('.hunt-title').first().should('have.length', 1);
 
     page.getSidenav()
