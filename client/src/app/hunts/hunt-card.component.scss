@@ -1,5 +1,6 @@
 .hunt-card {
 
+  min-width: 200px;
   margin: 20px;
   max-width: 800px;
   width: relative;
@@ -7,10 +8,15 @@
   height: relative min 300px;
   border-style: inset;
   min-height: 200px;
-  background-color: rgb(251, 252, 251);
+  background-color: rgb(254,255,156);
+  color:black !important;
   &:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
+}
+
+mat-card-subtitle {
+  color: black !important;
 }
 
 .hunt-title {
