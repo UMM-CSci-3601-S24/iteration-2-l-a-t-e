@@ -1,39 +1,14 @@
 <div class="flex-row">
-  <div class="flex-1">
-    <mat-card class="edit-hunt-card" style="padding: 20px;">
-      <mat-card-header>
-        <mat-card-title>Edit Hunt</mat-card-title>
-      </mat-card-header>
-
+    <mat-card class="edit-hunt-wrapper">
       <form [formGroup]="editHuntForm" (ngSubmit)="onSubmit()">
-        <mat-card-content>
-          <div class="flex-col">
-            <mat-form-field appearance="fill" style="width: 35%;">
-              <mat-label>Hunt Name</mat-label>
-              <input matInput formControlName="title" required>
-            </mat-form-field>
-            <!-- Add more fields for the hunt here -->
-          </div>
-        </mat-card-content>
-
-        <mat-card-content formArrayName="tasks">
-          <div class="flex-col">
-            <div *ngFor="let task of tasks.controls; index as i" [formGroupName]="i">
-              <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
-                <mat-label>Task {{ i + 1 }} Name</mat-label>
-                <input matInput formControlName="taskInput" required>
-              </mat-form-field>
-              <!-- Add more fields for the task here -->
-            </div>
-          </div>
-        </mat-card-content>
-
-        <mat-card-actions align="end">
-          <button mat-raised-button type="submit" color="accent" data-test="confirmEditTasksButton">
-            Update Hunt
-          </button>
-        </mat-card-actions>
+        <mat-form-field class="flex-1">
+          <input matInput placeholder="Title" formControlName="title">
+        </mat-form-field>
+        <mat-form-field class="flex-2">
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+        <!-- other form fields -->
+        <button type="submit" [disabled]="!editHuntForm.valid">Update Hunt</button>
       </form>
     </mat-card>
-  </div>
 </div>
