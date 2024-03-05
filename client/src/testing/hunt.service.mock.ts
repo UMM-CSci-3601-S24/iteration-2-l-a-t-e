@@ -39,7 +39,6 @@ export class MockHuntService extends HuntService {
     return of(MockHuntService.testHunts);
   }
 
-  // skipcq: JS-0105
   getHuntById(id: string): Observable<Hunt> {
     // If the specified ID is for one of the first two test users,
     // return that user, otherwise return `null` so
@@ -52,5 +51,17 @@ export class MockHuntService extends HuntService {
     } else {
       return of(null);
     }
+  }
+
+  addHunt(huntDetails: Partial<Hunt>): Observable<string> {
+    const newHunt: Hunt = {
+      _id: `hunt${MockHuntService.testHunts.length + 1}_id`,
+      hostid: huntDetails.hostid,
+      title: huntDetails.title,
+      description: huntDetails.description,
+    };
+    MockHuntService.testHunts.push(newHunt);
+
+    return of(newHunt._id);
   }
 }
