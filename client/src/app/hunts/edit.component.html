@@ -1,14 +1,14 @@
-<div class="flex-row">
-    <mat-card class="edit-hunt-wrapper">
-      <form [formGroup]="editHuntForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="flex-1">
-          <input matInput placeholder="Title" formControlName="title">
-        </mat-form-field>
-        <mat-form-field class="flex-2">
-          <textarea matInput placeholder="Description" formControlName="description"></textarea>
-        </mat-form-field>
-        <!-- other form fields -->
-        <button type="submit" [disabled]="!editHuntForm.valid">Update Hunt</button>
-      </form>
-    </mat-card>
+<div class="flex-column"> <!-- Change flex-row to flex-column -->
+  <mat-card class="edit-hunt-wrapper">
+    <form [formGroup]="editHuntForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="flex-1">
+        <input matInput placeholder="Title" formControlName="title">
+      </mat-form-field>
+      <mat-form-field class="flex-1"> <!-- Change flex-2 to flex-1 -->
+        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+      </mat-form-field>
+      <!-- other form fields -->
+      <button type="submit" mat-raised-button color="accent" [disabled]="!editHuntForm.valid">Update Hunt</button>
+    </form>
+  </mat-card>
 </div>
