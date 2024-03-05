@@ -45,21 +45,21 @@ import io.javalin.json.JavalinJackson;
 import io.javalin.validation.BodyValidator;
 import io.javalin.validation.ValidationException;
 
-
 /**
  * Tests the logic of the TaskController
  *
  * @throws IOException
  *
  */
-@SuppressWarnings({"MagicNumber"})
+@SuppressWarnings({ "MagicNumber" })
 class TaskControllerSpec {
 
   // An instance of the controller we're testing that is prepared in
   // `setupEach()`, and then exercised in the various tests below.
   private TaskController taskController;
 
-  // A Mongo object ID that is initialized in `setupEach()` and used in few of tests
+  // A Mongo object ID that is initialized in `setupEach()` and used in few of
+  // tests
   private ObjectId kkTaskId;
 
   private static JavalinJackson javalinJackson = new JavalinJackson();
@@ -81,13 +81,12 @@ class TaskControllerSpec {
   @Captor
   private ArgumentCaptor<Map<String, String>> mapCaptor;
 
-
   /**
    * Sets up (the connection to the) DB once; that connection and DB will
    * then be (re)used for all the tests, and closed in the `teardown()`
    * method.
    *
-   *  It's somewhat expensive to establish a connection to the
+   * It's somewhat expensive to establish a connection to the
    * database, and there are usually limits to how many connections
    * a database will support at once. Limiting ourselves to a single
    * connection that will be shared across all the tests in this spec
@@ -96,14 +95,14 @@ class TaskControllerSpec {
    *
    */
 
-   @BeforeAll
-   static void setupAll() {
+  @BeforeAll
+  static void setupAll() {
     String mongoAddr = System.getenv().getOrDefault("MONGO_ADDR", "localhost");
 
     mongoClient = MongoClients.create(
-      MongoClientSettings.builder()
-        .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
-        .build());
+        MongoClientSettings.builder()
+            .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
+            .build());
     db = mongoClient.getDatabase("test");
   }
 
@@ -124,19 +123,19 @@ class TaskControllerSpec {
     taskDocuments.drop();
     List<Document> testTasks = new ArrayList<>();
     testTasks.add(
-      new Document()
-          .append("huntid", "1234567")
-          .append("description", "teamAkaHunt"));
+        new Document()
+            .append("huntid", "1234567")
+            .append("description", "teamAkaHunt"));
 
     testTasks.add(
-      new Document()
-          .append("huntid", "1234567")
-          .append("description", "for event test"));
+        new Document()
+            .append("huntid", "1234567")
+            .append("description", "for event test"));
 
     testTasks.add(
-      new Document()
-          .append("huntid", "1234567")
-          .append("description", "for even test 2"));
+        new Document()
+            .append("huntid", "1234567")
+            .append("description", "for even test 2"));
 
     kkTaskId = new ObjectId();
     Document kk = new Document()
@@ -149,9 +148,10 @@ class TaskControllerSpec {
 
     taskController = new TaskController(db);
   }
- /**
-  * Test for addRoutes method in TaskController.
-  */
+
+  /**
+   * Test for addRoutes method in TaskController.
+   */
   @Test // Still failed
   void addRoutes() {
     Javalin mockServer = mock(Javalin.class);
@@ -310,7 +310,6 @@ class TaskControllerSpec {
     assertEquals("this is just a test description", addedTask.get(TaskController.DESCRIPTION_KEY));
   }
 
-
   /**
    * Test for blank huntid that throws Exception
    *
@@ -336,31 +335,30 @@ class TaskControllerSpec {
   /**
    *
    * Test for blank description that throws Exception
+   *
    * @throws IOException
    */
 
-   @Test
-   void addInvalidDescriptionTask() throws IOException {
-     String testNewTask = """
-         {
-           "huntid": "345678",
-           "description": ""
-         }
-         """;
-     when(ctx.bodyValidator(Task.class))
-         .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+  @Test
+  void addInvalidDescriptionTask() throws IOException {
+    String testNewTask = """
+        {
+          "huntid": "345678",
+          "description": ""
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
 
-     assertThrows(ValidationException.class, () -> {
-       taskController.addNewTask(ctx);
-     });
-    }
-
-
+    assertThrows(ValidationException.class, () -> {
+      taskController.addNewTask(ctx);
+    });
+  }
 
   /**
    *
    * Test for deleting existence task
-  */
+   */
 
   @Test
   void deleteFoundTask() throws IOException {
@@ -398,4 +396,49 @@ class TaskControllerSpec {
     assertEquals(0, db.getCollection("tasks").countDocuments(eq("_id", new ObjectId(testID))));
   }
 
+  // Test for updating a task description
+  @Test
+  void updateTaskDescription() throws IOException {
+    String testID = kkTaskId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewTask = """
+        {
+          "huntid": "1234567",
+          "description": "This is updated description"
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+    taskController.updateTask(ctx);
+
+    verify(ctx).status(HttpStatus.OK);
+
+    Document updatedTask = db.getCollection("tasks")
+        .find(eq("_id", new ObjectId(testID))).first();
+
+    assertEquals("1234567", updatedTask.get(TaskController.HUNTID_KEY));
+    assertEquals("This is updated description", updatedTask.get(TaskController.DESCRIPTION_KEY));
+  }
+
+  // Test that a task description is not updated to a string shorter than 2
+  // characters
+  @Test
+  void updateTaskDescriptionToShortString() throws IOException {
+    String testID = "588935f5c668650dc77df581";
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewTask = """
+        {
+          "description": "a"
+        }
+        """;
+    when(ctx.bodyValidator(Task.class))
+        .then(value -> new BodyValidator<Task>(testNewTask, Task.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      taskController.updateTask(ctx);
+    });
+  }
 }

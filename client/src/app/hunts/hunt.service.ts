@@ -55,4 +55,8 @@ export class HuntService {
     // Send post request to add a new hunt with the user data as the body.
     return this.httpClient.post<{ id: string }>(this.huntUrl, newHunt).pipe(map(res => res.id));
   }
+
+  updateHunt(huntId: string, updatedHunt: { title?: string, description?: string }): Observable<void> {
+    return this.httpClient.put<void>(`${this.huntUrl}/${huntId}`, updatedHunt);
+  }
 }

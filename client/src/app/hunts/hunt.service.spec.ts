@@ -186,4 +186,22 @@ describe('HuntService', () => {
       });
     });
 
+   describe('When updateHunt() is called', () => {
+    it('calls `api/hunts/id` with the correct ID and updated hunt', waitForAsync(() => {
+      const targetHunt: Hunt = testHunts[1];
+      const targetId: string = targetHunt._id;
+      const updatedHunt: Partial<Hunt> = { title: 'New Title' };
+
+      const mockedMethod = spyOn(httpClient, 'put').and.returnValue(of(null));
+
+      huntService.updateHunt(targetId, updatedHunt).subscribe(() => {
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(`${huntService.huntUrl}/${targetId}`, updatedHunt);
+      });
+    }));
+   });
 });
