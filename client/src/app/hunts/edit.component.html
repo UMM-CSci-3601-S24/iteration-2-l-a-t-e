@@ -3,17 +3,20 @@
     <div class="banner">Edit Hunt</div>
     <form [formGroup]="editHuntForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="flex-1">
-        <input matInput placeholder="Title" formControlName="title">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title">
       </mat-form-field>
       <mat-form-field class="flex-1">
-        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
       <!-- Add this block for tasks -->
       <div formArrayName="editTaskForm">
         <div *ngFor="let taskFormGroup of editTaskForm.controls; let i = index" [formGroupName]="i">
           <mat-form-field class="flex-1">
-            <input matInput placeholder="Task" formControlName="taskInput">
+            <mat-label>Task</mat-label>
+            <input matInput formControlName="taskInput">
           </mat-form-field>
         </div>
       </div>
