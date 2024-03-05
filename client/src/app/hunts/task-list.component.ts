@@ -47,17 +47,17 @@ export class TaskListComponent implements OnInit, OnDestroy {
       next: (returnedTasks) => {
         this.serverFilteredTasks = returnedTasks;
       },
-      error: (err) => {
-        if (err.error instanceof ErrorEvent) {
-          this.errMsg = `Problem in the client: ${err.error.message}`;
-        } else {
-          this.errMsg = `Problem on the server - Error Code: ${err.status}\nMessage: ${err.message}`;
-        }
-        this.snackBar.open(
-          this.errMsg,
-          'OK',
-          { duration: 6000 });
-      },
+      // error: (err) => {
+      //   if (err.error instanceof ErrorEvent) {
+      //     this.errMsg = `Problem in the client: ${err.error.message}`;
+      //   } else {
+      //     this.errMsg = `Problem on the server - Error Code: ${err.status}\nMessage: ${err.message}`;
+      //   }
+      //   this.snackBar.open(
+      //     this.errMsg,
+      //     'OK',
+      //     { duration: 6000 });
+      // },
     });
   }
 
