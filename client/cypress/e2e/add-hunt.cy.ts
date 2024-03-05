@@ -31,40 +31,10 @@ describe('Add hunt', () => {
     // Some more tests for various invalid name inputs
     page.getFormField('title').type('s').blur();
     page.getFormField('title').clear().type('This is a very long name that goes beyond the 50 character limit').blur();
-
-
-  //   // Before doing anything there shouldn't be an error
-  //   cy.get('[data-test=ageError]').should('not.exist');
-  //   // Just clicking the age field without entering anything should cause an error message
-  //   page.getFormField('age').click().blur();
-  //   // Some more tests for various invalid age inputs
-  //   cy.get('[data-test=ageError]').should('exist').and('be.visible');
-  //   page.getFormField('age').type('5').blur();
-  //   cy.get('[data-test=ageError]').should('exist').and('be.visible');
-  //   page.getFormField('age').clear().type('500').blur();
-  //   cy.get('[data-test=ageError]').should('exist').and('be.visible');
-  //   page.getFormField('age').clear().type('asd').blur();
-  //   cy.get('[data-test=ageError]').should('exist').and('be.visible');
-  //   // Entering a valid age should remove the error.
-  //   page.getFormField('age').clear().type('25').blur();
-  //   cy.get('[data-test=ageError]').should('not.exist');
-
-  //   // Before doing anything there shouldn't be an error
-  //   cy.get('[data-test=emailError]').should('not.exist');
-  //   // Just clicking the email field without entering anything should cause an error message
-  //   page.getFormField('email').click().blur();
-  //   // Some more tests for various invalid email inputs
-  //   cy.get('[data-test=emailError]').should('exist').and('be.visible');
-  //   page.getFormField('email').type('asd').blur();
-  //   cy.get('[data-test=emailError]').should('exist').and('be.visible');
-  //   page.getFormField('email').clear().type('@example.com').blur();
-  //   cy.get('[data-test=emailError]').should('exist').and('be.visible');
-  //   // Entering a valid email should remove the error.
-  //   page.getFormField('email').clear().type('user@example.com').blur();
-  //   cy.get('[data-test=emailError]').should('not.exist');
-  // });
-
-
+    page.getFormField('description').type('s').blur();
+    page.getFormField('description').clear().type('T'.repeat(150)).blur();
+    page.getFormField('taskInput').type('s').blur();
+    page.getFormField('taskInput').clear().type('T'.repeat(150)).blur();
 
 });
 })
