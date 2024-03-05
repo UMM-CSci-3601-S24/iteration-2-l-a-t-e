@@ -13,7 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
+import { Task } from './task';
 
 @Component({
   selector: 'app-hunt-edit',
@@ -41,6 +42,8 @@ export class HuntEditComponent implements OnInit {
     private router: Router
   ) { }
 
+  editTaskForm: FormArray = this.formBuilder.array([]);
+
   editHuntForm = this.formBuilder.group({
     title: ['', Validators.compose([
       Validators.required,
@@ -50,30 +53,45 @@ export class HuntEditComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
+    editTaskForm: this.editTaskForm
   });
 
-  editTaskForm: FormArray = this.formBuilder.array([]);
+
 
   get tasks() {
     return this.editTaskForm.get('tasks') as FormArray;
   }
 
-  createTaskFormGroup(): FormGroup {
-    return this.formBuilder.group({
-      taskInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(140)]]
-    });
-  }
+  // createTaskFormGroup(): FormGroup {
+  //   return this.formBuilder.group({
+  //     taskInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(140)]]
+  //   });
+  // }
 
   ngOnInit(): void {
     this.route.params.pipe(
-      switchMap((params: Params) => this.huntService.getHuntById(params['id'])))
-      .subscribe((hunt: Hunt) => {
+      switchMap((params: Params) => this.huntService.getHuntById(params['id'])),
+      tap((hunt: Hunt) => {
         this.hunt = hunt;
         this.editHuntForm.patchValue({
           title: this.hunt.title,
           description: this.hunt.description
         });
-      });
+      }),
+      switchMap((hunt: Hunt) => this.taskService.getTasks({ huntid: hunt._id }))
+    ).subscribe((tasks: Task[]) => {
+      if (tasks && tasks.length > 0) {
+        tasks.forEach(task => {
+          this.editTaskForm.push(this.createTaskFormGroup(task));
+        });
+      }
+    });
+  }
+
+  createTaskFormGroup(task: Task): FormGroup {
+    return this.formBuilder.group({
+      taskInput: [task.description, [Validators.required, Validators.minLength(2), Validators.maxLength(140)]]
+    });
   }
 
   onSubmit() {
@@ -88,6 +106,24 @@ export class HuntEditComponent implements OnInit {
         // handle successful update
       }, error => {
         console.error('An error occurred:', error);
+      });
+
+      this.editTaskForm.controls.forEach((taskFormGroup, index) => {
+        console.log('taskFormGroup:', taskFormGroup);
+        console.log('index:', index);
+        if (taskFormGroup.valid) {
+          const updatedTask = { description: taskFormGroup.value.taskInput };
+          console.log('updatedTask:', updatedTask);
+          console.log('Task ID:', this.tasks[index]._id);
+          // Only update if the task description has changed
+          if (this.tasks[index] && this.tasks[index].description !== updatedTask.description) {
+            this.taskService.updateTask(this.tasks[index]._id, updatedTask).subscribe(() => {
+              this.router.navigate(['/hunts', this.hunt._id]);
+            }, error => {
+              console.error('An error occurred:', error);
+            });
+          }
+        }
       });
     }
   }
