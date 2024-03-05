@@ -8,7 +8,7 @@
     </mat-card-header>
 
     <mat-card-actions class="card-actions">
-      <button mat-icon-button matTooltip="Play Hunt" (click)="onPlayClick($event)" data-test="playHuntButton">
+      <button mat-icon-button matTooltip="Play Hunt" (click)="onPlayClick($event)" data-test="playHuntButton" disabled>
         <mat-icon class="play-button-icon" aria-label="Play Hunt">play_arrow</mat-icon>
       </button>
       @if (editable) {

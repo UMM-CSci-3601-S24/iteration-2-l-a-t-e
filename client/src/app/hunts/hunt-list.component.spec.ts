@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockHuntService } from 'src/testing/hunt.service.mock';
 import { HuntService } from './hunt.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { Hunt } from './hunt';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -75,14 +75,14 @@ describe('Misbehaving Hunt List', () => {
 
   let huntServiceStub: {
     getHunts: () => Observable<Hunt[]>;
+    huntDeleted: Subject<void>;
   };
 
+  // In your test setup
   beforeEach(() => {
-    // stub HuntService for test purposes
     huntServiceStub = {
-      getHunts: () => new Observable(observer => {
-        observer.error('getHunts() Observer generates an error');
-      }),
+      getHunts: () => throwError('Problem on the server - Error Code: 500'), // returns an Observable of an empty array
+      huntDeleted: new Subject<void>(), // creates a new Subject
     };
 
     TestBed.configureTestingModule({
@@ -124,10 +124,10 @@ describe('Misbehaving Hunt List', () => {
       statusText: 'Internal Server Error'
     });
 
-    spyOn(huntServiceStub, 'getHunts').and.returnValue(throwError(errorResponse));
+    huntServiceStub.getHunts = () => throwError(errorResponse); // make getHunts throw an error
 
     // Act
-    huntList.getHuntsFromServer();
+    huntList.getHuntsFromServer(); // this should now throw an error
 
     // Assert
     expect(huntList.errMsg).toBe('Problem on the server - Error Code: 500\nMessage: Http failure response for (unknown url): 500 Internal Server Error');

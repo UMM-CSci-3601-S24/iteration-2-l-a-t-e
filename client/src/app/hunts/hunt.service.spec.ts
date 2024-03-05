@@ -204,4 +204,22 @@ describe('HuntService', () => {
       });
     }));
    });
-});
+
+    describe('When deleteHunt() is called', () => {
+      it('calls `api/hunts/id` with the correct ID', waitForAsync(() => {
+        const targetHunt: Hunt = testHunts[1];
+        const targetId: string = targetHunt._id;
+
+        const mockedMethod = spyOn(httpClient, 'delete').and.returnValue(of(null));
+
+        huntService.deleteHunt(targetId).subscribe(() => {
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(`${huntService.huntUrl}/${targetId}`);
+        });
+      }));
+    });
+  });

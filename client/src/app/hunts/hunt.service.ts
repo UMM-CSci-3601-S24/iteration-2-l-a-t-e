@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Hunt } from './hunt';
 
@@ -58,5 +58,16 @@ export class HuntService {
 
   updateHunt(huntId: string, updatedHunt: { title?: string, description?: string }): Observable<void> {
     return this.httpClient.put<void>(`${this.huntUrl}/${huntId}`, updatedHunt);
+  }
+
+  huntDeleted = new Subject<void>();
+
+  deleteHunt(huntId: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.huntUrl}/${huntId}`).pipe(
+      tap(() => {
+        // Emit the huntDeleted event
+        this.huntDeleted.next();
+      })
+    );
   }
 }
