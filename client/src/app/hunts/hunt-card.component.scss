@@ -8,7 +8,8 @@
   height: relative min 300px;
   border-style: inset;
   min-height: 200px;
-  background-color: rgb(254,255,156);
+  background-color: rgb(254, 255, 156);
+
   &:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
@@ -17,16 +18,14 @@
 
 mat-card-header mat-card-title {
   text-align: center;
-  color:black;
+  color: black;
   margin-bottom: 10px;
   text-transform: capitalize;
-
 }
 
 mat-card-header mat-card-subtitle {
   text-align: center;
-  color:black;
-
+  color: black;
 }
 
 mat-card-header {
@@ -37,8 +36,10 @@ mat-card-header {
 
 
 .hunt-card-link {
-  color: inherit; /* Use the same color as the parent element */
-  text-decoration: none; /* Remove underline */
+  color: inherit;
+  /* Use the same color as the parent element */
+  text-decoration: none;
+  /* Remove underline */
 }
 
 .hunt-card-link:link,
