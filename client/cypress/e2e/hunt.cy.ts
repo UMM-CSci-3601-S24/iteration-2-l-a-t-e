@@ -12,7 +12,7 @@ describe('Todo List', () => {
   });
 
   it('Should click on card to navigate to detailed Hunt page, then go back to My Hunt page', () => {
-    page.getHuntCards().first().click();
+    cy.get('.hunt-card').first().click();
     cy.get('.hunt-title').first().should('have.length', 1);
 
     page.getSidenav()
@@ -28,7 +28,7 @@ describe('Todo List', () => {
   });
 
   it('Should click on search button to navigate to detailed Hunt page, then go back to My Hunt page', () => {
-    page.getHuntCards().first().find('[data-test=inspectHuntButton]').click();
+    cy.get('.hunt-card').first().find('[data-test=inspectHuntButton]').click();
     cy.get('.hunt-title').first().should('have.length', 1);
 
     page.getSidenav()
