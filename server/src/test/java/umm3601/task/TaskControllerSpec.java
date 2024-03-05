@@ -238,8 +238,8 @@ class TaskControllerSpec {
   @Test
   void canGetTasksWithHunt() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(TaskController.HUNTID_KEY, Arrays.asList(new String[] { "1234567" }));
-    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
+    queryParams.put(TaskController.HUNTID_KEY, Arrays.asList(new String[] {"1234567"}));
+    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(TaskController.HUNTID_KEY)).thenReturn("1234567");
     when(ctx.queryParam(TaskController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -261,8 +261,8 @@ class TaskControllerSpec {
   @Test
   void canGetTasksWithDescription() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(TaskController.DESCRIPTION_KEY, Arrays.asList(new String[] { "This is test task for KK" }));
-    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
+    queryParams.put(TaskController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test task for KK"}));
+    queryParams.put(TaskController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(TaskController.DESCRIPTION_KEY)).thenReturn("This is test task for KK");
     when(ctx.queryParam(TaskController.SORT_ORDER_KEY)).thenReturn("desc");

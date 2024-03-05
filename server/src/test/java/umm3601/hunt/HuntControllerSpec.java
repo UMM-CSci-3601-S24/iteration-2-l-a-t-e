@@ -243,8 +243,8 @@ class HuntControllerSpec {
   @Test
   void canGetHuntsWithHost() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.HOST_KEY, Arrays.asList(new String[] { "1234567" }));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
+    queryParams.put(HuntController.HOST_KEY, Arrays.asList(new String[] {"1234567"}));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.HOST_KEY)).thenReturn("1234567");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -266,8 +266,8 @@ class HuntControllerSpec {
   @Test
   void canGetHuntsWithTitle() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.TITLE_KEY, Arrays.asList(new String[] { "KKTestHunt" }));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
+    queryParams.put(HuntController.TITLE_KEY, Arrays.asList(new String[] {"KKTestHunt"}));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.TITLE_KEY)).thenReturn("KKTestHunt");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");
@@ -289,8 +289,8 @@ class HuntControllerSpec {
   @Test
   void canGetHuntsWithDescription() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(HuntController.DESCRIPTION_KEY, Arrays.asList(new String[] { "This is test hunt for KK" }));
-    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] { "desc" }));
+    queryParams.put(HuntController.DESCRIPTION_KEY, Arrays.asList(new String[] {"This is test hunt for KK"}));
+    queryParams.put(HuntController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
     when(ctx.queryParam(HuntController.DESCRIPTION_KEY)).thenReturn("This is test hunt for KK");
     when(ctx.queryParam(HuntController.SORT_ORDER_KEY)).thenReturn("desc");

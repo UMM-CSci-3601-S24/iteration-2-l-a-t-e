@@ -235,7 +235,7 @@ public void getAllHunts(Context ctx) {
    * @param ctx a Javalin HTTP context
    *
    */
-  public void updateHunt (Context ctx) {
+  public void updateHunt(Context ctx) {
     String id = ctx.pathParam("id");
     Hunt hunt = ctx.bodyValidator(Hunt.class)
       .check(hnt -> hnt.title != null, "Hunt must have non-empty title")
