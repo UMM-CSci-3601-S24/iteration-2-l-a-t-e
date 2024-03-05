@@ -11,28 +11,44 @@ describe('Todo List', () => {
     page.getPageTitle().should('eq', 'My Hunts');
   });
 
-  // it('Should click on card or search button to navigate to detailed Hunt page, then go back to My Hunt page', () => {
-  //   page.getHuntCards().first().find('card').click();
-  //   cy.get('.hunt-card-title').first().should('have.text');
+  it('Should click on card to navigate to detailed Hunt page, then go back to My Hunt page', () => {
+    page.getHuntCards().first().click();
+    cy.get('.hunt-title').first().should('have.length', 1);
 
-    // page.getSidenav()
-    // .should('be.hidden');
-    // page.getSidenavButton()
-    // .should('be.visible');
+    page.getSidenav()
+    .should('be.hidden');
+    page.getSidenavButton()
+    .should('be.visible');
 
-    // page.getSidenavButton().click();
-    // page.getNavLink('Hunts').click();
-    // page.getSidenav().should('be.hidden');
-    // page.getPageTitle().should('eq', 'My Hunts');
-    // cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
-  // });
-  // I don't have MongoDB setup for now so this test is still in progress.
+    page.getSidenavButton().click();
+    page.getNavLink('Hunts').click();
+    page.getSidenav().should('be.hidden');
+    page.getPageTitle().should('eq', 'My Hunts');
+    cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
+  });
+
+  it('Should click on search button to navigate to detailed Hunt page, then go back to My Hunt page', () => {
+    page.getHuntCards().first().find('[data-test=inspectHuntButton]').click();
+    cy.get('.hunt-title').first().should('have.length', 1);
+
+    page.getSidenav()
+    .should('be.hidden');
+    page.getSidenavButton()
+    .should('be.visible');
+
+    page.getSidenavButton().click();
+    page.getNavLink('Hunts').click();
+    page.getSidenav().should('be.hidden');
+    page.getPageTitle().should('eq', 'My Hunts');
+    cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
+  });
 
   it('Should click add Hunt and navigate to the correct URL then go back to My Hunt page', () => {
 
     page.addHuntButton().click();
 
     cy.url().should(url => expect(url.endsWith('/hunts/new')).to.be.true);
+    cy.get('.mat-mdc-card-title').should('have.text', 'Create HuntTasks');
 
     page.getSidenav()
       .should('be.hidden');
@@ -43,5 +59,6 @@ describe('Todo List', () => {
       page.getNavLink('Hunts').click();
       page.getSidenav()
       .should('be.hidden');
+      cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
   });
 })

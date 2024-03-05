@@ -2,7 +2,6 @@ export class HuntPage {
   private readonly baseUrl = '/hunts';
   private readonly pageTitle = '.hunt-title';
   private readonly huntCardSelector = '.hunt-cards-container app-hunt-card';
-  private readonly profileButtonSelector = '[data-test=viewHuntDescriptionButton]';
   private readonly addHuntButtonSelector = '[data-test=addHuntButton]';
   private readonly sideNavButton = '.sidenav-button';
   private readonly sideNav = '.sidenav';
@@ -25,15 +24,6 @@ export class HuntPage {
     return cy.title();
   }
 
-  /**
-   * Clicks the "view profile" button for the given todo card.
-   * Requires being in the "card" view.
-   *
-   * @param card The user card
-   */
-  clickViewDetailedHunt(card: Cypress.Chainable<JQuery<HTMLElement>>) {
-    return card.find<HTMLButtonElement>(this.profileButtonSelector).click();
-  }
 
   addHuntButton() {
     return cy.get(this.addHuntButtonSelector);
