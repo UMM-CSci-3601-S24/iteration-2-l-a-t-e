@@ -166,5 +166,61 @@
     },
     "description": "Find and photograph any student-created artwork or mural.",
     "huntid": "588935f5236b2d4ad76a1413"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de7e"
+    },
+    "description": "Take a photo of the windmill or any sustainable energy source on campus.",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de8e"
+    },
+    "description": "Take a selfie at center field of Big Cat Stadium",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de9e"
+    },
+    "description": "Take a photo of Pounce",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de1f"
+    },
+    "description": "Take a photo in Louie's Lower Lounge",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de2f"
+    },
+    "description": "Take a picture of a CSCI student in the Dungeon Lab (with their permission of course).",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de3f"
+    },
+    "description": "Capture a photo of any wildlife that can be found on the college campus.",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de4f"
+    },
+    "description": "Snap a picture in from the podium of the 'Cow Palace'",
+    "huntid": "588935f57546a2daea44de7c"
+  },
+  {
+    "_id": {
+      "$oid": "588935f57546a2daea44de5f"
+    },
+    "description": "Find and photograph any student-created artwork or mural in the HFA",
+    "huntid": "588935f57546a2daea44de7c"
   }
 ]

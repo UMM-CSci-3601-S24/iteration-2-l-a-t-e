@@ -1,0 +1,38 @@
+.edit-hunt-wrapper {
+  margin-top: 20px;
+  display: flex;
+  width: 80%;
+}
+
+.flex-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+  width: 96%;
+}
+
+.flex-2 {
+  display: flex;
+  margin-top: 20px;
+  width: 200%;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.banner {
+  --banner-color: rgb(65, 155, 113);
+  background-color: var(--banner-color);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-size: 200%;
+  font-weight: 500;
+}
