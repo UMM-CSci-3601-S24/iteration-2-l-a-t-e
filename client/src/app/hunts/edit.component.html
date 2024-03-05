@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit()">
+  <h2>Edit Hunt</h2>
+  <label>
+    Hunt Name:
+    <input [(ngModel)]="hunt.name" name="name">
+  </label>
+  <!-- Add more fields for the hunt here -->
+
+  <h2>Edit Tasks</h2>
+  <div *ngFor="let task of tasks; index as i">
+    <label>
+      Task {{ i + 1 }} Name:
+      <input [(ngModel)]="task.name" name="taskName{{i}}">
+    </label>
+    <!-- Add more fields for the task here -->
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
