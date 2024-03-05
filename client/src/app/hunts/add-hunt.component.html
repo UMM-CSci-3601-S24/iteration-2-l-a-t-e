@@ -1,0 +1,75 @@
+<div class="flex-row">
+  <div class="flex-1">
+    <mat-card class="add-hunt-card" style="padding: 20px;">
+      <mat-card-header>
+        <mat-card-title>Create Hunt</mat-card-title>
+      </mat-card-header>
+
+      <form [formGroup]="addHuntForm">
+        <mat-card-content>
+          <div class="flex-col">
+            <mat-form-field appearance="fill" style="width: 35%;">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" required>
+              <mat-error *ngIf="formControlHasError('title')" data-test="nameError">
+                {{getErrorMessage('title')}}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" required>
+              <mat-error *ngIf="formControlHasError('description')" data-test="nameError">
+                {{getErrorMessage('description')}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </form>
+
+      <form [formGroup]="addTaskForm">
+        <mat-card-content>
+          <div class="flex-col">
+            <div formArrayName="tasks">
+              <mat-card-title>Tasks</mat-card-title>
+              <div *ngFor="let taskFormGroup of tasks.controls; let i=index" formGroupName="{{i}}">
+                <mat-form-field appearance="fill" style="width: calc(100% - 48px);">
+                  <mat-label>Task {{ i + 1 }}</mat-label>
+                  <input matInput formControlName="taskInput" required>
+                  <mat-error *ngIf="tasks.invalid && (tasks.dirty || tasks.touched)">
+                    {{ getTaskErrorMessage(i) }}
+                  </mat-error>
+                </mat-form-field>
+                <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                (click)="deleteTaskInput(i)"
+                *ngIf="tasks.controls.length > 1">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              </div>
+              <button
+              type="button"
+              mat-flat-button
+              color="primary"
+              (click)="addTaskInput()">
+                <mat-icon>add_task</mat-icon>Add Task
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button
+          mat-raised-button
+          type="button"
+          color="accent"
+          [disabled]="!addHuntForm.valid || !addTaskForm.valid"
+          (click)="submitAll()"
+          data-test="confirmAddTasksButton">
+          Create Hunt
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</div>

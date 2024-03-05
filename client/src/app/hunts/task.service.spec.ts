@@ -99,10 +99,10 @@ describe('TaskService', () => {
 
   it('should add a task', () => {
     const newTask = { description: 'Test task', huntid: 'hunt1_id' };
-    const expectedResponse = { taskId: 'test_task_id' };
+    const expectedResponse = { id: 'test_task_id' };
 
     taskService.addTask(newTask).subscribe(taskId => {
-      expect(taskId).toEqual(expectedResponse.taskId);
+      expect(taskId).toEqual(expectedResponse.id);
     });
 
     const req = httpTestingController.expectOne(taskService.taskUrl);
