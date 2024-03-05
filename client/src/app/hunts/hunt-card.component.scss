@@ -9,7 +9,6 @@
   border-style: inset;
   min-height: 200px;
   background-color: rgb(254,255,156);
-  color:black !important;
   &:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
@@ -18,12 +17,16 @@
 
 mat-card-header mat-card-title {
   text-align: center;
-  margin-bottom: 20px;
+  color:black;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+
 }
 
 mat-card-header mat-card-subtitle {
   text-align: center;
-  color:black !important;
+  color:black;
+
 }
 
 mat-card-header {
