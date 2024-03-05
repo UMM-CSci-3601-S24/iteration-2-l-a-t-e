@@ -4,6 +4,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Hunt } from './hunt';
 import { HuntService } from './hunt.service';
+import { MockHuntService } from 'src/testing/hunt.service.mock';
 
 describe('HuntService', () => {
   // A small collection of test hunts
@@ -148,6 +149,41 @@ describe('HuntService', () => {
             .toHaveBeenCalledWith(huntService.huntUrl, newHunt);
         });
       }));
+    });
+
+    describe('MockHuntService', () => {
+      let service: MockHuntService;
+
+      beforeEach(() => {
+        service = new MockHuntService();
+      });
+
+      it('should return a hunt by id', () => {
+        const huntId = 'hunt1_id';
+        service.getHuntById(huntId).subscribe(hunt => {
+          expect(hunt).toEqual(MockHuntService.testHunts[0]);
+        });
+      });
+
+      it('should return null for a non-existent hunt id', () => {
+        const huntId = 'non_existent_id';
+        service.getHuntById(huntId).subscribe(hunt => {
+          expect(hunt).toBeNull();
+        });
+      });
+
+      it('should add a hunt', () => {
+        const newHunt: Hunt = {
+          _id: `hunt${MockHuntService.testHunts.length + 1}_id`,
+          hostid: 'new_host',
+          title: 'New Hunt',
+          description: 'New hunt description',
+        };
+        service.addHunt(newHunt).subscribe(id => {
+          expect(id).toBe(newHunt._id);
+          expect(MockHuntService.testHunts[MockHuntService.testHunts.length - 1]).toEqual(newHunt);
+        });
+      });
     });
 
 });

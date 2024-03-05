@@ -39,7 +39,6 @@ export class MockHuntService extends HuntService {
     return of(MockHuntService.testHunts);
   }
 
-  // skipcq: JS-0105
   getHuntById(id: string): Observable<Hunt> {
     // If the specified ID is for one of the first two test users,
     // return that user, otherwise return `null` so
