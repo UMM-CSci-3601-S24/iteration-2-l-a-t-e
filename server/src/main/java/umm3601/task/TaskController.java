@@ -138,7 +138,6 @@ public void getAllTasks(Context ctx) {
   /**
    *
    * @param server // The javalin server instance
-   * @param TaskController // The controller for tasks
    *
    */
 
