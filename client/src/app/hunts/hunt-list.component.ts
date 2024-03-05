@@ -104,6 +104,10 @@ export class HuntListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getHuntsFromServer();
     this.getGenericHuntsFromServer();
+    this.huntService.huntDeleted.subscribe(() => {
+      // Refresh the hunts list
+      this.getHuntsFromServer();
+    });
   }
 
   ngOnDestroy(): void {
