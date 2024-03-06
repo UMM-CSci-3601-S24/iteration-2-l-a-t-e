@@ -3,6 +3,11 @@ import { HuntPage } from "cypress/support/hunt.po";
 const page = new HuntPage();
 
 describe('My Hunt Page', () => {
+
+  before(() => {
+    cy.task('seed:database');
+  });
+
   beforeEach(() => {
     page.navigateTo();
   });
@@ -16,9 +21,9 @@ describe('My Hunt Page', () => {
     cy.get('.hunt-title').first().should('have.length', 1);
 
     page.getSidenav()
-    .should('be.hidden');
+      .should('be.hidden');
     page.getSidenavButton()
-    .should('be.visible');
+      .should('be.visible');
 
     page.getSidenavButton().click();
     page.getNavLink('Hunts').click();
@@ -32,9 +37,9 @@ describe('My Hunt Page', () => {
     cy.get('.hunt-title').first().should('have.length', 1);
 
     page.getSidenav()
-    .should('be.hidden');
+      .should('be.hidden');
     page.getSidenavButton()
-    .should('be.visible');
+      .should('be.visible');
 
     page.getSidenavButton().click();
     page.getNavLink('Hunts').click();
@@ -48,9 +53,9 @@ describe('My Hunt Page', () => {
     cy.get('.banner').first().should('have.text', 'Edit Hunt');
 
     page.getSidenav()
-    .should('be.hidden');
+      .should('be.hidden');
     page.getSidenavButton()
-    .should('be.visible');
+      .should('be.visible');
 
     page.getSidenavButton().click();
     page.getNavLink('Hunts').click();
@@ -60,13 +65,14 @@ describe('My Hunt Page', () => {
   });
 
   it('Should click on delete button to delete a specific hunt page, then go back to My Hunt page', () => {
+    cy.on('window:confirm', () => false);
     cy.get('.hunt-card', { timeout: 10000 }).first().find('[data-test=deleteHuntButton]').click();
 
 
     page.getSidenav()
-    .should('be.hidden');
+      .should('be.hidden');
     page.getSidenavButton()
-    .should('be.visible');
+      .should('be.visible');
 
     page.getSidenavButton().click();
     page.getNavLink('Hunts').click();
@@ -90,14 +96,14 @@ describe('My Hunt Page', () => {
     page.getSidenavButton()
       .should('be.visible');
 
-      page.getSidenavButton().click();
-      page.getNavLink('Hunts').click();
-      page.getSidenav()
+    page.getSidenavButton().click();
+    page.getNavLink('Hunts').click();
+    page.getSidenav()
       .should('be.hidden');
-      cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
+    cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
   });
 
-  it ('should click in a edit task field and type in a updated for the Hunt', () => {
+  it('should click in a edit task field and type in a updated for the Hunt', () => {
     cy.get('.hunt-card', { timeout: 10000 }).first().find('[data-test=editHuntButton]').click();
     cy.get('.banner').first().should('have.text', 'Edit Hunt');
 
@@ -107,9 +113,9 @@ describe('My Hunt Page', () => {
     cy.get('[data-test=Update]').click();
 
     page.getSidenav()
-    .should('be.hidden');
+      .should('be.hidden');
     page.getSidenavButton()
-    .should('be.visible');
+      .should('be.visible');
 
     page.getSidenavButton().click();
     page.getNavLink('Hunts').click();

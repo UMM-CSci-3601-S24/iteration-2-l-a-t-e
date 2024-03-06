@@ -4,6 +4,10 @@ import { AddHuntPage } from '../support/add-hunt.po';
 describe('Add hunt', () => {
   const page = new AddHuntPage();
 
+  before(() => {
+    cy.task('seed:database');
+  });
+
   beforeEach(() => {
     page.navigateTo();
   });

@@ -3,6 +3,11 @@ import { AppPage } from '../support/app.po';
 const page = new AppPage();
 
 describe('App', () => {
+
+  before(() => {
+    cy.task('seed:database');
+  });
+
   beforeEach(() => page.navigateTo());
 
   it('Should have the correct title', () => {
