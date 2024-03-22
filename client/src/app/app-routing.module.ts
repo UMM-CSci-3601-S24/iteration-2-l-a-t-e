@@ -6,6 +6,7 @@ import { HuntProfileComponent } from './hunts/hunt-profile.component';
 import { TaskListComponent } from './hunts/task-list.component';
 import { HuntEditComponent } from './hunts/edit.component';
 import { AddHuntComponent } from './hunts/add-hunt.component';
+import { OpenHuntComponent } from './open-hunts/open-hunt.component';
 
 // Note that the 'hunts/new' route needs to come before 'hunts/:id'.
 // If 'hunts/:id' came first, it would accidentally catch requests to
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
-  {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
+  {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'},
+  {path: 'open-hunt/:id', component: OpenHuntComponent, title: 'Hunt'}
 
 ];
 
