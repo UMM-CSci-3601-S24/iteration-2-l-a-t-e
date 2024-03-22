@@ -15,6 +15,8 @@ public class Hunt {
   public String title;
   public String description;
 
+  public String estimatedTime;
+
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof Hunt)) {
