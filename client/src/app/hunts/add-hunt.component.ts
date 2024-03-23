@@ -97,7 +97,7 @@ export class AddHuntComponent {
 
   submitAll() {
     const huntData = {
-      ...this.addHuntForm.value,
+      ...this.addHuntForm.value, //the spread operator ... is used here to copy the data from addHunt form to a new object, huntData
       hostid: this.currentHost
     };
 

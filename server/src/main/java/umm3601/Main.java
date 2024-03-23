@@ -61,7 +61,7 @@ public class Main {
       // although you need to make sure that each of your new controllers implements
       // the `Controller` interface.
       new HuntController(database),
-      new TaskController(database)
+      new TaskController(database),
     };
     return controllers;
   }
