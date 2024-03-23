@@ -26,6 +26,25 @@
         </mat-card-content>
       </form>
 
+      <mat-card-header>
+        <mat-card-title>Estimated Time</mat-card-title>
+      </mat-card-header>
+
+      <form [formGroup]="addHuntForm">
+        <mat-card-content>
+          <div class="flex-col">
+            <mat-form-field appearance="fill" style="width: 15%;">
+                <!-- Find a text box display name -->
+              <mat-label>Undecided</mat-label>
+              <input matInput formControlName="title" required>
+              <mat-error *ngIf="formControlHasError('title')" data-test="nameError">
+                {{getErrorMessage('title')}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </form>
+
       <form [formGroup]="addTaskForm">
         <mat-card-content>
           <div class="flex-col">
