@@ -1,0 +1,9 @@
+.banner {
+  --banner-color: rgb(65, 155, 113); /* Replace with your desired color */
+  background-color: var(--banner-color);
+  color: #fff; /* Replace with your desired text color */
+  padding: 20px;
+  text-align: center;
+  font-size: 200%;
+  font-weight: 500;
+}
