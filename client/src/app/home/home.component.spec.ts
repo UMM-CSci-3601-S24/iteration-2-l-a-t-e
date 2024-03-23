@@ -1,8 +1,12 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
 import { HomeComponent } from './home.component';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { Location } from '@angular/common';
+//import { LoginComponent } from '../login/login.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('Home', () => {
 
@@ -27,8 +31,48 @@ describe('Home', () => {
 
   it('It has the basic home page text', () => {
     fixture.detectChanges();
-    expect(el.textContent).toContain('This is a home page! It doesn\'t do anything!');
+    expect(el.textContent).toContain('Welcome to the hunt');
     expect(component).toBeTruthy();
   });
+
+});
+
+describe('home navigation', () => {
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
+  let location: Location;
+
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HomeComponent, HttpClientTestingModule,
+        RouterTestingModule.withRoutes([
+          //{ path: 'login', component: LoginComponent }
+      ])]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    location = TestBed.inject(Location);
+    fixture.detectChanges();
+  })
+
+  it('sendToHost() should navigate to the right page', fakeAsync(() => {
+    fixture.ngZone.run(() => {
+    component.hostLogin();
+    tick()
+    expect(location.path()).toBe('/login')
+    flush();
+  });
+  }));
+
+  it('showHunterInput changes flag', () =>{
+  expect(component.showHunterInput).toBeFalse;
+  component.showHunterForm();
+  expect(component.showHunterInput).toBeTrue;
+})
 
 });
