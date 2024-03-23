@@ -14,7 +14,8 @@ public class Group {
 
   public String groupName;
   public String[] huntIds;
-  public Hunter[] hunters; //this is meant to be empty in the database, it will be populated with Hunter objects when it is sent to frontend
+  public Hunter[] hunters; //this is meant to be empty in the database,
+  //it will be populated with Hunter objects when it is sent to frontend
 
 
   @Override

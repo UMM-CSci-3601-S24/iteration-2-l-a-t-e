@@ -20,8 +20,9 @@ public class OpenHunt {
   public String invitecode;
   public Integer numberofgroups;
 
-  public String [] groupids;
-  public Group [] groups; //this is meant to be empty in the database, it will be populated with Hunter objects when it is sent to frontend
+  public String[] groupids;
+  public Group[] groups; //this is meant to be empty in the database,
+  // it will be populated with Hunter objects when it is sent to frontend
 
   @Override
   public boolean equals(Object obj) {
