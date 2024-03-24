@@ -1,0 +1,105 @@
+
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-card {
+  position: relative;
+  width: 25%;
+  margin-top: 10%;
+  margin-left: 36%;
+  background-color: transparent;
+  border: none;
+}
+
+.bottom-card {
+  position: fixed;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  margin-left: -8%;
+  margin-top: 34%;
+}
+
+.input-card {
+  width: 400px;
+  margin: 20px auto;
+  background-color: transparent;
+  border: none;
+}
+
+.input-card .sign {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-card input {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.submit-button {
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 20px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #333;
+}
+
+
+.iteration-message {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+}
+
+.sign {
+  display: inline-block;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 7px;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.choice-sign {
+  display: inline-block;
+  text-align: center;
+  color: white;
+  padding: 7px;
+  box-shadow: 0 0 0px;
+}
+
+.sign h1 {
+  margin: 0;
+}
+
+.action-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.action-button:last-child {
+  margin-right: 0;
+}
