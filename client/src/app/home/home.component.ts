@@ -17,7 +17,7 @@ export class HomeComponent {
   showHunterInput: boolean = false;
 
   hostLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
 }
 
   showHunterForm() {

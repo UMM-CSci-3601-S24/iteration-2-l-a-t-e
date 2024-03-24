@@ -64,7 +64,7 @@ describe('home navigation', () => {
     fixture.ngZone.run(() => {
     component.hostLogin();
     tick()
-    expect(location.path()).toBe('/login')
+    expect(location.path()).toBe('/')
     flush();
   });
   }));
