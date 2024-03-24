@@ -30,9 +30,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Scav-a-Snap - By AKA'`, () => {
+  it(`should have as title 'Scav-a-Snap - Team L.A.T.E'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Scav-a-Snap - By AKA');
+    expect(app.title).toEqual('Scav-a-Snap - Team L.A.T.E');
   });
 });
