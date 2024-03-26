@@ -4,4 +4,5 @@ export interface Hunt {
     hostid: string;
     title: string;
     description: string;
+    estimatedTime: string;
 }
