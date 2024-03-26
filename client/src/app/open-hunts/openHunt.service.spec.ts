@@ -57,21 +57,8 @@ describe('OpenHuntSevice', () => {
     // After every test, assert that there are no more pending requests.
     httpTestingController.verify();
   });
-/**
-  describe('test', () => {
-    it('should get active hunts', () => {
-      openHuntService.getActive().subscribe(hunts => {
-        expect(hunts.length).toBe(4);
-        expect(hunts).toEqual(testOpenHunts);
 
-        const req = httpTestingController.expectOne('api/openHunt/active');
-        expect(req.request.method).toEqual('GET');
-      });
-    })
-  });
-   */
-
-  describe('When getHunts() is called with no parameters', () => {
+  describe('When getOpenHunts() is called with no parameters', () => {
 
     it('calls `api/hunts`', waitForAsync(() => {
 
@@ -89,7 +76,7 @@ describe('OpenHuntSevice', () => {
       });
     }));
   });
-  describe('When getHunts() is called with parameters', () => {
+  describe('When getOpenHunts() is called with parameters', () => {
 
     it('correctly calls `api/hunts` with parameters', () => {
       const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testOpenHunts));
@@ -107,7 +94,7 @@ describe('OpenHuntSevice', () => {
     });
   });
 
-  describe('When getHuntById() is given an ID', () => {
+  describe('When getOpenHuntById() is given an ID', () => {
     /* We really don't care what `getHuntById()` returns. Since all the
      * interesting work is happening on the server, `getHuntById()`
      * is really just a "pass through" that returns whatever it receives,
@@ -123,7 +110,7 @@ describe('OpenHuntSevice', () => {
      * about the returned value). Since we don't use the returned value in this test,
      * It might also be fine to not bother making the mock return it.
      */
-     it('calls api/hunts/id with the correct ID', waitForAsync(() => {
+     it('calls api/openHunts/id with the correct ID', waitForAsync(() => {
        // We're just picking a User "at random" from our little
        // set of Hunts up at the top.
        const targetHunt: OpenHunt = testOpenHunts[1];
@@ -152,7 +139,7 @@ describe('OpenHuntSevice', () => {
      }));
    });
 
-   describe('When addHunt() is called', () => {
+   describe('When addOpenHunt() is called', () => {
       it('calls `api/hunts` with the correct body', waitForAsync(() => {
         const newHunt: Partial<OpenHunt> = {
           invitecode: 'hunt5',
@@ -170,6 +157,24 @@ describe('OpenHuntSevice', () => {
           expect(mockedMethod)
             .withContext('talks to the correct endpoint')
             .toHaveBeenCalledWith(openHuntService.openHuntUrl, newHunt);
+        });
+      }));
+    });
+
+    describe('When deleteOpenHunt() is called', () => {
+      it('calls `api/hunts/id` with the correct ID', waitForAsync(() => {
+        const targetHunt: OpenHunt = testOpenHunts[1];
+        const targetId: string = targetHunt._id;
+
+        const mockedMethod = spyOn(httpClient, 'delete').and.returnValue(of(null));
+
+        openHuntService.deleteOpenHunt(targetId).subscribe(() => {
+          expect(mockedMethod)
+            .withContext('one call')
+            .toHaveBeenCalledTimes(1);
+          expect(mockedMethod)
+            .withContext('talks to the correct endpoint')
+            .toHaveBeenCalledWith(`${openHuntService.openHuntUrl}/${targetId}`);
         });
       }));
     });
