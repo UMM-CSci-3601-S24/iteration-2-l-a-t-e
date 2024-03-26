@@ -16,9 +16,10 @@ export class HomeComponent {
   constructor(private router: Router) { }
   showHunterInput: boolean = false;
 
+
   hostLogin() {
-    this.router.navigate(['']);
-}
+    this.router.navigate(['/login']); // Navigate to the 'add-hunt' route
+  }
 
   showHunterForm() {
     this.showHunterInput = !this.showHunterInput; // Set the flag to the opposite
