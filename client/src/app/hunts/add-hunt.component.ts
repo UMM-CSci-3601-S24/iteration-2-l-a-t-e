@@ -49,6 +49,7 @@ export class AddHuntComponent {
     estimatedTime: ['', Validators.compose([
       Validators.required,
       Validators.maxLength(3),
+      // Only allows a maximum of 3 digits
       Validators.pattern("^[1-9][0-9]{0,2}$")])]
   });
 
