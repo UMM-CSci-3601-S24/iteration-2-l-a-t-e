@@ -47,7 +47,8 @@ describe('HuntCardComponent', () => {
       _id: 'hunt1_id',
       hostid: 'chris',
       title: 'Chris\'s Hunt',
-      description: 'Chris\'s test hunt'
+      description: 'Chris\'s test hunt',
+      estimatedTime: '60'
     };
     fixture.detectChanges();
   });

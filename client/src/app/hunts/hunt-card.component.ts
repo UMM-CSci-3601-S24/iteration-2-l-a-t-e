@@ -16,6 +16,7 @@ import { HuntService } from './hunt.service';
 })
 export class HuntCardComponent {
   @Input() hunt: Hunt;
+  @Input() estimatedTime: string;
   @Input() simple?: boolean = false;
   @Input() editable: boolean = true;
 
