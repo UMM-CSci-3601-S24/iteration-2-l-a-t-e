@@ -6,35 +6,36 @@ import { TestBed, waitForAsync } from "@angular/core/testing";
 import { of } from "rxjs";
 
 
+
 describe('OpenHuntSevice', () => {
   const testOpenHunts: OpenHunt[] = [
     {
-      _id: 'hunt1_id',
-      invitecode: 'hunt1',
+      _id: 'openhunt1id',
       active: true,
+      hostid: 'host',
+      huntid: 'hunt1id',
+      title: "hunt 1",
+      description: "Test Hunt 1",
+      invitecode: "invite1",
       numberofgroups: 1,
-      groupids: ["group1"]
+      groupids: ["group1"],
+      groups: [{ _id: 'group1', huntids: ["hunt1id"], hunters: [
+        { _id: "hunter1", huntername: "numberone"}]}]
     },
     {
-      _id: 'hunt2_id',
-      invitecode: 'hunt2',
+      _id: 'openhunt2id',
       active: true,
+      hostid: 'host',
+      huntid: 'hunt2id',
+      title: "hunt 2",
+      description: "Test Hunt 2",
+      invitecode: "invite2",
       numberofgroups: 2,
-      groupids: ["group1", "group2"]
-    },
-    {
-      _id: 'hunt3_id',
-      invitecode: 'hunt3',
-      active: true,
-      numberofgroups: 3,
-      groupids: ["group1", "group2", "group3"]
-    },
-    {
-      _id: 'hunt4_id',
-      invitecode: 'hunt4',
-      active: false,
-      numberofgroups: 4,
-      groupids: ["group1", "group2", "group3", "group4"]
+      groupids: ["group1","group2"],
+      groups: [{ _id: 'group1', huntids: ["hunt2id"], hunters: [
+        { _id: "hunter1", huntername: "numberone"}]},
+                { _id: 'group2', huntids: ["hunt2id"], hunters: [
+          { _id: "hunter2", huntername: "numbertwo"}]}]
     }
   ];
 
