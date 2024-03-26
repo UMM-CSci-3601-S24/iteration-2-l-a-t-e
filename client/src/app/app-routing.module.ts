@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'},
-  {path: 'open-hunts/:id', component: OpenHuntComponent, title: 'Hunt'}
+  {path: 'open-hunts/:id', component: OpenHuntComponent, title: 'Hunt'} // id for coresponing hunt, not openhunt id.
 
 ];
 
