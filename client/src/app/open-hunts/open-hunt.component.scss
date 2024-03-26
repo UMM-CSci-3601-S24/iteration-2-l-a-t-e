@@ -1,5 +1,5 @@
 .banner {
-  --banner-color: rgb(65, 155, 113); /* Replace with your desired color */
+  --banner-color: rgb(216, 181, 137); /* Replace with your desired color */
   background-color: var(--banner-color);
   color: #fff; /* Replace with your desired text color */
   padding: 20px;
@@ -7,3 +7,34 @@
   font-size: 200%;
   font-weight: 500;
 }
+
+.label {
+  background: linear-gradient(
+    45deg,
+    #999 5%,
+    #fff 10%,
+    #ccc 30%,
+    #ddd 50%,
+    #ccc 70%,
+    #fff 80%,
+    #999 95%
+  );
+  color: black;
+  text-shadow: 2px 2px 2px rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.board {
+  background-color: #caa478ff;
+  padding: 50%;
+  aspect-ratio: 1;
+  position: relative;
+  background:
+    repeating-radial-gradient(closest-corner at 1% 2%, #caa488ff, #caa468ff, #000 50%),
+    repeating-radial-gradient(closest-corner at 1% 2%, #caa478ff, #caa488ff, #caa468ff 50%);
+  background-size: 900px 900px;
+}
+
