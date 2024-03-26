@@ -33,8 +33,8 @@
   aspect-ratio: 1;
   position: relative;
   background:
-    repeating-radial-gradient(closest-corner at 1% 2%, #caa488ff, #caa468ff, #000 50%),
-    repeating-radial-gradient(closest-corner at 1% 2%, #caa478ff, #caa488ff, #caa468ff 50%);
-  background-size: 900px 900px;
+    repeating-radial-gradient(closest-corner at .1% .3%, #caa488ff, #caa468ff, #000 .01%),
+    repeating-radial-gradient(closest-corner at .1% 2%, #caa478ff, #caa488ff, #caa468ff .01%);
+  background-size: 1700px 1000px;
 }
 
