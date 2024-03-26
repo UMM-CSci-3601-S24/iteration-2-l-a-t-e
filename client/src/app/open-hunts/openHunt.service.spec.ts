@@ -19,8 +19,10 @@ describe('OpenHuntSevice', () => {
       invitecode: "invite1",
       numberofgroups: 1,
       groupids: ["group1"],
-      groups: [{ _id: 'group1', huntids: ["hunt1id"], hunters: [
-        { _id: "hunter1", huntername: "numberone"}]}]
+      groups: [{
+        _id: 'group1', huntids: ["hunt1id"], hunters: [
+          { _id: "hunter1", huntername: "numberone" }]
+      }]
     },
     {
       _id: 'openhunt2id',
@@ -31,11 +33,15 @@ describe('OpenHuntSevice', () => {
       description: "Test Hunt 2",
       invitecode: "invite2",
       numberofgroups: 2,
-      groupids: ["group1","group2"],
-      groups: [{ _id: 'group1', huntids: ["hunt2id"], hunters: [
-        { _id: "hunter1", huntername: "numberone"}]},
-                { _id: 'group2', huntids: ["hunt2id"], hunters: [
-          { _id: "hunter2", huntername: "numbertwo"}]}]
+      groupids: ["group1", "group2"],
+      groups: [{
+        _id: 'group1', huntids: ["hunt2id"], hunters: [
+          { _id: "hunter1", huntername: "numberone" }]
+      },
+      {
+        _id: 'group2', huntids: ["hunt2id"], hunters: [
+          { _id: "hunter2", huntername: "numbertwo" }]
+      }]
     }
   ];
 
@@ -84,14 +90,14 @@ describe('OpenHuntSevice', () => {
 
       openHuntService.getOpenHunts({ hostid: 'chris' }).subscribe(() => {
 
-          expect(mockedMethod)
-            .withContext('one call')
-            .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
 
-          expect(mockedMethod)
-            .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(openHuntService.openHuntUrl, { params: new HttpParams().set('hostid', 'chris') });
-        });
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(openHuntService.openHuntUrl, { params: new HttpParams().set('hostid', 'chris') });
+      });
     });
   });
 
@@ -111,74 +117,74 @@ describe('OpenHuntSevice', () => {
      * about the returned value). Since we don't use the returned value in this test,
      * It might also be fine to not bother making the mock return it.
      */
-     it('calls api/openHunts/id with the correct ID', waitForAsync(() => {
-       // We're just picking a User "at random" from our little
-       // set of Hunts up at the top.
-       const targetHunt: OpenHunt = testOpenHunts[1];
-       const targetId: string = targetHunt._id;
+    it('calls api/openHunts/id with the correct ID', waitForAsync(() => {
+      // We're just picking a User "at random" from our little
+      // set of Hunts up at the top.
+      const targetHunt: OpenHunt = testOpenHunts[1];
+      const targetId: string = targetHunt._id;
 
-       // Mock the `httpClient.get()` method so that instead of making an HTTP request
-       // it just returns one hunt from our test data
-       const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(targetHunt));
+      // Mock the `httpClient.get()` method so that instead of making an HTTP request
+      // it just returns one hunt from our test data
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(targetHunt));
 
-       // Call `huntService.getHunt()` and confirm that the correct call has
-       // been made with the correct arguments.
-       //
-       // We have to `subscribe()` to the `Observable` returned by `getHuntById()`.
-       // The `hunt` argument in the function below is the thing of type Hunt returned by
-       // the call to `getHuntById()`.
-       openHuntService.getOpenHuntById(targetId).subscribe(() => {
-         // The `Hunt` returned by `getHuntById()` should be targetHunt, but
-         // we don't bother with an `expect` here since we don't care what was returned.
-         expect(mockedMethod)
-           .withContext('one call')
-           .toHaveBeenCalledTimes(1);
-         expect(mockedMethod)
-           .withContext('talks to the correct endpoint')
-           .toHaveBeenCalledWith(`${openHuntService.openHuntUrl}/${targetId}`);
-       });
-     }));
-   });
+      // Call `huntService.getHunt()` and confirm that the correct call has
+      // been made with the correct arguments.
+      //
+      // We have to `subscribe()` to the `Observable` returned by `getHuntById()`.
+      // The `hunt` argument in the function below is the thing of type Hunt returned by
+      // the call to `getHuntById()`.
+      openHuntService.getOpenHuntById(targetId).subscribe(() => {
+        // The `Hunt` returned by `getHuntById()` should be targetHunt, but
+        // we don't bother with an `expect` here since we don't care what was returned.
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(`${openHuntService.openHuntUrl}/${targetId}`);
+      });
+    }));
+  });
 
-   describe('When addOpenHunt() is called', () => {
-      it('calls `api/hunts` with the correct body', waitForAsync(() => {
-        const newHunt: Partial<OpenHunt> = {
-          invitecode: 'hunt5',
-          active: false,
-          numberofgroups: 5,
-          groupids: ["group1", "group2", "group3", "group4","group5"]
-        };
+  describe('When addOpenHunt() is called', () => {
+    it('calls `api/hunts` with the correct body', waitForAsync(() => {
+      const newHunt: Partial<OpenHunt> = {
+        invitecode: 'hunt5',
+        active: false,
+        numberofgroups: 5,
+        groupids: ["group1", "group2", "group3", "group4", "group5"]
+      };
 
-        const mockedMethod = spyOn(httpClient, 'post').and.returnValue(of({ hostid: 'chris' }));
+      const mockedMethod = spyOn(httpClient, 'post').and.returnValue(of({ hostid: 'chris' }));
 
-        openHuntService.addOpenHunt(newHunt).subscribe(() => {
-          expect(mockedMethod)
-            .withContext('one call')
-            .toHaveBeenCalledTimes(1);
-          expect(mockedMethod)
-            .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(openHuntService.openHuntUrl, newHunt);
-        });
-      }));
-    });
+      openHuntService.addOpenHunt(newHunt).subscribe(() => {
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(openHuntService.openHuntUrl, newHunt);
+      });
+    }));
+  });
 
-    describe('When deleteOpenHunt() is called', () => {
-      it('calls `api/hunts/id` with the correct ID', waitForAsync(() => {
-        const targetHunt: OpenHunt = testOpenHunts[1];
-        const targetId: string = targetHunt._id;
+  describe('When deleteOpenHunt() is called', () => {
+    it('calls `api/hunts/id` with the correct ID', waitForAsync(() => {
+      const targetHunt: OpenHunt = testOpenHunts[1];
+      const targetId: string = targetHunt._id;
 
-        const mockedMethod = spyOn(httpClient, 'delete').and.returnValue(of(null));
+      const mockedMethod = spyOn(httpClient, 'delete').and.returnValue(of(null));
 
-        openHuntService.deleteOpenHunt(targetId).subscribe(() => {
-          expect(mockedMethod)
-            .withContext('one call')
-            .toHaveBeenCalledTimes(1);
-          expect(mockedMethod)
-            .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(`${openHuntService.openHuntUrl}/${targetId}`);
-        });
-      }));
-    });
+      openHuntService.deleteOpenHunt(targetId).subscribe(() => {
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(`${openHuntService.openHuntUrl}/${targetId}`);
+      });
+    }));
+  });
 
 
 });
