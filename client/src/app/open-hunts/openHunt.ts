@@ -1,7 +1,7 @@
+import { Group } from "./group";
 
 export interface OpenHunt {
   _id: string;
-
   active: boolean;
   hostid: string;
   huntid: string;
