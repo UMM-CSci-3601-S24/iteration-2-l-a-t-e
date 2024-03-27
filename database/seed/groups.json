@@ -1,0 +1,20 @@
+[
+  {
+    "_id": {
+      "$oid": "6604555a2713335ce969fbda"
+    },
+    "groupName": "Group1"
+  },
+  {
+    "_id": {
+      "$oid": "6604555a3c7292c3bdc28d20"
+    },
+    "groupName": "Group2"
+  },
+  {
+    "_id": {
+      "$oid": "6604555a8aff87ad616185d9"
+    },
+    "groupName": "Group3"
+  }
+]
