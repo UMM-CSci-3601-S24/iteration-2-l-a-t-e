@@ -1,27 +1,27 @@
 package umm3601.hunt;
 
-import static com.mongodb.client.model.Filters.and;
+// import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
+// import static com.mongodb.client.model.Filters.regex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+// import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
+// import java.util.Objects;
+// import java.util.regex.Pattern;
 
-import org.bson.BsonObjectId;
-import org.bson.BsonValue;
+// import org.bson.BsonObjectId;
+// import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.UuidRepresentation;
-import org.bson.conversions.Bson;
+// import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Sorts;
-import com.mongodb.client.result.DeleteResult;
+// import com.mongodb.client.model.Sorts;
+// import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 
 import io.javalin.Javalin;
@@ -34,17 +34,17 @@ import umm3601.hunter.Group;
 import umm3601.hunter.Hunter;
 
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
 
-public class OpenHuntController implements Controller{
+public class OpenHuntController implements Controller {
 
-  // private static final String API_OPENHUNTS = "/api/openhunts";
-  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}"; //this id is the hunt ID not the openHunt id
-  private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}"; //this is the actual open hunt id
-  private static final String API_NEW_HUNTER_BY_OPENHUNT_ID = "/api/openhunts/hunter/{id}"; //this is the open hunt id, not the hunter id
-  private static final String API_GROUP_BY_ID = "/api/openhunts/group/{id}"; //this is the group id
+  //this id is the hunt ID not the openHunt id
+  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}";
+  //this is the actual open hunt id
+  private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
+  //this is the open hunt id, not the hunter id
+  private static final String API_NEW_HUNTER_BY_OPENHUNT_ID = "/api/openhunts/hunter/{id}";
+  //this is the group id
+  private static final String API_GROUP_BY_ID = "/api/openhunts/group/{id}";
 
   static final String HOST_KEY = "hostid";
 
@@ -83,14 +83,14 @@ public class OpenHuntController implements Controller{
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
-        if(nextGroup.hunterIds != null){
-        for (String hunterId : nextGroup.hunterIds){
+        if (nextGroup.hunterIds != null) {
+        for (String hunterId : nextGroup.hunterIds) {
           Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
           hunterArrayList.add(nextHunter);
         }
       }
         openHunt.groups[i] = nextGroup;
-        openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter [hunterArrayList.size()]);
+        openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
         i++;
       }
 
@@ -120,23 +120,25 @@ public class OpenHuntController implements Controller{
      * throw a `BadRequestResponse` with an appropriate error message.
      *
      */
+      final int maxGroupNumber = 51;
       OpenHunt newOpenHunt = ctx.bodyValidator(OpenHunt.class)
       .check(hnt -> hnt.title != null, "Hunt must have non-empty title")
       .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
       .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
       .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
-      .check(hnt -> hnt.active == true, "Hunt must be open/active to begin with")
-      .check(hnt -> hnt.numberofgroups > 0 && hnt.numberofgroups < 51, "Hunt must have a positive number of groups that is less than 51")
+      .check(hnt -> hnt.active, "Hunt must be open/active to begin with")
+      .check(hnt -> hnt.numberofgroups > 0 && hnt.numberofgroups < maxGroupNumber,
+       "Hunt must have a positive number of groups that is less than 51")
       .get();
       int numGroups = newOpenHunt.numberofgroups;
       newOpenHunt.groupids = new String[numGroups];
 
-      for(int i = 1; i <= numGroups; i++){
+      for (int i = 1; i <= numGroups; i++) {
         Group newGroup = new Group();
         newGroup.groupName = "Group" + Integer.toString(i);
         InsertOneResult groupResult = groupCollection.insertOne(newGroup);
         String id = groupResult.getInsertedId().asObjectId().getValue().toString();
-        newOpenHunt.groupids[i-1] = id;
+        newOpenHunt.groupids[i - 1] = id;
       }
     // Add new hunt to the database.
     openHuntCollection.insertOne(newOpenHunt);
@@ -167,7 +169,7 @@ public class OpenHuntController implements Controller{
     Group group = getGroupById(groupId);
     Document groupDoc = new Document();
     Document updateDoc;
-    if (group.hunterIds == null){
+    if (group.hunterIds == null) {
       String[] onlyHunterId = {hunterId};
       groupDoc.append("hunterIds", onlyHunterId);
       updateDoc = new Document("$set", groupDoc);
@@ -186,18 +188,18 @@ public class OpenHuntController implements Controller{
 
   private String chooseGroup(String openHuntId) {
     OpenHunt openHunt;
-    int minimumGroup = 10000;
+    final int minimumGroup = 10000;
     String minimumGroupId = null;
-    ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
+
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
-      Dictionary<Group, Integer> numInGroup = new Hashtable<>();
+
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
 
         int groupSize = nextGroup.hunterIds.length;
-        if(groupSize < minimumGroup) {
+        if (groupSize < minimumGroup) {
           minimumGroupId = nextGroup._id;
         }
       }
@@ -207,14 +209,14 @@ public class OpenHuntController implements Controller{
     if (openHunt == null) {
       throw new NotFoundResponse("The requested openHunt was not found");
     } else {
-      return(minimumGroupId);
+      return (minimumGroupId);
     }
   }
 
   private Group getGroupById(String groupId) {
     Group group;
 
-    try{
+    try {
       group = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
     } catch (IllegalArgumentException e) {
       throw new BadRequestResponse("The requested group id wasn't a legal Mongo Object ID.");
@@ -232,12 +234,12 @@ public class OpenHuntController implements Controller{
     Group group = getGroupById(id);
     ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
 
-    if(group.hunterIds != null){
-    for (String hunterId : group.hunterIds){
+    if (group.hunterIds != null) {
+    for (String hunterId : group.hunterIds) {
       Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
       hunterArrayList.add(nextHunter);
     }
-    group.hunters = hunterArrayList.toArray(new Hunter [hunterArrayList.size()]);
+    group.hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
   }
     ctx.json(group);
     ctx.status(HttpStatus.OK);
