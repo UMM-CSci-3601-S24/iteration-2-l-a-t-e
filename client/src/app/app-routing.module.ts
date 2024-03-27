@@ -7,6 +7,7 @@ import { TaskListComponent } from './hunts/task-list.component';
 import { HuntEditComponent } from './hunts/edit.component';
 import { AddHuntComponent } from './hunts/add-hunt.component';
 import { OpenHuntComponent } from './open-hunts/open-hunt.component';
+import { NewOpenHuntComponent } from './open-hunts/new-open-hunt.component';
 
 // Note that the 'hunts/new' route needs to come before 'hunts/:id'.
 // If 'hunts/:id' came first, it would accidentally catch requests to
@@ -21,7 +22,7 @@ const routes: Routes = [
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'},
-  // {path: 'open-hunts/new/:id', component: NewOpenHuntComponent, title: 'Hunt'} // id for coresponing hunt, not openhunt id.
+  {path: 'open-hunts/new/:id', component: NewOpenHuntComponent, title: 'Hunt'}, // id for coresponing hunt, not openhunt id.
   {path: 'open-hunts/:id', component: OpenHuntComponent, title: 'Hunt'} // openhunt id.
 
 ];
