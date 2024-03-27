@@ -1,1 +1,19 @@
-<p>test</p>
+<div class="flex-row">
+  <div class="flex-1">
+    <mat-card class="Banner">Open Hunt</mat-card>
+
+    <form [formGroup]="newOpenHuntForm">
+      <mat-card-content>
+        <div class="flex-col">
+          <mat-form-field appearance="fill" style="width: 35%;">
+            <mat-label>Number of Groups</mat-label>
+            <input matInput formControlName="numberOfGroups" required>
+            <mat-error *ngIf="formControlHasError('numberOfGroups')" data-test="nameError">
+              {{getErrorMessage('numberOfGroups')}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </form>
+  </div>
+</div>

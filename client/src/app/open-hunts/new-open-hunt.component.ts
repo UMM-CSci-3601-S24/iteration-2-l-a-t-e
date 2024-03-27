@@ -8,6 +8,9 @@ import { Hunt } from '../hunts/hunt';
 import { Task } from '../hunts/task';
 import { HuntService } from '../hunts/hunt.service';
 import { TaskService } from '../hunts/task.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 
 
@@ -15,19 +18,25 @@ import { TaskService } from '../hunts/task.service';
   selector: 'app-new-open-hunt',
   standalone: true,
   imports: [
-    MatCardModule
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
   templateUrl: './new-open-hunt.component.html',
   styleUrl: './new-open-hunt.component.scss'
 })
-export class NewOpenHuntComponent implements OnInit, OnDestroy{
+export class NewOpenHuntComponent implements OnInit, OnDestroy {
   hunt: Hunt;
   tasks: Task[] = [];
   error: { help: string, httpResponse: string, message: string };
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private huntService: HuntService, private taskService: TaskService) { }
+  constructor(private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private huntService: HuntService,
+    private taskService: TaskService,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -56,5 +65,17 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy{
     this.ngUnsubscribe.next();
 
     this.ngUnsubscribe.complete();
+  }
+
+  newOpenHuntForm = this.formBuilder.group({
+
+  });
+
+  getErrorMessage(controlName: string) {
+    const control = this.newOpenHuntForm.get(controlName);
+
+    if (control.hasError('required')) {
+      return 'You must enter a value';
+    }
   }
 }
