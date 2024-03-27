@@ -9,7 +9,7 @@ import { Task } from '../hunts/task';
 import { HuntService } from '../hunts/hunt.service';
 import { TaskService } from '../hunts/task.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 
 
@@ -68,7 +68,11 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
   }
 
   newOpenHuntForm = this.formBuilder.group({
-
+    numberOfGroups: ['', Validators.compose([
+      Validators.required,
+      Validators.min(1),
+      Validators.max(50) //Note: may be too high
+    ])]
   });
 
   getErrorMessage(controlName: string) {
