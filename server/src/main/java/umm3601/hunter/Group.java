@@ -13,7 +13,7 @@ public class Group {
   public String _id;
 
   public String groupName;
-  public String[] huntIds;
+  public String[] hunterIds;
   public Hunter[] hunters; //this is meant to be empty in the database,
   //it will be populated with Hunter objects when it is sent to frontend
 

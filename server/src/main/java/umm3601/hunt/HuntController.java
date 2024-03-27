@@ -249,7 +249,7 @@ public void getAllHunts(Context ctx) {
     huntDoc.append("description", hunt.description);
 
     Document updateDoc = new Document("$set", huntDoc);
-    huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+    huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc); //changes the specified fields in the $set command json
 
     ctx.status(HttpStatus.OK);
   }
