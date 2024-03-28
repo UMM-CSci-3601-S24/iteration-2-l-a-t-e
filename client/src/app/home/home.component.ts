@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { LobbyService } from '../hunts/lobby.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-home-component',
@@ -9,11 +11,13 @@ import { CommonModule } from '@angular/common';
     styleUrls: ['./home.component.scss'],
     providers: [],
     standalone: true,
-    imports: [MatCardModule, CommonModule]
+    imports: [MatCardModule, FormsModule, CommonModule]
 })
 
 export class HomeComponent {
-  constructor(private router: Router) { }
+
+  username: string;
+  constructor(private router: Router, private lobbyService: LobbyService) { }
   showHunterInput: boolean = false;
 
 
@@ -25,9 +29,14 @@ export class HomeComponent {
     this.showHunterInput = !this.showHunterInput; // Set the flag to the opposite
   }
 
-  // submitHunterForm() {
-  //   // NEED TO SEND SOMEWHERE/VALIDATE SOMETHING. DO NOT LEAVE BLANK
-  // }
+  submitHunterForm() {
+
+  }
+
+  submitCode() {
+    this.lobbyService.setUsername(this.username);
+    this.router.navigate(['/hunt-lobby']);
+  }
 
   // navigateToCreateTask(): void {
   //   // this.router.navigate(['../','task','new', this.taskHuntId], {relativeTo: this.route});

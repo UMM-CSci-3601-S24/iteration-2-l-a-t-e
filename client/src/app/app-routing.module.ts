@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'hunts/edit/:id', component: HuntEditComponent, title: 'Edit Hunt'},
   {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'},
   {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
-  {path: 'game/:id', component: HuntLobbyComponent, title: 'Hunt Lobby'},
+  {path: 'hunt-lobby', component: HuntLobbyComponent, title: 'Hunt Lobby'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
   {path: '', component: HomeComponent},

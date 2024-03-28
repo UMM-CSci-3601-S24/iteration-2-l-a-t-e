@@ -7,8 +7,8 @@
 
     <mat-card class="input-card" *ngIf="showHunterInput">
       <div class="sign">
-        <input type="text" placeholder="Enter the invite code">
-        <button class="submit-button" >Submit</button>
+        <input type="text" class="form-control" id="username" [(ngModel)]="username" placeholder="Enter the username">
+        <button class="submit-button" (click)="submitCode()" >Submit</button>
       </div>
     </mat-card>
 

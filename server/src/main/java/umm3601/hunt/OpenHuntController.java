@@ -6,6 +6,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 // import java.util.List;
 import java.util.Map;
 // import java.util.Objects;
@@ -41,6 +42,8 @@ public class OpenHuntController implements Controller {
   private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}";
   //this is the actual open hunt id
   private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
+
+  private static final String API_OPENHUNTS = "/api/openhunts";
   //this is the open hunt id, not the hunter id
   private static final String API_NEW_HUNTER_BY_OPENHUNT_ID = "/api/openhunts/hunter/{id}";
   //this is the group id
@@ -71,6 +74,35 @@ public class OpenHuntController implements Controller {
        Hunter.class,
        UuidRepresentation.STANDARD);
   }
+  public void getAllOpenHunts(Context ctx) {
+    List<OpenHunt> openHunts;
+    ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
+
+    try {
+        openHunts = openHuntCollection.find().into(new ArrayList<>());
+        for (OpenHunt openHunt : openHunts) {
+            openHunt.groups = new Group[openHunt.numberofgroups];
+            int i = 0;
+            for (String groupId : openHunt.groupids) {
+                Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+                if (nextGroup.hunterIds != null) {
+                    for (String hunterId : nextGroup.hunterIds) {
+                        Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
+                        hunterArrayList.add(nextHunter);
+                    }
+                }
+                openHunt.groups[i] = nextGroup;
+                openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
+                i++;
+            }
+        }
+    } catch (IllegalArgumentException e) {
+        throw new BadRequestResponse("An illegal argument was encountered while fetching open hunts.");
+    }
+
+    ctx.json(openHunts);
+    ctx.status(HttpStatus.OK);
+}
 
   public void getOpenHunt(Context ctx) {
     String id = ctx.pathParam("id");
@@ -104,6 +136,42 @@ public class OpenHuntController implements Controller {
       ctx.status(HttpStatus.OK);
     }
   }
+
+  public void getOpenHuntbyInviteCode(Context ctx) {
+    String inviteCode = ctx.pathParam("inviteCode");
+    OpenHunt openHunt;
+    int i = 0;
+    ArrayList<Hunter> hunterArrayList = new ArrayList<>();
+
+    try {
+        openHunt = openHuntCollection.find(eq("invitecode", inviteCode)).first();
+        if (openHunt != null) {
+            openHunt.groups = new Group[openHunt.numberofgroups];
+            for (String groupId : openHunt.groupids) {
+                Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+                if (nextGroup.hunterIds != null) {
+                    for (String hunterId : nextGroup.hunterIds) {
+                        Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
+                        hunterArrayList.add(nextHunter);
+                    }
+                }
+                openHunt.groups[i] = nextGroup;
+                openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
+                i++;
+            }
+        }
+    } catch (IllegalArgumentException e) {
+        throw new BadRequestResponse("The requested invite code is not valid.");
+    }
+
+    if (openHunt == null) {
+        throw new NotFoundResponse("The requested openHunt with invite code " + inviteCode + " was not found.");
+    } else {
+        ctx.json(openHunt);
+        ctx.status(HttpStatus.OK);
+    }
+}
+
 
   public void addNewOpenHunt(Context ctx) {
     /**
@@ -250,6 +318,8 @@ public class OpenHuntController implements Controller {
     server.get(API_GROUP_BY_ID, this::getGroup);
     // get the specified OpenHunt
     server.get(API_OPENHUNTS_BY_ID, this::getOpenHunt);
+
+    server.get(API_OPENHUNTS, this::getAllOpenHunts);
     // List hunts, filtered using query parameters
     server.post(API_NEW_OPENHUNTS_BY_ID, this::addNewOpenHunt);
     //add new hunter, returns group id hunter is in
