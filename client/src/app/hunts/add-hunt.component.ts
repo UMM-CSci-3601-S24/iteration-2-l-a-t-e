@@ -46,6 +46,11 @@ export class AddHuntComponent {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
+      estimatedTime: ['', Validators.compose([
+        Validators.required,
+        Validators.maxLength(3),
+        // Only allows a maximum of 3 digits
+        Validators.pattern("^[1-9][0-9]{0,2}$")])]
   });
 
   addTaskForm = this.formBuilder.group({
@@ -64,8 +69,9 @@ export class AddHuntComponent {
     return this.addTaskForm.get('tasks') as FormArray;
   }
 
-  formControlHasError(controlName: string, errorName: string = 'required'): boolean {
-    return this.addHuntForm.controls[controlName].hasError(errorName);
+  formControlHasError(controlName: string): boolean {
+    const control = this.addHuntForm.get(controlName);
+    return control.invalid && (control.dirty || control.touched);
   }
 
   getErrorMessage(controlName: string) {
@@ -73,7 +79,10 @@ export class AddHuntComponent {
 
     if (control.hasError('required')) {
       return 'You must enter a value';
+    } else {
+      return 'Maximum of 3 digits';
     }
+    return '';
 
     // Add other error type handling here if needed
   }

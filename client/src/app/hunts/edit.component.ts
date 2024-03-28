@@ -53,6 +53,11 @@ export class HuntEditComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
+    estimatedTime: ['', Validators.compose([
+      Validators.required,
+      Validators.maxLength(3),
+      // Only allows a maximum of 3 digits
+      Validators.pattern("^[1-9][0-9]{0,2}$")])],
     editTaskForm: this.editTaskForm
   });
 
@@ -60,6 +65,26 @@ export class HuntEditComponent implements OnInit {
 
   get tasks() {
     return this.editTaskForm as FormArray;
+  }
+
+  // Error messaging for estimatedTime
+  formControlHasError(controlName: string): boolean {
+    const control = this.editHuntForm.get(controlName);
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  // Error messaging for estimatedTime
+  getErrorMessage(controlName: string) {
+    const control = this.editHuntForm.get(controlName);
+
+    if (control.hasError('required')) {
+      return 'You must enter a value';
+    } else {
+      return 'Maximum of 3 digits';
+    }
+    return '';
+
+    // Add other error type handling here if needed
   }
 
   ngOnInit(): void {
