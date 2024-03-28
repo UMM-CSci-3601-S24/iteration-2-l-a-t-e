@@ -8,10 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
+
+
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         BrowserAnimationsModule,
         RouterTestingModule,
         MatToolbarModule,
@@ -19,9 +21,11 @@ describe('AppComponent', () => {
         MatSidenavModule,
         MatCardModule,
         MatListModule,
-        AppComponent
-    ],
-}).compileComponents();
+      ],
+      declarations: [
+        AppComponent // Correct place for AppComponent
+      ],
+    }).compileComponents();
   }));
 
   it('should create the app', () => {
