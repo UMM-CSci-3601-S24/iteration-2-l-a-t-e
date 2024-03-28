@@ -45,8 +45,10 @@ public class OpenHuntController implements Controller {
   private static final String API_NEW_HUNTER_BY_OPENHUNT_ID = "/api/openhunts/hunter/{id}";
   //this is the group id
   private static final String API_GROUP_BY_ID = "/api/openhunts/group/{id}";
+  //this is the invite code and returns the bare openhunt/ hunt without group json
+  private static final String API_OPENHUNTS_BY_INVITE_CODE = "/api/openhunts/invite/{invitecode}";
 
-  static final String HOST_KEY = "hostid";
+  static final String INVITE_CODE_KEY = "invitecode";
 
   private final JacksonMongoCollection<OpenHunt> openHuntCollection;
   private final JacksonMongoCollection<Group> groupCollection;
@@ -71,6 +73,25 @@ public class OpenHuntController implements Controller {
        Hunter.class,
        UuidRepresentation.STANDARD);
   }
+
+  //gets the bare open hunt without the group json and the hunter json
+  public void getOpenHuntByInviteCode(Context ctx) {
+    String code = ctx.pathParam("invitecode");
+    OpenHunt openHunt;
+
+    try {
+      openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestResponse("The requested invite code wasn't a legal Mongo invite code.");
+    }
+    if (openHunt == null) {
+      throw new NotFoundResponse("The requested invite code was not found " + code);
+    } else {
+      ctx.json(openHunt);
+      ctx.status(HttpStatus.OK);
+    }
+  }
+
 
   public void getOpenHunt(Context ctx) {
     String id = ctx.pathParam("id");
@@ -254,6 +275,8 @@ public class OpenHuntController implements Controller {
     server.post(API_NEW_OPENHUNTS_BY_ID, this::addNewOpenHunt);
     //add new hunter, returns group id hunter is in
     server.post(API_NEW_HUNTER_BY_OPENHUNT_ID, this::addNewHunter);
+    //get bare openhunt by invite code
+    server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
   }
 
 }
