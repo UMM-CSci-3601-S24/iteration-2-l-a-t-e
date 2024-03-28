@@ -15,6 +15,7 @@ public class OpenHunt {
 
   public boolean active;
   public String hostid;
+  public String huntid;
   public String title;
   public String description;
   public String invitecode;
