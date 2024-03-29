@@ -101,6 +101,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(id))).first();
+      if (openHunt != null){
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
@@ -114,9 +115,10 @@ public class OpenHuntController implements Controller {
         openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
         i++;
       }
+    }
 
     } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested hunt id wasn't a legal Mongo Object ID.");
+      throw new BadRequestResponse("The requested open hunt id wasn't a legal Mongo Object ID.");
     }
     if (openHunt == null) {
       throw new NotFoundResponse("The requested openHunt was not found");
@@ -215,7 +217,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
-
+      if (openHunt != null){
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
 
@@ -224,6 +226,7 @@ public class OpenHuntController implements Controller {
           minimumGroupId = nextGroup._id;
         }
       }
+    }
     } catch (IllegalArgumentException e) {
       throw new BadRequestResponse("The requested hunt id wasn't a legal Mongo Object ID.");
     }
