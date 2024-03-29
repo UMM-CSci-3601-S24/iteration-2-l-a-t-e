@@ -9,7 +9,8 @@ import { Observable, Subject, map, tap } from "rxjs";
 })
 export class OpenHuntService {
   // URL for openHunts part of server API
-  readonly openHuntUrl: string = `${environment.apiUrl}open-hunts`
+  readonly openHuntUrl: string = `${environment.apiUrl}openhunts`
+  readonly addOpenHuntUrl: string = `${environment.apiUrl}openhunts/new`
 
   private readonly hostKey = 'hostid';
 
@@ -36,7 +37,7 @@ export class OpenHuntService {
 
   addOpenHunt(newHunt: Partial<OpenHunt>): Observable<string> {
     // Send post request to add a new hunt with the user data as the body.
-    return this.httpClient.post<{ id: string }>(this.openHuntUrl, newHunt).pipe(map(res => res.id));
+    return this.httpClient.post<{ id: string }>(this.addOpenHuntUrl, newHunt).pipe(map(res => res.id));
   }
 
   openHuntDeleted = new Subject<void>();
