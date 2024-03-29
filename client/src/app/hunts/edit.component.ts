@@ -119,7 +119,8 @@ export class HuntEditComponent implements OnInit {
       const updatedHunt: Partial<Hunt> = {
         ...this.hunt,
         title: this.editHuntForm.value.title,
-        description: this.editHuntForm.value.description
+        description: this.editHuntForm.value.description,
+        estimatedTime: parseInt(this.editHuntForm.value.estimatedTime)
       };
 
       this.huntService.updateHunt(this.hunt._id, updatedHunt).subscribe(() => {
