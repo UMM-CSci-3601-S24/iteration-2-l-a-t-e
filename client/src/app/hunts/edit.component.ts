@@ -94,7 +94,8 @@ export class HuntEditComponent implements OnInit {
         this.hunt = hunt;
         this.editHuntForm.patchValue({
           title: this.hunt.title,
-          description: this.hunt.description
+          description: this.hunt.description,
+          estimatedTime: this.hunt.estimatedTime.toString() // Convert to string
         });
       }),
       switchMap((hunt: Hunt) => this.taskService.getTasks({ huntid: hunt._id }))

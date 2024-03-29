@@ -18,6 +18,7 @@ export class HuntCardComponent {
   @Input() hunt: Hunt;
   @Input() simple?: boolean = false;
   @Input() editable: boolean = true;
+  math = Math;
 
   constructor(private router: Router, private huntService: HuntService) { }
 

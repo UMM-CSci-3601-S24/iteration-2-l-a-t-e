@@ -35,6 +35,7 @@ public class HuntController implements Controller {
   static final String HOST_KEY = "hostid";
   static final String TITLE_KEY = "title";
   static final String DESCRIPTION_KEY = "description";
+  static final String ESTIMATEDTIME_KEY = "estimatedTime";
   static final String SORT_ORDER_KEY = "sortorder";
 
   private final JacksonMongoCollection<Hunt> huntCollection;
@@ -121,6 +122,11 @@ public void getAllHunts(Context ctx) {
   filters.add(regex(DESCRIPTION_KEY, pattern));
     }
 
+  if (ctx.queryParamMap().containsKey(ESTIMATEDTIME_KEY)) {
+  Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(ESTIMATEDTIME_KEY)), Pattern.CASE_INSENSITIVE);
+  filters.add(regex(ESTIMATEDTIME_KEY, pattern));
+    }
+
   // Combine list of filters into a single filtering document.
   Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
 
@@ -192,6 +198,8 @@ public void getAllHunts(Context ctx) {
       .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
       .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
       .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
+      .check(hnt -> hnt.estimatedTime != null, "Hunt must have non-empty estimated time")
+      .check(hnt -> hnt.estimatedTime.length() > 0, "Hunt must have estimated time greater than 0 characters")
       .get();
 
     // Add new hunt to the database.
@@ -242,11 +250,14 @@ public void getAllHunts(Context ctx) {
       .check(hnt -> hnt.title.length() > 2, "Hunt must not have title shorter than 2 characters")
       .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
       .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
+      .check(hnt -> hnt.estimatedTime != null, "Hunt must have non-empty estimated time")
+      .check(hnt -> hnt.estimatedTime.length() > 0, "Hunt must have estimated time greater than 0 characters")
       .get();
 
     Document huntDoc = new Document();
     huntDoc.append("title", hunt.title);
     huntDoc.append("description", hunt.description);
+    huntDoc.append("estimatedTime", hunt.estimatedTime);
 
     Document updateDoc = new Document("$set", huntDoc);
     huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);

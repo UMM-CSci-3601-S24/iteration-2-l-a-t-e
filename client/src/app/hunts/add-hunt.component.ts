@@ -46,11 +46,11 @@ export class AddHuntComponent {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
-      estimatedTime: ['', Validators.compose([
-        Validators.required,
-        Validators.maxLength(3),
-        // Only allows a maximum of 3 digits
-        Validators.pattern("^[1-9][0-9]{0,2}$")])]
+    estimatedTime: ['', Validators.compose([
+      Validators.required,
+      Validators.maxLength(3),
+      // Only allows a maximum of 3 digits
+      Validators.pattern("^[1-9][0-9]{0,2}$")])]
   });
 
   addTaskForm = this.formBuilder.group({
@@ -112,7 +112,10 @@ export class AddHuntComponent {
 
     console.log('Submitting form with data:', huntData); // Log the data being submitted
 
-    this.huntService.addHunt(huntData).subscribe({
+    this.huntService.addHunt({
+      ...huntData,
+      estimatedTime: Number(huntData.estimatedTime)
+    }).subscribe({
       next: (response) => {
         this.currentHuntId = response; // Save the id of the created hunt
         this.isHuntCreated = true; // Set the flag to true

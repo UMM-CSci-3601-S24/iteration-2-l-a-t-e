@@ -56,7 +56,7 @@ export class HuntService {
     return this.httpClient.post<{ id: string }>(this.huntUrl, newHunt).pipe(map(res => res.id));
   }
 
-  updateHunt(huntId: string, updatedHunt: { title?: string, description?: string }): Observable<void> {
+  updateHunt(huntId: string, updatedHunt: { title?: string, description?: string, estimatedTime?: number}): Observable<void> {
     return this.httpClient.put<void>(`${this.huntUrl}/${huntId}`, updatedHunt);
   }
 

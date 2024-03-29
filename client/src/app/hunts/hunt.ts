@@ -5,5 +5,5 @@ export interface Hunt {
     title: string;
     description: string;
       // Create an estimated time variable in hunt.ts
-    estimatedTime: string;
+    estimatedTime: number;
 }
