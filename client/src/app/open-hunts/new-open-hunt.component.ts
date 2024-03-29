@@ -128,6 +128,14 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
         );
 
 
+      },
+      error: err => {
+        console.log('Error occurred:', err); // Log the error
+        this.snackBar.open(
+          `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`,
+          'OK',
+          { duration: 5000 }
+        );
       }
     })
 
