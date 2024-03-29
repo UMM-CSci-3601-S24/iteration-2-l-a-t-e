@@ -38,7 +38,7 @@ import umm3601.hunter.Hunter;
 public class OpenHuntController implements Controller {
 
   //this id is the hunt ID not the openHunt id
-  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}";
+  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new";
   //this is the actual open hunt id
   private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
   //this is the open hunt id, not the hunter id
