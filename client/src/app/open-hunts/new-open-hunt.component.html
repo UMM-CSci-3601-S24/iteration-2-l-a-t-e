@@ -12,6 +12,17 @@
               {{getErrorMessage('numberOfGroups')}}
             </mat-error>
           </mat-form-field>
+          <mat-card-actions align="end">
+            <button
+            mat-raised-button
+            type="button"
+            color="accent"
+            [disabled]="!newOpenHuntForm.valid || !newOpenHuntForm.valid"
+            (click)="submitAll()"
+            data-test="confirmAddTasksButton">
+            Create Hunt
+            </button>
+          </mat-card-actions>
         </div>
       </mat-card-content>
     </form>
