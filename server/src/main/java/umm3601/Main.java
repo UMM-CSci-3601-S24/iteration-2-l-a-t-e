@@ -5,7 +5,7 @@ import com.mongodb.client.MongoDatabase;
 
 import umm3601.task.TaskController;
 import umm3601.hunt.HuntController;
-
+import umm3601.hunt.OpenHuntController;
 
 public class Main {
 
@@ -62,6 +62,7 @@ public class Main {
       // the `Controller` interface.
       new HuntController(database),
       new TaskController(database),
+      new OpenHuntController(database)
     };
     return controllers;
   }
