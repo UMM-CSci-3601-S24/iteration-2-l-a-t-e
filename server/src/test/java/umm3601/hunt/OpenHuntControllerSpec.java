@@ -15,8 +15,8 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+// import java.util.Collections;
+// import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,16 +81,16 @@ public class OpenHuntControllerSpec {
     @Captor
     private ArgumentCaptor<Map<String, String>> mapCaptor;
 
-    ObjectId groupId1;
-    ObjectId groupId2;
-    ObjectId groupId3;
+    private ObjectId groupId1;
+    private ObjectId groupId2;
+    private ObjectId groupId3;
 
-    ObjectId openHuntId1;
+    private ObjectId openHuntId1;
 
-    ObjectId hunterId1;
-    ObjectId hunterId2;
+    private ObjectId hunterId1;
+    private  ObjectId hunterId2;
 
-    List<ObjectId> groupList;
+    private List<ObjectId> groupList;
 
 
     @BeforeAll
@@ -126,7 +126,7 @@ public class OpenHuntControllerSpec {
     groupId2 = new ObjectId();
     groupId3 = new ObjectId();
 
-    ObjectId[] groupArray = {groupId1,groupId2,groupId3};
+    ObjectId[] groupArray = {groupId1, groupId2, groupId3};
     groupList = Arrays.asList(groupArray);
 
     openHuntId1 = new ObjectId();
@@ -224,10 +224,10 @@ public class OpenHuntControllerSpec {
     assertEquals("CSCI3601Hunt", openHuntCaptor.getValue().title);
     assertEquals(openHuntId1.toHexString(), openHuntCaptor.getValue()._id);
 
-    String[] groupArray = {groupId1.toString(),groupId2.toString(),groupId3.toString()};
+    String[] groupArray = {groupId1.toString(), groupId2.toString(), groupId3.toString()};
     assertArrayEquals(groupArray, openHuntCaptor.getValue().groupids);
-    assertEquals("Group2",openHuntCaptor.getValue().groups[1].groupName);
-    assertEquals("Alija",openHuntCaptor.getValue().groups[0].hunters[0].hunterName);
+    assertEquals("Group2", openHuntCaptor.getValue().groups[1].groupName);
+    assertEquals("Alija", openHuntCaptor.getValue().groups[0].hunters[0].hunterName);
   }
 
     /**

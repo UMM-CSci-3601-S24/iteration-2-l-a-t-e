@@ -101,7 +101,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(id))).first();
-      if (openHunt != null){
+      if (openHunt != null) {
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
@@ -217,7 +217,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
-      if (openHunt != null){
+      if (openHunt != null) {
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
 
