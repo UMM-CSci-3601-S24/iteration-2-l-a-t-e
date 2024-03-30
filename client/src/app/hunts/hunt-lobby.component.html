@@ -10,4 +10,13 @@
     <ul *ngFor="let task of taskList">
       <li>{{ task.description }}</li>
     </ul>
+    <p><strong>Group List:</strong></p>
+    <ul *ngFor="let group of groupList">
+      <li>{{ group.groupName }}</li>
+      <div *ngIf="group.hunters" >
+        <ul *ngFor="let hunter of group.hunters">
+          <li>hunter.hunterName</li>
+        </ul>
+      </div>
+    </ul>
   </div>

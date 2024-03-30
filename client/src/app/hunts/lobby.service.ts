@@ -59,18 +59,11 @@ export class LobbyService {
     return this.lobbies;
   }
 
-  getGroupById(id: string): Group {
-    let found: Group = null;
-    this.httpClient.get<Group>(`${this.lobbyUrl}/group/${id}`).subscribe(
-      (group: Group) => {
-        found = group;
-      },
-      (error) => {
-        console.error('Error fetching open hunts:', error);
-      }
-    );
-    return found;
+  getGroupById(id: string): Observable<Group> {
+    // Directly return the Observable from HttpClient
+    return this.httpClient.get<Group>(`${this.lobbyUrl}/group/${id}`);
   }
+
 
   getOpenHuntById(id: string): Observable<Lobby> {
     return this.httpClient.get<Lobby>(`${this.lobbyUrl}/${id}`);
@@ -97,8 +90,8 @@ export interface Lobby {
   title: string;
   description: string;
   invitecode: string;
-  numberOfGroups: number;
-  groupIds: string[];
+  numberofgroups: number;
+  groupids: string[];
 }
 
 export interface Group {
@@ -111,6 +104,8 @@ export interface Group {
 }
 
 export interface Hunter {
-  _id: string;
+  _id: {
+    $oid: string;
+  };
   hunterName: string;
 }
