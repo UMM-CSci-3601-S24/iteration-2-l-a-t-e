@@ -1,20 +1,13 @@
-<div class="container">
-  <h2>Search for Lobby by Invite Code</h2>
-  <div class="form-group">
-    <label for="inviteCode">Invite Code:</label>
-    <input type="text" class="form-control" id="inviteCode" [(ngModel)]="inviteCode">
-  </div>
-  <button class="btn btn-primary" (click)="searchByInviteCode()">Search</button>
+
   <div *ngIf="lobby" class="mt-3">
     <h3>{{ lobby.title }}</h3>
     <p><strong>Description:</strong> {{ lobby.description }}</p>
     <p><strong>Host ID:</strong> {{ lobby.hostid }}</p>
     <p><strong>Hunt ID:</strong> {{ lobby.huntid }}</p>
+    <p><strong>User:</strong> {{ username }}</p>
     <p><strong>Active:</strong> {{ lobby.active ? 'Yes' : 'No' }}</p>
-    <p><strong>Number of Groups:</strong> {{ lobby.numberofgroups }}</p>
-    <p><strong>Group IDs:</strong></p>
-    <ul>
-      <li *ngFor="let groupId of lobby.groupids">{{ groupId }}</li>
+    <p><strong>Task List:</strong></p>
+    <ul *ngFor="let task of taskList">
+      <li>{{ task.description }}</li>
     </ul>
   </div>
-</div>

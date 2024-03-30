@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { LobbyService, Lobby } from './lobby.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HuntService } from './hunt.service';
+import { Task } from './task';
+import { TaskService } from './task.service';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-hunt-lobby',
@@ -16,31 +21,29 @@ export class HuntLobbyComponent implements OnInit {
   lobby: Lobby;
   errorMessage: string;
   searchedLobby: null;
+  username: string;
+  taskList: Task[];
 
-  constructor(private lobbyService: LobbyService) { }
+  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private lobbyService: LobbyService, private huntService: HuntService, private taskService: TaskService) {
+      this.username = this.lobbyService.getUsername();
+  }
 
   ngOnInit(): void {
-    this.getAllOpenHunts();
+    this.lobbies = this.lobbyService.getAllOpenHunts();
     this.inviteCode = this.lobbyService.getInviteCode();
-    this.searchByInviteCode();
+    this.lobby = this.lobbyService.searchByInviteCode();
+    this.loadTaskList();
   }
 
-  getAllOpenHunts(): void {
-    this.lobbyService.getAllOpenHunts()
-      .subscribe(
-        (lobbies: Lobby[]) => {
-          this.lobbies = lobbies;
-        },
-        (error) => {
-          console.error('Error fetching open hunts:', error);
-        }
-      );
-  }
-  searchByInviteCode() {
-    if (this.inviteCode) {
-      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === this.inviteCode.trim());
-    } else {
-      console.error('Please enter a valid invite code.');
-    }
+  loadTaskList(): void {
+    // Assuming getTasks returns an Observable<Task[]>
+    this.taskService.getTasks({huntid: this.lobby.huntid}).subscribe(
+      (data: Task[]) => {
+        this.taskList = data;
+      },
+      error => {
+        console.error('Failed to load tasks', error);
+      }
+    );
   }
 }

@@ -15,6 +15,9 @@ export class HuntService {
 
   private readonly hostKey = 'hostid';
 
+  username: string;
+  password: string;
+
   constructor(private httpClient: HttpClient) {
   }
 
@@ -45,6 +48,23 @@ export class HuntService {
   * @param id the ID of the desired user
   * @returns an `Observable` containing the resulting hunt.
   */
+  getUsername()
+  {
+    return this.username;
+  }
+  getPassword()
+  {
+    return this.password;
+  }
+
+  setUsername(value: string)
+  {
+    this.username = value;
+  }
+  setPassword(value: string)
+  {
+    this.password = value;
+  }
 
   getHuntById(id: string): Observable<Hunt> {
     // The input to get could also be written as (this.huntUrl + '/' + id)
