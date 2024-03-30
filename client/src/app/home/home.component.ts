@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { LobbyService } from '../hunts/lobby.service';
+import { Lobby, LobbyService } from '../hunts/lobby.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -17,6 +17,9 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent {
 
   username: string;
+  inviteCode: string;
+  lobbies: Lobby[];
+  lobby: Lobby;
   constructor(private router: Router, private lobbyService: LobbyService) { }
   showHunterInput: boolean = false;
 
@@ -27,6 +30,11 @@ export class HomeComponent {
 
   showHunterForm() {
     this.showHunterInput = !this.showHunterInput; // Set the flag to the opposite
+    if(!this.showHunterInput)
+    {
+      this.username = '';
+      this.inviteCode = '';
+    }
   }
 
   submitHunterForm() {
@@ -34,8 +42,28 @@ export class HomeComponent {
   }
 
   submitCode() {
-    this.lobbyService.setUsername(this.username);
-    this.router.navigate(['/hunt-lobby']);
+    this.lobbies = this.lobbyService.getAllOpenHunts();
+    this.lobbyService.setInviteCode(this.inviteCode);
+    this.lobby = this.lobbyService.searchByInviteCode();
+    if(this.lobby)
+    {
+      this.lobbyService.setUsername(this.username);
+      this.router.navigate(['/hunt-lobby']);
+    }
+    else
+    {
+       window.alert('Error: Invalid Invite Code');
+       this.inviteCode = '';
+       this.username = '';
+        this.lobbyService.setInviteCode(this.inviteCode);
+    }
+  }
+  searchByInviteCode() {
+    if (this.inviteCode) {
+      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === this.inviteCode.trim());
+    } else {
+      console.error('Please enter a valid invite code.');
+    }
   }
 
   // navigateToCreateTask(): void {

@@ -1,105 +1,97 @@
-
-
 .flex-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-around; // Adds more space between the cards vertically
+  padding: 5px; // Adds some padding around the container for better spacing from the viewport edges
 }
 
+.home-card, .input-card {
+  width: 90%; // Example width, adjust as needed
+  max-width: 500px; // Ensures the card doesn't get too wide on larger screens
+  margin: 20px 0; // Adds more space between cards
+  padding: 20px; // Adds internal spacing within cards
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); // Adds a subtle shadow for depth
+}
 .home-card {
-  position: relative;
-  width: 25%;
-  margin-top: 10%;
-  margin-left: 36%;
-  background-color: transparent;
-  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // This centers children vertically for column direction
+  align-items: center; // This centers children horizontally
+  height: 100%; // Adjust this as necessary
 }
-
-.bottom-card {
-  position: fixed;
-  width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  margin-left: -8%;
-  margin-top: 34%;
-}
-
 .input-card {
-  width: 400px;
-  margin: 20px auto;
-  background-color: transparent;
-  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  margin: 20px 0;
 }
 
 .input-card .sign {
-  padding: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.input-card input {
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.submit-button {
-  background-color: black;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 15px 20px;
-  cursor: pointer;
-}
-
-.submit-button:hover {
-  background-color: #333;
-}
 
 
-.iteration-message {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-size: 14px;
+.sign, .choice-sign {
+  text-align: center; // Centers the content within the sign areas
+  max-width: 95%;
 }
 
 .sign {
-  display: inline-block;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 7px;
-  border: 2px solid black;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-.choice-sign {
-  display: inline-block;
-  text-align: center;
-  color: white;
-  padding: 7px;
-  box-shadow: 0 0 0px;
+  display: flex; // Enables flexbox layout
+  justify-content: center; // Centers content horizontally
+  align-items: center; // Centers content vertically
+  height: 100%; // Ensures the div takes up the full height of its parent
+  text-align: center; // Centers the text
 }
 
 .sign h1 {
-  margin: 0;
+  font-family: 'Roboto Mono', monospace; // Example of a blocky, classy font
+  font-size: 24px; // Adjusted font size for legibility
+  font-weight: bold; // Makes the font weight bold
+  margin: 0; // Removes any default margin
+  padding: 0; // Removes any default padding
 }
 
-.action-button {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-right: 10px;
+.form-control {
+  margin: 10px 0; // Adds more space between form inputs
+  padding: 10px; // Increases padding within inputs for better text visibility
+  width: 100%; // Ensures input takes full width of its parent
 }
 
-.action-button:last-child {
-  margin-right: 0;
+.submit-button, .action-button {
+  padding: 15px 0; // Adjusts padding for a taller, more prominent button
+  font-size: 18px; // Makes the button text larger
+  width: 100%; // Ensures the button spans the entire card width
+  margin-top: 20px; // Adds some space above the button
+  background-color: forestgreen;
+  color: white;
+  min-width: 25vw; // Makes buttons full width
+
+  &:hover {
+    background-color: darken(forestgreen, 5%); // Darkens button on hover for interactive feedback
+  }
+}
+
+// Specific adjustments for bottom-card spacing and layout
+.bottom-card {
+  .action-button {
+    margin: 10px; // Adds spacing between buttons
+    width: auto; // Allows button width to adjust to its content
+  }
+}
+
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
 }
