@@ -48,6 +48,7 @@ export class HomeComponent {
     if(this.lobby)
     {
       this.lobbyService.setUsername(this.username);
+      this.lobbyService.addNewHunterByOpenHuntId(this.lobby._id.$oid);
       this.router.navigate(['/hunt-lobby']);
     }
     else

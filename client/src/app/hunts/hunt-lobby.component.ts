@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LobbyService, Lobby } from './lobby.service';
+import { LobbyService, Lobby, Group } from './lobby.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HuntService } from './hunt.service';
@@ -23,6 +23,7 @@ export class HuntLobbyComponent implements OnInit {
   searchedLobby: null;
   username: string;
   taskList: Task[];
+  groupList: Group[] = [];
 
   constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private lobbyService: LobbyService, private huntService: HuntService, private taskService: TaskService) {
       this.username = this.lobbyService.getUsername();
@@ -33,6 +34,19 @@ export class HuntLobbyComponent implements OnInit {
     this.inviteCode = this.lobbyService.getInviteCode();
     this.lobby = this.lobbyService.searchByInviteCode();
     this.loadTaskList();
+
+    for(const groupId of this.lobby.groupids)
+    {
+      this.lobbyService.getGroupById(groupId).subscribe(
+        (group: Group) => {
+          this.groupList.push(group);
+          console.log(group);
+        },
+        error => {
+          console.error('Error:', error);
+        }
+      );
+    }
   }
 
   loadTaskList(): void {
