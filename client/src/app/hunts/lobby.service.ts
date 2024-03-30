@@ -85,9 +85,7 @@ export class LobbyService {
 }
 
 export interface Lobby {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   active: boolean;
   hostid: string;
   huntid: string;
@@ -99,17 +97,13 @@ export interface Lobby {
 }
 
 export interface Group {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   groupName: string;
   hunterIds: string[];
   hunters: Hunter[];
 }
 
 export interface Hunter {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   hunterName: string;
 }

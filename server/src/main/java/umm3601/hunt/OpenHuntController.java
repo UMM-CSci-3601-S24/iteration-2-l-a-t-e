@@ -265,8 +265,15 @@ public class OpenHuntController implements Controller {
 
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
-
-        int groupSize = nextGroup.hunterIds.length;
+        int groupSize;
+        if(nextGroup.hunterIds == null)
+        {
+          groupSize = 0;
+        }
+        else
+        {
+          groupSize = nextGroup.hunterIds.length;
+        }
         if (groupSize < minimumGroup) {
           minimumGroupId = nextGroup._id;
         }

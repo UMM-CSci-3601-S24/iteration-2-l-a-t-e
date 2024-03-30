@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { Lobby, LobbyService } from '../hunts/lobby.service';
+import { Hunter, Lobby, LobbyService } from '../hunts/lobby.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -48,7 +48,7 @@ export class HomeComponent {
     if(this.lobby)
     {
       this.lobbyService.setUsername(this.username);
-      this.addNewHunterToGroup(this.lobby._id.$oid);
+      this.addNewHunterToGroup(this.lobby._id);
       this.router.navigate(['/hunt-lobby']);
     }
     else
@@ -67,10 +67,11 @@ export class HomeComponent {
     }
   }
 
-  addNewHunterToGroup(hunterName: string) {
-    const newHunter = { hunterName }; // Construct the hunter object
+  addNewHunterToGroup(huntId: string) {
+    const newHunter: Partial<Hunter>  =
+    { hunterName: this.username }; // Construct the hunter object
 
-    this.lobbyService.addNewHunterByOpenHuntId(this.lobby._id.$oid, newHunter).subscribe({
+    this.lobbyService.addNewHunterByOpenHuntId(huntId, newHunter).subscribe({
       next: (responseGroupId) => {
         console.log('Hunter added to group with ID:', responseGroupId);
         // Additional logic here, such as navigation or UI update
