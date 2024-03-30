@@ -48,7 +48,7 @@ export class HomeComponent {
     if(this.lobby)
     {
       this.lobbyService.setUsername(this.username);
-      this.lobbyService.addNewHunterByOpenHuntId(this.lobby._id.$oid);
+      this.addNewHunterToGroup(this.lobby._id.$oid);
       this.router.navigate(['/hunt-lobby']);
     }
     else
@@ -66,6 +66,22 @@ export class HomeComponent {
       console.error('Please enter a valid invite code.');
     }
   }
+
+  addNewHunterToGroup(hunterName: string) {
+    const newHunter = { hunterName }; // Construct the hunter object
+
+    this.lobbyService.addNewHunterByOpenHuntId(this.lobby._id.$oid, newHunter).subscribe({
+      next: (responseGroupId) => {
+        console.log('Hunter added to group with ID:', responseGroupId);
+        // Additional logic here, such as navigation or UI update
+      },
+      error: err => {
+        console.error('Error adding new hunter:', err);
+        // Error handling logic here
+      }
+    });
+  }
+
 
   // navigateToCreateTask(): void {
   //   // this.router.navigate(['../','task','new', this.taskHuntId], {relativeTo: this.route});

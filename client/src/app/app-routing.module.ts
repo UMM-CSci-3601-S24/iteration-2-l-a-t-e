@@ -28,7 +28,6 @@ const routes: Routes = [
   {path: 'add-hunt', component: AddHuntComponent },
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'hunt-list', component: HuntListComponent },
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}

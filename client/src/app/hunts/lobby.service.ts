@@ -74,8 +74,12 @@ export class LobbyService {
       .pipe(map(res => res.id));
   }
 
-  addNewHunterByOpenHuntId(openHuntId: string): Observable<string> {
-    return this.httpClient.post<{ id: string }>(`${this.lobbyUrl}/hunter/${openHuntId}`, null).pipe(map(res => res.id));
+  addNewHunterByOpenHuntId(openHuntId: string, hunterData: Partial<Hunter>): Observable<string> {
+
+    return this.httpClient.post<{ id: string }>(`${this.lobbyUrl}/hunter/${openHuntId}`, hunterData).pipe(
+      map(res => res.id) // Extracts and returns the group ID from the response
+    );
+
   }
 
 }
