@@ -199,7 +199,8 @@ public class OpenHuntController implements Controller {
     Document updateDoc;
       ArrayList<String> hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
       hunterIdArrayList.add(hunterId);
-      groupDoc.append("hunterIds", hunterIdArrayList); //need to append array list instead of array or else it causes an error
+      //need to append array list instead of array or else it causes an error
+      groupDoc.append("hunterIds", hunterIdArrayList);
     System.out.println("groupId: " + groupId + " group name: " + group.groupName);
     updateDoc = new Document("$set", groupDoc);
     groupCollection.updateOne(eq("_id", new ObjectId(groupId)), updateDoc);

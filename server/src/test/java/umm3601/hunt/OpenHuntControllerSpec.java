@@ -372,7 +372,7 @@ public class OpenHuntControllerSpec {
 
     // Successfully adding the hunt should return newly generated, non-empty
     // MongoDB ID for that hunt.
-    System.out.println("added OpenHunt doc: " + addedOpenHunt );
+    System.out.println("added OpenHunt doc: " + addedOpenHunt);
     ArrayList<String> groupIdsList = (ArrayList<String>) addedOpenHunt.get("groupids");
 
     assertNotEquals("", addedOpenHunt.get("_id"));
@@ -482,7 +482,7 @@ void addInvalidNumberOfGroupsOpenHunt() throws IOException {
 
     when(ctx.bodyValidator(Hunter.class))
     .then(value -> new BodyValidator<Hunter>(testNewHunter, Hunter.class, javalinJackson));
-    System.out.println("testNewHunter:" + testNewHunter + " ID in test: " + openHuntId1.toHexString() + " ctx body: " + ctx.bodyValidator(Hunter.class));
+    System.out.println("testNewHunter:" + testNewHunter);
 
     openHuntController.addNewHunter(ctx);
     verify(ctx).json(mapCaptor.capture());
