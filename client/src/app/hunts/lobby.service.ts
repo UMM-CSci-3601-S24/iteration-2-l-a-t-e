@@ -11,7 +11,7 @@ export class LobbyService {
   readonly lobbyUrl: string = `${environment.apiUrl}openhunts`;
 
   private readonly idKey = 'id';
-  inviteCode: string;
+  inviteCode: string = null;
   username: string;
   lobbies: Lobby[] = [];
   lobby: Lobby;
@@ -20,9 +20,11 @@ export class LobbyService {
   constructor(private httpClient: HttpClient) {
     this.lobbies = this.getAllOpenHunts();
   }
-  searchByInviteCode(): Lobby {
-    if (this.inviteCode) {
-      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === this.inviteCode.trim());
+  searchByInviteCode(code: string): Lobby {
+    if (code) {
+      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === code.trim());
+      console.log(this.lobbies);
+      console.log(this.lobby);
     } else {
       console.error('Please enter a valid invite code.');
     }

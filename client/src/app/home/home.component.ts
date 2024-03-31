@@ -44,7 +44,8 @@ export class HomeComponent {
   submitCode() {
     this.lobbies = this.lobbyService.getAllOpenHunts();
     this.lobbyService.setInviteCode(this.inviteCode);
-    this.lobby = this.lobbyService.searchByInviteCode();
+    localStorage.setItem('inviteCode', this.inviteCode);
+    this.lobby = this.lobbyService.searchByInviteCode(this.inviteCode);
     if(this.lobby)
     {
       this.lobbyService.setUsername(this.username);

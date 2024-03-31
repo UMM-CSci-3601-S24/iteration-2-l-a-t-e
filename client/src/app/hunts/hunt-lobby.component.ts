@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HuntService } from './hunt.service';
 import { Task } from './task';
 import { TaskService } from './task.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -24,30 +24,45 @@ export class HuntLobbyComponent implements OnInit {
   username: string;
   taskList: Task[];
   groupList: Group[] = [];
+  selectedTab: string = 'tasks';
+  selectedGroupIndex: number = 0;
 
-  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private lobbyService: LobbyService, private huntService: HuntService, private taskService: TaskService) {
+  constructor(private snackBar: MatSnackBar, private router: Router, private route: ActivatedRoute, private lobbyService: LobbyService, private huntService: HuntService, private taskService: TaskService) {
       this.username = this.lobbyService.getUsername();
   }
 
   ngOnInit(): void {
-    this.lobbies = this.lobbyService.getAllOpenHunts();
-    this.inviteCode = this.lobbyService.getInviteCode();
-    this.lobby = this.lobbyService.searchByInviteCode();
-    this.loadTaskList();
+    // Retrieve the invite code from Local Storage, or default to null/undefined
+    this.inviteCode = localStorage.getItem('inviteCode');
 
-    for(const groupId of this.lobby.groupids)
-    {
-      this.lobbyService.getGroupById(groupId).subscribe(
-        (group: Group) => {
-          this.groupList.push(group);
-          console.log(group);
-        },
-        error => {
-          console.error('Error:', error);
+    if (this.inviteCode !== '') {
+        // Since we now have an invite code, use it to search for the lobby
+        this.lobby = this.lobbyService.searchByInviteCode(this.inviteCode);
+
+        if (this.lobby) {
+          this.loadTaskList();
+          for (const groupId of this.lobby.groupids) {
+              this.lobbyService.getGroupById(groupId).subscribe(
+                  (group: Group) => {
+                      this.groupList.push(group);
+                      console.log(group);
+                  },
+                  error => {
+                      console.error('Error:', error);
+                  }
+              );
+          }
         }
-      );
+        else
+        {
+          // Redirect to the home page
+          this.router.navigate(['']);
+        }
+    } else {
+      this.router.navigate(['']);
     }
-  }
+}
+
 
   loadTaskList(): void {
     // Assuming getTasks returns an Observable<Task[]>
