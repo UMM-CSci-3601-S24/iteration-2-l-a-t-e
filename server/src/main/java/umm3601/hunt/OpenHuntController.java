@@ -32,13 +32,13 @@ import io.javalin.http.NotFoundResponse;
 import umm3601.Controller;
 import umm3601.hunter.Group;
 import umm3601.hunter.Hunter;
+// import io.javalin.validation.ValidationException;
 
 
 
 public class OpenHuntController implements Controller {
 
-  //this id is the hunt ID not the openHunt id
-  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}";
+  private static final String API_NEW_OPENHUNTS = "/api/openhunts/new";
   //this is the actual open hunt id
   private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
   //this is the open hunt id, not the hunter id
@@ -79,11 +79,8 @@ public class OpenHuntController implements Controller {
     String code = ctx.pathParam("invitecode");
     OpenHunt openHunt;
 
-    try {
-      openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
-    } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested invite code wasn't a legal Mongo invite code.");
-    }
+    openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
+
     if (openHunt == null) {
       throw new NotFoundResponse("The requested invite code was not found " + code);
     } else {
@@ -178,35 +175,39 @@ public class OpenHuntController implements Controller {
 
   public void addNewHunter(Context ctx) { //need to update this new hunterid string into the group it goes into
     String id = ctx.pathParam("id");
+    Hunter newHunter;
 
-    Hunter newHunter = ctx.bodyValidator(Hunter.class)
-    .check(hunter -> hunter.hunterName != null, "Hunter must have non-empty name")
-    .check(hunter -> hunter.hunterName.length() > 2, "Hunter must not have name shorter than 2 characters")
-    .get();
+    System.out.println("id in method: " + id + " ctx body: " + ctx.body());
+
+    newHunter = ctx.bodyValidator(Hunter.class)
+        .check(hunter -> hunter.hunterName != null, "Hunter must have non-empty name")
+        .check(hunter -> hunter.hunterName.length() > 2, "Hunter must not have name shorter than 2 characters")
+        .get();
+
+
+    System.out.println("got hunter object");
 
     String groupId = chooseGroup(id);
 
     InsertOneResult hunterResult = hunterCollection.insertOne(newHunter);
     String hunterId = hunterResult.getInsertedId().asObjectId().getValue().toString();
 
+     System.out.println("hunter id in method: " + hunterId);
+
     Group group = getGroupById(groupId);
     Document groupDoc = new Document();
     Document updateDoc;
-    if (group.hunterIds == null) {
-      String[] onlyHunterId = {hunterId};
-      groupDoc.append("hunterIds", onlyHunterId);
-      updateDoc = new Document("$set", groupDoc);
-    } else {
       ArrayList<String> hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
       hunterIdArrayList.add(hunterId);
-      String[] hunterIdArray = hunterIdArrayList.toArray(new String[hunterIdArrayList.size()]);
-      groupDoc.append("hunterIds", hunterIdArray);
-    }
-
+      //need to append array list instead of array or else it causes an error
+      groupDoc.append("hunterIds", hunterIdArrayList);
+    System.out.println("groupId: " + groupId + " group name: " + group.groupName);
     updateDoc = new Document("$set", groupDoc);
-    groupCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+    groupCollection.updateOne(eq("_id", new ObjectId(groupId)), updateDoc);
 
     ctx.json(Map.of("id", group._id)); //returns group id for further routing use in frontend
+
+    ctx.status(HttpStatus.CREATED);
   }
 
   private String chooseGroup(String openHuntId) {
@@ -275,7 +276,7 @@ public class OpenHuntController implements Controller {
     // get the specified OpenHunt
     server.get(API_OPENHUNTS_BY_ID, this::getOpenHunt);
     // List hunts, filtered using query parameters
-    server.post(API_NEW_OPENHUNTS_BY_ID, this::addNewOpenHunt);
+    server.post(API_NEW_OPENHUNTS, this::addNewOpenHunt);
     //add new hunter, returns group id hunter is in
     server.post(API_NEW_HUNTER_BY_OPENHUNT_ID, this::addNewHunter);
     //get bare openhunt by invite code
