@@ -33,13 +33,13 @@ import io.javalin.http.NotFoundResponse;
 import umm3601.Controller;
 import umm3601.hunter.Group;
 import umm3601.hunter.Hunter;
+// import io.javalin.validation.ValidationException;
 
 
 
 public class OpenHuntController implements Controller {
 
-  //this id is the hunt ID not the openHunt id
-  private static final String API_NEW_OPENHUNTS_BY_ID = "/api/openhunts/new/{id}";
+  private static final String API_NEW_OPENHUNTS = "/api/openhunts/new";
   //this is the actual open hunt id
   private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
 
@@ -48,8 +48,10 @@ public class OpenHuntController implements Controller {
   private static final String API_NEW_HUNTER_BY_OPENHUNT_ID = "/api/openhunts/hunter/{id}";
   //this is the group id
   private static final String API_GROUP_BY_ID = "/api/openhunts/group/{id}";
+  //this is the invite code and returns the bare openhunt/ hunt without group json
+  private static final String API_OPENHUNTS_BY_INVITE_CODE = "/api/openhunts/invite/{invitecode}";
 
-  static final String HOST_KEY = "hostid";
+  static final String INVITE_CODE_KEY = "invitecode";
 
   private final JacksonMongoCollection<OpenHunt> openHuntCollection;
   private final JacksonMongoCollection<Group> groupCollection;
@@ -104,6 +106,22 @@ public class OpenHuntController implements Controller {
     ctx.status(HttpStatus.OK);
 }
 
+  //gets the bare open hunt without the group json and the hunter json
+  public void getOpenHuntByInviteCode(Context ctx) {
+    String code = ctx.pathParam("invitecode");
+    OpenHunt openHunt;
+
+    openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
+
+    if (openHunt == null) {
+      throw new NotFoundResponse("The requested invite code was not found " + code);
+    } else {
+      ctx.json(openHunt);
+      ctx.status(HttpStatus.OK);
+    }
+  }
+
+
   public void getOpenHunt(Context ctx) {
     String id = ctx.pathParam("id");
     OpenHunt openHunt;
@@ -112,6 +130,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(id))).first();
+      if (openHunt != null) {
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
@@ -125,9 +144,10 @@ public class OpenHuntController implements Controller {
         openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
         i++;
       }
+    }
 
     } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested hunt id wasn't a legal Mongo Object ID.");
+      throw new BadRequestResponse("The requested open hunt id wasn't a legal Mongo Object ID.");
     }
     if (openHunt == null) {
       throw new NotFoundResponse("The requested openHunt was not found");
@@ -223,35 +243,39 @@ public class OpenHuntController implements Controller {
 
   public void addNewHunter(Context ctx) { //need to update this new hunterid string into the group it goes into
     String id = ctx.pathParam("id");
+    Hunter newHunter;
 
-    Hunter newHunter = ctx.bodyValidator(Hunter.class)
-    .check(hunter -> hunter.hunterName != null, "Hunter must have non-empty name")
-    .check(hunter -> hunter.hunterName.length() > 2, "Hunter must not have name shorter than 2 characters")
-    .get();
+    System.out.println("id in method: " + id + " ctx body: " + ctx.body());
+
+    newHunter = ctx.bodyValidator(Hunter.class)
+        .check(hunter -> hunter.hunterName != null, "Hunter must have non-empty name")
+        .check(hunter -> hunter.hunterName.length() > 2, "Hunter must not have name shorter than 2 characters")
+        .get();
+
+
+    System.out.println("got hunter object");
 
     String groupId = chooseGroup(id);
 
     InsertOneResult hunterResult = hunterCollection.insertOne(newHunter);
     String hunterId = hunterResult.getInsertedId().asObjectId().getValue().toString();
 
+     System.out.println("hunter id in method: " + hunterId);
+
     Group group = getGroupById(groupId);
     Document groupDoc = new Document();
     Document updateDoc;
-    if (group.hunterIds == null) {
-      String[] onlyHunterId = {hunterId};
-      groupDoc.append("hunterIds", onlyHunterId);
-      updateDoc = new Document("$set", groupDoc);
-    } else {
       ArrayList<String> hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
       hunterIdArrayList.add(hunterId);
-      String[] hunterIdArray = hunterIdArrayList.toArray(new String[hunterIdArrayList.size()]);
-      groupDoc.append("hunterIds", hunterIdArray);
-    }
-
+      //need to append array list instead of array or else it causes an error
+      groupDoc.append("hunterIds", hunterIdArrayList);
+    System.out.println("groupId: " + groupId + " group name: " + group.groupName);
     updateDoc = new Document("$set", groupDoc);
-    groupCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+    groupCollection.updateOne(eq("_id", new ObjectId(groupId)), updateDoc);
 
     ctx.json(Map.of("id", group._id)); //returns group id for further routing use in frontend
+
+    ctx.status(HttpStatus.CREATED);
   }
 
   private String chooseGroup(String openHuntId) {
@@ -262,7 +286,7 @@ public class OpenHuntController implements Controller {
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
-
+      if (openHunt != null) {
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
         int groupSize;
@@ -278,6 +302,7 @@ public class OpenHuntController implements Controller {
           minimumGroupId = nextGroup._id;
         }
       }
+    }
     } catch (IllegalArgumentException e) {
       throw new BadRequestResponse("The requested hunt id wasn't a legal Mongo Object ID.");
     }
@@ -328,9 +353,11 @@ public class OpenHuntController implements Controller {
 
     server.get(API_OPENHUNTS, this::getAllOpenHunts);
     // List hunts, filtered using query parameters
-    server.post(API_NEW_OPENHUNTS_BY_ID, this::addNewOpenHunt);
+    server.post(API_NEW_OPENHUNTS, this::addNewOpenHunt);
     //add new hunter, returns group id hunter is in
     server.post(API_NEW_HUNTER_BY_OPENHUNT_ID, this::addNewHunter);
+    //get bare openhunt by invite code
+    server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
   }
 
 }
