@@ -77,26 +77,40 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  readonly addOpenHuntValidationMessages = {
+    numberofgroups: [
+      {type: 'required', message: 'Group number is required'},
+      {type: 'min', message: 'Group number must be at least 1'},
+      {type: 'max', message: 'Group number may not be greater than 50'},
+      {type: 'pattern', message: 'Group number must be a whole number'}
+    ]
+  }
+
   newOpenHuntForm = this.formBuilder.group({
     numberofgroups: [1, Validators.compose([
       Validators.required,
       Validators.min(1),
-      Validators.max(50) //Note: may be too high
+      Validators.max(50), //Note: may be too high
+      Validators.pattern('^[0-9]+$')
     ])]
   });
 
-  formControlHasError(controlName: string, errorName: string = 'required'): boolean {
-    console.log('Control Name:', controlName);
-    return this.newOpenHuntForm.controls[controlName].hasError(errorName);
+
+  formControlHasError(controlName: string): boolean {
+    return this.newOpenHuntForm.get(controlName).invalid &&
+      (this.newOpenHuntForm.get(controlName).dirty || this.newOpenHuntForm.get(controlName).touched);
   }
 
-  getErrorMessage(controlName: string) {
-    const control = this.newOpenHuntForm.get(controlName);
 
-    if (control.hasError('required')) {
-      return 'You must enter a value';
+  getErrorMessage(name: keyof typeof this.addOpenHuntValidationMessages): string {
+    for(const {type, message} of this.addOpenHuntValidationMessages[name]) {
+      if (this.newOpenHuntForm.get(name).hasError(type)) {
+        return message;
+      }
     }
+    return 'Unknown error';
   }
+
 
   getRandomInt(max) {
     return Math.floor(Math.random() * max);
