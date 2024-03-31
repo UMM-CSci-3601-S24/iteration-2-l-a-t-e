@@ -78,7 +78,7 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
   }
 
   newOpenHuntForm = this.formBuilder.group({
-    numberOfGroups: ['', Validators.compose([
+    numberofgroups: [1, Validators.compose([
       Validators.required,
       Validators.min(1),
       Validators.max(50) //Note: may be too high
@@ -86,6 +86,7 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
   });
 
   formControlHasError(controlName: string, errorName: string = 'required'): boolean {
+    console.log('Control Name:', controlName);
     return this.newOpenHuntForm.controls[controlName].hasError(errorName);
   }
 
