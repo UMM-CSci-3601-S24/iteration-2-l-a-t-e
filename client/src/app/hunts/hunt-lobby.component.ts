@@ -33,11 +33,18 @@ export class HuntLobbyComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrieve the invite code from Local Storage, or default to null/undefined
-    this.inviteCode = localStorage.getItem('inviteCode');
+    this.inviteCode = this.lobbyService.getInviteCode();
 
     if (this.inviteCode !== '') {
         // Since we now have an invite code, use it to search for the lobby
-        this.lobby = this.lobbyService.searchByInviteCode(this.inviteCode);
+        this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
+          (data: Lobby) => {
+            this.lobby = data;
+          },
+          error => {
+            console.error('Failed to retrieve open hunt by invite code', error);
+          }
+        );
 
         if (this.lobby) {
           this.loadTaskList();

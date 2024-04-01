@@ -13,22 +13,13 @@ export class LobbyService {
   private readonly idKey = 'id';
   inviteCode: string = null;
   username: string;
-  lobbies: Lobby[] = [];
   lobby: Lobby;
   groups: Group[];
 
   constructor(private httpClient: HttpClient) {
-    this.lobbies = this.getAllOpenHunts();
   }
-  searchByInviteCode(code: string): Lobby {
-    if (code) {
-      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === code.trim());
-      console.log(this.lobbies);
-      console.log(this.lobby);
-    } else {
-      console.error('Please enter a valid invite code.');
-    }
-    return this.lobby;
+  searchByInviteCode(code: string): Observable<Lobby> {
+    return this.httpClient.get<Lobby>(`${this.lobbyUrl}/invite/${code}`);
   }
   getInviteCode()
   {
@@ -47,18 +38,6 @@ export class LobbyService {
   setUsername(input)
   {
     this.username = input;
-  }
-
-  getAllOpenHunts(): Lobby[] {
-    this.httpClient.get<Lobby[]>(this.lobbyUrl).subscribe(
-      (lobbies: Lobby[]) => {
-        this.lobbies = lobbies;
-      },
-      (error) => {
-        console.error('Error fetching open hunts:', error);
-      }
-    );
-    return this.lobbies;
   }
 
   getGroupById(id: string): Observable<Group> {

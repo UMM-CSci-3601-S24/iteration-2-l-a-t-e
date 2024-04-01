@@ -86,7 +86,7 @@ public class OpenHuntController implements Controller {
             openHunt.groups = new Group[openHunt.numberofgroups];
             int i = 0;
             for (String groupId : openHunt.groupids) {
-                Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+                Group nextGroup = this.getGroupById(groupId);
                 if (nextGroup.hunterIds != null) {
                     for (String hunterId : nextGroup.hunterIds) {
                         Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
@@ -243,6 +243,7 @@ public class OpenHuntController implements Controller {
 
   public void addNewHunter(Context ctx) { //need to update this new hunterid string into the group it goes into
     String id = ctx.pathParam("id");
+    System.err.println("The id is " + id);
     Hunter newHunter;
 
     System.out.println("id in method: " + id + " ctx body: " + ctx.body());
@@ -261,15 +262,45 @@ public class OpenHuntController implements Controller {
     String hunterId = hunterResult.getInsertedId().asObjectId().getValue().toString();
 
      System.out.println("hunter id in method: " + hunterId);
+     System.out.println("group id in method: " + groupId);
 
     Group group = getGroupById(groupId);
+    System.out.println("group retrieved");
+    System.out.println("group in method: " + group);
     Document groupDoc = new Document();
     Document updateDoc;
-      ArrayList<String> hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
+    System.out.println("hunter list creating");
+    ArrayList<String> hunterIdArrayList;
+      if(group.hunterIds != null)
+      {
+      hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
+      }
+      else
+      {
+      hunterIdArrayList = new ArrayList<String>();
+      }
       hunterIdArrayList.add(hunterId);
+      System.out.println("hunter added retrieved");
       //need to append array list instead of array or else it causes an error
       groupDoc.append("hunterIds", hunterIdArrayList);
     System.out.println("groupId: " + groupId + " group name: " + group.groupName);
+    ArrayList<Document> hunterDocs = new ArrayList<>();
+    if(group.hunters != null) {
+        for(Hunter hunter : Arrays.asList(group.hunters)) {
+            Document hunterDoc = new Document("id", hunter._id)
+                                          .append("name", hunter.hunterName);
+            hunterDocs.add(hunterDoc);
+        }
+    }
+    // Add the newHunter converted to Document
+    Document newHunterDoc = new Document("id", newHunter._id)
+                   .append("hunterName", newHunter.hunterName);
+    hunterDocs.add(newHunterDoc);
+
+    // Use hunterDocs instead of hunterList for appending
+    groupDoc.append("hunters", hunterDocs);
+
+
     updateDoc = new Document("$set", groupDoc);
     groupCollection.updateOne(eq("_id", new ObjectId(groupId)), updateDoc);
 
@@ -314,24 +345,38 @@ public class OpenHuntController implements Controller {
   }
 
   private Group getGroupById(String groupId) {
-    Group group;
+    // Check if groupId is null or empty
+    if (groupId == null || groupId.trim().isEmpty()) {
+        throw new BadRequestResponse("The provided group ID is empty or null.");
+    }
 
     try {
-      group = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+        // Attempt to retrieve the group from the database
+        Group group = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+        System.out.println("group in method: " + group);
+
+        // If no group is found, throw a NotFoundResponse
+        if (group == null) {
+            System.out.println("No group found with ID: " + groupId); // Logging for debugging
+            throw new NotFoundResponse("The requested group was not found");
+        }
+
+        // Return the found group
+        return group;
+
     } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested group id wasn't a legal Mongo Object ID.");
+        // This catches cases where groupId is not a valid ObjectId format
+        System.out.println("IllegalArgumentException for groupId: " + groupId); // Logging for debugging
+        throw new BadRequestResponse("The requested group id wasn't a legal Mongo Object ID.");
     }
-    if (group == null) {
-      throw new NotFoundResponse("The requested group was not found");
-    } else {
-      return (group);
-    }
-  }
+}
+
 
   public void getGroup(Context ctx) {
     String id = ctx.pathParam("id");
-
+    System.out.println("group attempted");
     Group group = getGroupById(id);
+    System.out.println("group retrieved");
     ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
 
     if (group.hunterIds != null) {

@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Hunter, Lobby, LobbyService } from '../hunts/lobby.service';
 import { FormsModule } from '@angular/forms';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-home-component',
@@ -18,7 +19,6 @@ export class HomeComponent {
 
   username: string;
   inviteCode: string;
-  lobbies: Lobby[];
   lobby: Lobby;
   constructor(private router: Router, private lobbyService: LobbyService) { }
   showHunterInput: boolean = false;
@@ -41,28 +41,60 @@ export class HomeComponent {
 
   }
 
+
+
   submitCode() {
-    this.lobbies = this.lobbyService.getAllOpenHunts();
     this.lobbyService.setInviteCode(this.inviteCode);
-    localStorage.setItem('inviteCode', this.inviteCode);
-    this.lobby = this.lobbyService.searchByInviteCode(this.inviteCode);
-    if(this.lobby)
-    {
-      this.lobbyService.setUsername(this.username);
-      this.addNewHunterToGroup(this.lobby._id);
-      this.router.navigate(['/hunt-lobby']);
-    }
-    else
-    {
-       window.alert('Error: Invalid Invite Code');
-       this.inviteCode = '';
-       this.username = '';
-        this.lobbyService.setInviteCode(this.inviteCode);
-    }
+    this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
+      (data: Lobby) => {
+        this.lobby = data;
+        console.log(this.lobby)
+        console.log(this.lobby.active)
+        if(this.lobby.active)
+        {
+          this.lobbyService.setUsername(this.username);
+          this.addNewHunterToGroup(this.lobby._id);
+          this.router.navigate(['/hunt-lobby']);
+          console.log("in if: " + this.inviteCode)
+        }
+        else
+        {
+           window.alert('Error: Invalid Invite Code');
+           this.inviteCode = '';
+           this.username = '';
+            this.lobbyService.setInviteCode(this.inviteCode);
+        }
+      },
+      error => {
+        console.error('Failed to retrieve open hunt by invite code', error);
+      }
+    );
+    // if(this.lobby.active)
+    // {
+    //   this.lobbyService.setUsername(this.username);
+    //   this.addNewHunterToGroup(this.lobby._id);
+    //   this.router.navigate(['/hunt-lobby']);
+    //   console.log("in if: " + this.inviteCode)
+    // }
+    // else
+    // {
+    //    window.alert('Error: Invalid Invite Code');
+    //    this.inviteCode = '';
+    //    this.username = '';
+    //     this.lobbyService.setInviteCode(this.inviteCode);
+    // }
   }
+
   searchByInviteCode() {
     if (this.inviteCode) {
-      this.lobby = this.lobbies.find(lobby => lobby.invitecode.trim() === this.inviteCode.trim());
+      this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
+        (data: Lobby) => {
+          this.lobby = data;
+        },
+        error => {
+          console.error('Failed to retrieve open hunt by invite code', error);
+        }
+      );
     } else {
       console.error('Please enter a valid invite code.');
     }
