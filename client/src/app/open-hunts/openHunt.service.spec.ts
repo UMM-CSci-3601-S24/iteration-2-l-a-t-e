@@ -163,7 +163,7 @@ describe('OpenHuntSevice', () => {
           .toHaveBeenCalledTimes(1);
         expect(mockedMethod)
           .withContext('talks to the correct endpoint')
-          .toHaveBeenCalledWith(openHuntService.openHuntUrl, newHunt);
+          .toHaveBeenCalledWith(openHuntService.addOpenHuntUrl, newHunt);
       });
     }));
   });
