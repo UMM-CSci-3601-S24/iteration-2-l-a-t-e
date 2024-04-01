@@ -14,6 +14,7 @@ import { FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { OpenHuntService } from './openHunt.service';
+import { Router } from '@angular/router';
 
 
 
@@ -45,7 +46,8 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
     private huntService: HuntService,
     private taskService: TaskService,
     private openHuntService: OpenHuntService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router) { }
     currentHost = "kk"
 
   ngOnInit(): void {
@@ -140,7 +142,8 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
           `Added Hunt`,
           null,
           { duration: 2000 }
-        );
+        )
+        //this.router.navigate([]); // Where the submit button should route to (the opened hunt)
 
 
       },
