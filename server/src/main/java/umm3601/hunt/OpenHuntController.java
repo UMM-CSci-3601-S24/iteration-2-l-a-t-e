@@ -98,7 +98,7 @@ public class OpenHuntController implements Controller {
     OpenHunt openHunt;
     int i = 0;
     ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
-
+    System.err.println("id " + id);
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(id))).first();
       if (openHunt != null) {
@@ -115,6 +115,8 @@ public class OpenHuntController implements Controller {
         openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
         i++;
       }
+      System.err.println("openhunt " + openHunt.title);
+      System.err.println("openhunt group name" + openHunt.groups[2].groupName);
     }
 
     } catch (IllegalArgumentException e) {

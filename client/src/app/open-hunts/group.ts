@@ -3,7 +3,7 @@ import { Hunter } from "./hunter";
 export interface Group {
   _id: string;
 
-  groupname: string;
-  huntids: Array<string>;
+  groupName: string;
+  hunterIds: Array<string>;
   hunters: Array<Hunter>;
 }

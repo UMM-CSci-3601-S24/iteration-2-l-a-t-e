@@ -40,12 +40,14 @@ export class OpenHuntComponent implements OnInit, OnDestroy {
     this.route.paramMap.pipe(
       map((paramMap: ParamMap) => paramMap.get('id')),
       switchMap((id: string) => this.openHuntservice.getOpenHuntById(id)),
-      switchMap((openHunt: OpenHunt) => {
-        this.openHunt = openHunt;
-        return of(openHunt);
+      switchMap((openhunt: OpenHunt) => {
+        this.openHunt = openhunt;
+        return of(openhunt);
       }),
       takeUntil(this.ngUnsubscribe)
     ).subscribe();
+    // console.log("openhunt " + this.openHunt)
+    // console.log("groups: " + this.openHunt.groups)
   }
 
   ngOnDestroy() {

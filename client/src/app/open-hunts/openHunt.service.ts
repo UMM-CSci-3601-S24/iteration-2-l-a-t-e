@@ -31,6 +31,7 @@ export class OpenHuntService {
   }
 
   getOpenHuntById(id: string): Observable<OpenHunt> {
+    console.log("id: " + id)
     // The input to get could also be written as (this.openHuntUrl + '/' + id)
     return this.httpClient.get<OpenHunt>(`${this.openHuntUrl}/${id}`);
   }
