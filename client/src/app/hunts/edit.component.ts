@@ -82,7 +82,6 @@ export class HuntEditComponent implements OnInit {
     } else {
       return 'Maximum of 3 digits';
     }
-    return '';
 
     // Add other error type handling here if needed
   }
