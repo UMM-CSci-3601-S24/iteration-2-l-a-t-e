@@ -75,4 +75,17 @@ describe('home navigation', () => {
   expect(component.showHunterInput).toBeTrue;
 })
 
+it('should toggle input visibility when clicking the Hunter button', () => {
+  // Initially, inputs should not be visible
+  expect(fixture.debugElement.query(By.css('.form-control'))).toBeNull();
+
+  // Find the Hunter button and click it
+  const hunterButton = fixture.debugElement.query(By.css('.action-button')).nativeElement;
+  hunterButton.click();
+  fixture.detectChanges(); // Update view
+
+  // Now, inputs should be visible
+  expect(fixture.debugElement.query(By.css('.form-control'))).not.toBeNull();
+});
+
 });
