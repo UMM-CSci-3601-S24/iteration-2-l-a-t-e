@@ -271,12 +271,10 @@ public class OpenHuntController implements Controller {
     Document updateDoc;
     System.out.println("hunter list creating");
     ArrayList<String> hunterIdArrayList;
-      if(group.hunterIds != null)
-      {
-      hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
+      if (group.hunterIds != null) {
+        hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
       }
-      else
-      {
+      else {
       hunterIdArrayList = new ArrayList<String>();
       }
       hunterIdArrayList.add(hunterId);
@@ -309,6 +307,7 @@ public class OpenHuntController implements Controller {
     ctx.status(HttpStatus.CREATED);
   }
 
+  @SuppressWarnings({ "MagicNumber" })
   private String chooseGroup(String openHuntId) {
     OpenHunt openHunt;
     int minimumGroup = 10000;
@@ -323,12 +322,9 @@ public class OpenHuntController implements Controller {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
         System.err.println("groupName: " + nextGroup.groupName);
         int groupSize;
-        if(nextGroup.hunterIds == null)
-        {
-          groupSize = 0;
-        }
-        else
-        {
+        if(nextGroup.hunterIds == null) {
+          groupSize = 0; }
+        else {
           System.err.println("hunterids:" + nextGroup.hunterIds.toString());
           groupSize = nextGroup.hunterIds.length;
           System.err.println("groupName: " + nextGroup.groupName + "group size :" + groupSize);
