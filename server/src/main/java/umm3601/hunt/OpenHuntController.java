@@ -254,9 +254,11 @@ public class OpenHuntController implements Controller {
         .get();
 
 
-    System.out.println("got hunter object");
+    System.err.println("got hunter object " + newHunter.hunterName);
 
     String groupId = chooseGroup(id);
+
+    System.err.println("group id: " + groupId);
 
     InsertOneResult hunterResult = hunterCollection.insertOne(newHunter);
     String hunterId = hunterResult.getInsertedId().asObjectId().getValue().toString();
@@ -285,20 +287,20 @@ public class OpenHuntController implements Controller {
       groupDoc.append("hunterIds", hunterIdArrayList);
     System.out.println("groupId: " + groupId + " group name: " + group.groupName);
     ArrayList<Document> hunterDocs = new ArrayList<>();
-    if(group.hunters != null) {
-        for(Hunter hunter : Arrays.asList(group.hunters)) {
-            Document hunterDoc = new Document("id", hunter._id)
-                                          .append("name", hunter.hunterName);
-            hunterDocs.add(hunterDoc);
-        }
-    }
+    // if(group.hunters != null) {
+    //     for(Hunter hunter : Arrays.asList(group.hunters)) {
+    //         Document hunterDoc = new Document("id", hunter._id)
+    //                                       .append("name", hunter.hunterName);
+    //         hunterDocs.add(hunterDoc);
+    //     }
+    // }
     // Add the newHunter converted to Document
-    Document newHunterDoc = new Document("id", newHunter._id)
-                   .append("hunterName", newHunter.hunterName);
-    hunterDocs.add(newHunterDoc);
+    // Document newHunterDoc = new Document("id", newHunter._id)
+    //                .append("hunterName", newHunter.hunterName);
+    // hunterDocs.add(newHunterDoc);
 
     // Use hunterDocs instead of hunterList for appending
-    groupDoc.append("hunters", hunterDocs);
+    // groupDoc.append("hunters", hunterDocs);
 
 
     updateDoc = new Document("$set", groupDoc);
@@ -311,15 +313,17 @@ public class OpenHuntController implements Controller {
 
   private String chooseGroup(String openHuntId) {
     OpenHunt openHunt;
-    final int minimumGroup = 10000;
+    int minimumGroup = 10000;
     String minimumGroupId = null;
 
 
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
+      System.err.println("openHunt name: " + openHunt.title);
       if (openHunt != null) {
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+        System.err.println("groupName: " + nextGroup.groupName);
         int groupSize;
         if(nextGroup.hunterIds == null)
         {
@@ -327,10 +331,14 @@ public class OpenHuntController implements Controller {
         }
         else
         {
+          System.err.println("hunterids:" + nextGroup.hunterIds.toString());
           groupSize = nextGroup.hunterIds.length;
+          System.err.println("groupName: " + nextGroup.groupName + "group size :" + groupSize);
         }
         if (groupSize < minimumGroup) {
+          minimumGroup = groupSize;
           minimumGroupId = nextGroup._id;
+          System.err.println("minimum group name " + nextGroup.groupName);
         }
       }
     }
