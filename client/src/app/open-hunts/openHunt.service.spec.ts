@@ -20,8 +20,8 @@ describe('OpenHuntSevice', () => {
       numberofgroups: 1,
       groupids: ["group1"],
       groups: [{
-        _id: 'group1', huntids: ["hunt1id"], hunters: [
-          { _id: "hunter1", huntername: "numberone" }]
+        _id: 'group1', groupName: 'Group1', hunterIds: ["hunt1id"], hunters: [
+          { _id: "hunter1", hunterName: "numberone" }]
       }]
     },
     {
@@ -35,12 +35,12 @@ describe('OpenHuntSevice', () => {
       numberofgroups: 2,
       groupids: ["group1", "group2"],
       groups: [{
-        _id: 'group1', huntids: ["hunt2id"], hunters: [
-          { _id: "hunter1", huntername: "numberone" }]
+        _id: 'group1', groupName: 'Group1', hunterIds: ["hunt2id"], hunters: [
+          { _id: "hunter1", hunterName: "numberone" }]
       },
       {
-        _id: 'group2', huntids: ["hunt2id"], hunters: [
-          { _id: "hunter2", huntername: "numbertwo" }]
+        _id: 'group2', groupName: 'Group2', hunterIds: ["hunt2id"], hunters: [
+          { _id: "hunter2", hunterName: "numbertwo" }]
       }]
     }
   ];
