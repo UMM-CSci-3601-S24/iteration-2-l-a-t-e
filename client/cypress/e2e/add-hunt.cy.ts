@@ -37,6 +37,9 @@ describe('Add hunt', () => {
     page.getFormField('title').clear().type('This is a very long name that goes beyond the 50 character limit').blur();
     page.getFormField('description').type('s').blur();
     page.getFormField('description').clear().type('T'.repeat(150)).blur();
+      // Add estimatedTime tests
+
+
     page.getFormField('taskInput').type('s').blur();
     page.getFormField('taskInput').clear().type('T'.repeat(150)).blur();
 

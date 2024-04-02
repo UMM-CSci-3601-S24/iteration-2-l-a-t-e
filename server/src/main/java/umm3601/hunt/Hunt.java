@@ -14,8 +14,7 @@ public class Hunt {
   public String hostid;
   public String title;
   public String description;
-
-  public String estimatedTime;
+  public Integer estimatedTime;
 
   @Override
   public boolean equals(Object obj) {

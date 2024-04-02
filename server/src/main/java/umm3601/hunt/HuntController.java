@@ -199,7 +199,7 @@ public void getAllHunts(Context ctx) {
       .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
       .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
       .check(hnt -> hnt.estimatedTime != null, "Hunt must have non-empty estimated time")
-      .check(hnt -> hnt.estimatedTime.length() > 0, "Hunt must have estimated time greater than 0 characters")
+      .check(hnt -> hnt.estimatedTime > 0, "Hunt must have estimated time greater than 0 characters")
       .get();
 
     // Add new hunt to the database.
@@ -251,7 +251,7 @@ public void getAllHunts(Context ctx) {
       .check(hnt -> hnt.description != null, "Hunt must have non-empty description")
       .check(hnt -> hnt.description.length() > 2, "Hunt must not have description shorter than 2 characters")
       .check(hnt -> hnt.estimatedTime != null, "Hunt must have non-empty estimated time")
-      .check(hnt -> hnt.estimatedTime.length() > 0, "Hunt must have estimated time greater than 0 characters")
+      // .check(hnt -> hnt.estimatedTime.length() > 0, "Hunt must have estimated time greater than 0 characters")
       .get();
 
     Document huntDoc = new Document();
