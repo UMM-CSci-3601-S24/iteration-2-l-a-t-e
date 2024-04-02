@@ -1,6 +1,6 @@
 .lobby-container {
   font-family: 'Arial', sans-serif;
-  color: #ffffff;
+  color: #add8e6;
   padding: 20px;
   border-radius: 8px;
   max-width: 600px;
@@ -24,7 +24,7 @@
 
 .lobby-header p {
   font-size: 1.2em; /* Adjusts description text size */
-  color: #ccc;
+  color: #add8e6;
 }
 
 .lobby-info-container {
@@ -96,23 +96,23 @@
     font-size: 17px;
     width: 50%; /* Ensure each tab takes up half the width of the container */
     background-color: forestgreen;
-    color: white;
+    color: #add8e6;
 }
 
 .tabs button:hover {
     background-color: darken($color: forestgreen, $amount: 10%);
-    color: white;
+    color:#add8e6;
 }
 
 .tabs button.active {
     background-color: darken($color: forestgreen, $amount: 10%);
-    color: white;
+    color: #add8e6;
 }
 
 .tab-content {
     padding: 20px;
     clear: both;
-    color: white;
+    color: #add8e6;
     overflow-y: auto;
     max-height: 50vh; /* Adjust based on your needs */
     scrollbar-width: none; /* For Firefox */
@@ -134,9 +134,9 @@
   flex: 1;
   min-width: 120px; /* Adjust minimum width for readability */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #add8e6;
   background-color: forestgreen;
-  color: white;
+  color: #add8e6;
   cursor: pointer;
   border-radius: 5px;
   margin-right: 5px;
@@ -146,7 +146,7 @@
 
 .group-tabs button.active {
   background-color: darken($color: forestgreen, $amount: 10%);
-  color: white;
+  color: #add8e6;
   border-color: forestgreen;
 }
 
@@ -161,7 +161,7 @@
 }
 
 .tasks-table th, .tasks-table td, .hunters-table th, .hunters-table td {
-  border: 1px solid #ddd;
+  border: 1px solid #add8e6;
   padding: 8px;
   text-align: left;
 }

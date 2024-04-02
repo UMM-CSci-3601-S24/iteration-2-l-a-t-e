@@ -42,6 +42,7 @@ export class HuntLobbyComponent implements OnInit {
             this.lobby = data;
             if (this.lobby != null) {
               this.loadTaskList();
+              console.log("group ids " + this.lobby.groupids)
               for (const groupId of this.lobby.groupids) {
                   this.lobbyService.getGroupById(groupId).subscribe(
                       (group: Group) => {
