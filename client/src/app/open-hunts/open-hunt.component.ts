@@ -23,7 +23,7 @@ import { OpenHuntService } from './openHunt.service';
   styleUrl: './open-hunt.component.scss'
 })
 export class OpenHuntComponent implements OnInit, OnDestroy {
-  hunt: Hunt;
+  openHunt: OpenHunt;
   tasks: Task[] = [];
   error: { help: string, httpResponse: string, message: string };
 
@@ -41,7 +41,7 @@ export class OpenHuntComponent implements OnInit, OnDestroy {
       map((paramMap: ParamMap) => paramMap.get('id')),
       switchMap((id: string) => this.openHuntservice.getOpenHuntById(id)),
       switchMap((openHunt: OpenHunt) => {
-        this.hunt = openHunt;
+        this.openHunt = openHunt;
         return of(openHunt);
       }),
       takeUntil(this.ngUnsubscribe)
