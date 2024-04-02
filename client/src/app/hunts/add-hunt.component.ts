@@ -71,7 +71,7 @@ export class AddHuntComponent {
 
   formControlHasError(controlName: string): boolean {
     const control = this.addHuntForm.get(controlName);
-    return control.invalid && (control.dirty || control.touched);
+    return control && control.errors ? true : false;
   }
 
   getErrorMessage(controlName: string) {
@@ -80,7 +80,7 @@ export class AddHuntComponent {
     if (control.hasError('required')) {
       return 'You must enter a value';
     } else {
-      return 'Maximum of 3 digits';
+      return '';
     }
 
     // Add other error type handling here if needed
