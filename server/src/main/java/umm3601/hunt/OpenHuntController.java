@@ -287,20 +287,20 @@ public class OpenHuntController implements Controller {
       groupDoc.append("hunterIds", hunterIdArrayList);
     System.out.println("groupId: " + groupId + " group name: " + group.groupName);
     ArrayList<Document> hunterDocs = new ArrayList<>();
-    // if(group.hunters != null) {
-    //     for(Hunter hunter : Arrays.asList(group.hunters)) {
-    //         Document hunterDoc = new Document("id", hunter._id)
-    //                                       .append("name", hunter.hunterName);
-    //         hunterDocs.add(hunterDoc);
-    //     }
-    // }
+    if(group.hunters != null) {
+        for(Hunter hunter : Arrays.asList(group.hunters)) {
+            Document hunterDoc = new Document("id", hunter._id)
+                                          .append("name", hunter.hunterName);
+            hunterDocs.add(hunterDoc);
+        }
+    }
     // Add the newHunter converted to Document
     // Document newHunterDoc = new Document("id", newHunter._id)
     //                .append("hunterName", newHunter.hunterName);
     // hunterDocs.add(newHunterDoc);
 
     // Use hunterDocs instead of hunterList for appending
-    // groupDoc.append("hunters", hunterDocs);
+    groupDoc.append("hunters", hunterDocs);
 
 
     updateDoc = new Document("$set", groupDoc);
