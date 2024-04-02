@@ -272,9 +272,11 @@ public class OpenHuntController implements Controller {
     System.out.println("hunter list creating");
     ArrayList<String> hunterIdArrayList;
       if (group.hunterIds != null) {
-        hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds)); }
+        hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
+      }
       else {
-      hunterIdArrayList = new ArrayList<String>(); }
+      hunterIdArrayList = new ArrayList<String>();
+    }
       hunterIdArrayList.add(hunterId);
       System.out.println("hunter added retrieved");
       //need to append array list instead of array or else it causes an error
@@ -311,7 +313,6 @@ public class OpenHuntController implements Controller {
     int minimumGroup = 10000;
     String minimumGroupId = null;
 
-
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(openHuntId))).first();
       System.err.println("openHunt name: " + openHunt.title);
@@ -321,7 +322,8 @@ public class OpenHuntController implements Controller {
         System.err.println("groupName: " + nextGroup.groupName);
         int groupSize;
         if (nextGroup.hunterIds == null) {
-          groupSize = 0; }
+          groupSize = 0;
+        }
         else {
           System.err.println("hunterids:" + nextGroup.hunterIds.toString());
           groupSize = nextGroup.hunterIds.length;
