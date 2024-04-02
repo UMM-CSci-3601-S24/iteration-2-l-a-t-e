@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 // import java.util.Collections;
+// import java.util.Collections;
 // import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,8 @@ public class OpenHuntControllerSpec {
     private ObjectId groupId1;
     private ObjectId groupId2;
     private ObjectId groupId3;
+    private ObjectId groupId4;
+    private ObjectId groupId5;
 
     private ObjectId openHuntId1;
 
@@ -93,6 +96,8 @@ public class OpenHuntControllerSpec {
     private ObjectId hunterId3;
 
     private List<ObjectId> groupList;
+    private List<ObjectId> groupList2;
+    private List<ObjectId> groupList3;
 
 
     @BeforeAll
@@ -127,9 +132,17 @@ public class OpenHuntControllerSpec {
     groupId1 = new ObjectId();
     groupId2 = new ObjectId();
     groupId3 = new ObjectId();
+    groupId4 = new ObjectId();
+    groupId5 = new ObjectId();
 
     ObjectId[] groupArray = {groupId1, groupId2, groupId3};
     groupList = Arrays.asList(groupArray);
+
+    ObjectId[] groupArray2 = {groupId4};
+    groupList2 = Arrays.asList(groupArray2);
+
+    ObjectId[] groupArray3 = {groupId5};
+    groupList3 = Arrays.asList(groupArray3);
 
     openHuntId1 = new ObjectId();
     testOpenHunts.add(
@@ -147,13 +160,19 @@ public class OpenHuntControllerSpec {
         new Document()
             .append("hostid", "1234567")
             .append("title", "KKHunt")
-            .append("description", "for event test"));
+            .append("description", "for event test")
+            .append("groupids", groupList2)
+            .append("invitecode", "openHunt2InviteCode")
+            .append("numberofgroups", 1));
 
     testOpenHunts.add(
         new Document()
             .append("hostid", "1234567")
             .append("title", "NicHunt")
-            .append("description", "for even test 2"));
+            .append("description", "for even test 2")
+            .append("groupids", groupList3)
+            .append("invitecode", "openHunt3InviteCode")
+            .append("numberofgroups", 1));
 
     openHuntDocuments.insertMany(testOpenHunts);
 
@@ -191,6 +210,18 @@ public class OpenHuntControllerSpec {
       .append("_id", groupId3)
       .append("groupName", "Group3")
       .append("hunterIds", hunterList3));
+
+    testGroups.add(
+      new Document()
+      .append("_id", groupId4)
+      .append("groupName", "Group3"));
+
+
+    testGroups.add(
+      new Document()
+      .append("_id", groupId5)
+      .append("groupName", "Group5"));
+
 
     groupDocuments.insertMany(testGroups);
 
@@ -278,23 +309,25 @@ public class OpenHuntControllerSpec {
 
   @Test
   void canGetOpenHuntWithExistentInviteCode() throws IOException {
-    when(ctx.pathParam("invitecode")).thenReturn("openHunt1InviteCode");
+    when(ctx.pathParam("inviteCode")).thenReturn("openHunt1InviteCode");
 
-    openHuntController.getOpenHuntByInviteCode(ctx);
+    openHuntController.getOpenHuntbyInviteCode(ctx);
 
     verify(ctx).json(openHuntCaptor.capture());
     verify(ctx).status(HttpStatus.OK);
     assertEquals("CSCI3601Hunt", openHuntCaptor.getValue().title);
     assertEquals(openHuntId1.toHexString(), openHuntCaptor.getValue()._id);
+
+    System.err.println("We got a hunt with the ID " + openHuntCaptor.getValue()._id);
   }
 
   @Test
   void getOpenHuntWithNonexistentInviteCode() throws IOException {
     String code = "280820042908200427082004";
-    when(ctx.pathParam("invitecode")).thenReturn(code);
+    when(ctx.pathParam("inviteCode")).thenReturn(code);
 
     Throwable exception = assertThrows(NotFoundResponse.class, () -> {
-      openHuntController.getOpenHuntByInviteCode(ctx);
+      openHuntController.getOpenHuntbyInviteCode(ctx);
 
     });
 
@@ -509,6 +542,41 @@ void addInvalidNumberOfGroupsOpenHunt() throws IOException {
     assertNotEquals("", addedHunter.get("_id"));
     assertEquals("Ethan", addedHunter.get("hunterName"));
   }
+
+
+    @Test // Still failed
+  void canGetAllHunts() throws IOException {
+
+    // Ask the huntController to getHunts
+    // (which will ask the context for its queryParamMap)
+    openHuntController.getAllOpenHunts(ctx);
+
+    verify(ctx).json(openHuntArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    // Check that the database collection holds the same number of documents
+    // as the size of the captured List<Hunt>
+    assertEquals(
+        db.getCollection("openHunts").countDocuments(),
+        openHuntArrayListCaptor.getValue().size());
+  }
+
+//   @Test
+//   void chooseGroupWithOpenHuntWithBadId() throws IOException {
+//     String testNewHunter = """
+//       {
+//         "hunterName": "Ethan"
+//       }
+//       """;
+
+//     when(ctx.pathParam("id")).thenReturn("bad");
+
+//     Throwable exception = assertThrows(BadRequestResponse.class, () -> {
+//       openHuntController.addNewHunter(ctx);("bad");
+//     });
+
+//     assertEquals("The requested open hunt id wasn't a legal Mongo Object ID.", exception.getMessage());
+//   }
 
 }
 

@@ -106,20 +106,21 @@ public class OpenHuntController implements Controller {
     ctx.status(HttpStatus.OK);
 }
 
-  //gets the bare open hunt without the group json and the hunter json
-  public void getOpenHuntByInviteCode(Context ctx) {
-    String code = ctx.pathParam("invitecode");
-    OpenHunt openHunt;
+  // //gets the bare open hunt without the group json and the hunter json
+  // public void getOpenHuntByInviteCode(Context ctx) {
+  //   String code = ctx.pathParam("invitecode");
+  //   System.err.println("Getting open hunt with invite code " + code);
+  //   OpenHunt openHunt;
 
-    openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
+  //   openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
 
-    if (openHunt == null) {
-      throw new NotFoundResponse("The requested invite code was not found " + code);
-    } else {
-      ctx.json(openHunt);
-      ctx.status(HttpStatus.OK);
-    }
-  }
+  //   if (openHunt == null) {
+  //     throw new NotFoundResponse("The requested invite code was not found " + code);
+  //   } else {
+  //     ctx.json(openHunt);
+  //     ctx.status(HttpStatus.OK);
+  //   }
+  // }
 
 
   public void getOpenHunt(Context ctx) {
@@ -163,7 +164,6 @@ public class OpenHuntController implements Controller {
     int i = 0;
     ArrayList<Hunter> hunterArrayList = new ArrayList<>();
 
-    try {
         openHunt = openHuntCollection.find(eq("invitecode", inviteCode)).first();
         if (openHunt != null) {
             openHunt.groups = new Group[openHunt.numberofgroups];
@@ -180,12 +180,10 @@ public class OpenHuntController implements Controller {
                 i++;
             }
         }
-    } catch (IllegalArgumentException e) {
-        throw new BadRequestResponse("The requested invite code is not valid.");
-    }
+
 
     if (openHunt == null) {
-        throw new NotFoundResponse("The requested openHunt with invite code " + inviteCode + " was not found.");
+        throw new NotFoundResponse("The requested invite code was not found " + inviteCode);
     } else {
         ctx.json(openHunt);
         ctx.status(HttpStatus.OK);
@@ -286,21 +284,21 @@ public class OpenHuntController implements Controller {
       //need to append array list instead of array or else it causes an error
       groupDoc.append("hunterIds", hunterIdArrayList);
     System.out.println("groupId: " + groupId + " group name: " + group.groupName);
-    ArrayList<Document> hunterDocs = new ArrayList<>();
-    if(group.hunters != null) {
-        for(Hunter hunter : Arrays.asList(group.hunters)) {
-            Document hunterDoc = new Document("id", hunter._id)
-                                          .append("name", hunter.hunterName);
-            hunterDocs.add(hunterDoc);
-        }
-    }
+    // ArrayList<Document> hunterDocs = new ArrayList<>();
+    // if(group.hunters != null) {
+    //     for(Hunter hunter : Arrays.asList(group.hunters)) {
+    //         Document hunterDoc = new Document("id", hunter._id)
+    //                                       .append("name", hunter.hunterName);
+    //         hunterDocs.add(hunterDoc);
+    //     }
+    // }
     // Add the newHunter converted to Document
     // Document newHunterDoc = new Document("id", newHunter._id)
     //                .append("hunterName", newHunter.hunterName);
     // hunterDocs.add(newHunterDoc);
 
     // Use hunterDocs instead of hunterList for appending
-    groupDoc.append("hunters", hunterDocs);
+    // groupDoc.append("hunters", hunterDocs);
 
 
     updateDoc = new Document("$set", groupDoc);
@@ -409,8 +407,8 @@ public class OpenHuntController implements Controller {
     server.post(API_NEW_OPENHUNTS, this::addNewOpenHunt);
     //add new hunter, returns group id hunter is in
     server.post(API_NEW_HUNTER_BY_OPENHUNT_ID, this::addNewHunter);
-    //get bare openhunt by invite code
-    server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
+    // //get bare openhunt by invite code
+    // server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
   }
 
 }
