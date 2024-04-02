@@ -35,37 +35,40 @@ export class HuntLobbyComponent implements OnInit {
     // Retrieve the invite code from Local Storage, or default to null/undefined
     this.inviteCode = this.lobbyService.getInviteCode();
 
-    if (this.inviteCode !== '') {
+    if (this.inviteCode !== null) {
         // Since we now have an invite code, use it to search for the lobby
-        this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
+        this.lobbyService.searchByInviteCode(this.inviteCode.trim()).subscribe(
           (data: Lobby) => {
             this.lobby = data;
+            if (this.lobby != null) {
+              this.loadTaskList();
+              for (const groupId of this.lobby.groupids) {
+                  this.lobbyService.getGroupById(groupId).subscribe(
+                      (group: Group) => {
+                          this.groupList.push(group);
+                          console.log(group);
+                      },
+                      error => {
+                          console.error('Error:', error);
+                      }
+                  );
+              }
+            }
+            else
+            {
+              this.router.navigate(['']);
+            }
+
           },
           error => {
             console.error('Failed to retrieve open hunt by invite code', error);
           }
         );
 
-        if (this.lobby) {
-          this.loadTaskList();
-          for (const groupId of this.lobby.groupids) {
-              this.lobbyService.getGroupById(groupId).subscribe(
-                  (group: Group) => {
-                      this.groupList.push(group);
-                      console.log(group);
-                  },
-                  error => {
-                      console.error('Error:', error);
-                  }
-              );
-          }
-        }
-        else
-        {
-          // Redirect to the home page
-          this.router.navigate(['']);
-        }
-    } else {
+
+    }
+    else
+    {
       this.router.navigate(['']);
     }
 }

@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Hunter, Lobby, LobbyService } from '../hunts/lobby.service';
 import { FormsModule } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+// import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-home-component',
@@ -48,14 +48,10 @@ export class HomeComponent {
     this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
       (data: Lobby) => {
         this.lobby = data;
-        console.log(this.lobby)
-        console.log(this.lobby.active)
         if(this.lobby.active)
         {
           this.lobbyService.setUsername(this.username);
           this.addNewHunterToGroup(this.lobby._id);
-          this.router.navigate(['/hunt-lobby']);
-          console.log("in if: " + this.inviteCode)
         }
         else
         {
@@ -68,7 +64,8 @@ export class HomeComponent {
       error => {
         console.error('Failed to retrieve open hunt by invite code', error);
       }
-    );
+    )
+
     // if(this.lobby.active)
     // {
     //   this.lobbyService.setUsername(this.username);
@@ -107,6 +104,7 @@ export class HomeComponent {
     this.lobbyService.addNewHunterByOpenHuntId(huntId, newHunter).subscribe({
       next: (responseGroupId) => {
         console.log('Hunter added to group with ID:', responseGroupId);
+        this.router.navigate(['/hunt-lobby']);
         // Additional logic here, such as navigation or UI update
       },
       error: err => {
@@ -117,8 +115,8 @@ export class HomeComponent {
   }
 
 
-  // navigateToCreateTask(): void {
-  //   // this.router.navigate(['../','task','new', this.taskHuntId], {relativeTo: this.route});
-  //   this.router.navigate(['task','new', '65de46d19a719626538626bc']);
-  // }
+  navigateToCreateTask(): void {
+    // this.router.navigate(['../','task','new', this.taskHuntId], {relativeTo: this.route});
+    this.router.navigate(['task','new', '65de46d19a719626538626bc']);
+  }
 }

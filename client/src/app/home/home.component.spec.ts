@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { HomeComponent } from './home.component';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
-//import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../login/login.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
 
@@ -47,7 +47,7 @@ describe('home navigation', () => {
     await TestBed.configureTestingModule({
       imports: [HomeComponent, HttpClientTestingModule,
         RouterTestingModule.withRoutes([
-          //{ path: 'login', component: LoginComponent }
+           { path: 'login', component: LoginComponent }
       ])]
     })
     .compileComponents();
