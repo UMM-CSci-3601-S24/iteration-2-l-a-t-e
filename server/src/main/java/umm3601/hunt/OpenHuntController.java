@@ -272,11 +272,9 @@ public class OpenHuntController implements Controller {
     System.out.println("hunter list creating");
     ArrayList<String> hunterIdArrayList;
       if (group.hunterIds != null) {
-        hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
-      }
+        hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds)); }
       else {
-      hunterIdArrayList = new ArrayList<String>();
-      }
+      hunterIdArrayList = new ArrayList<String>(); }
       hunterIdArrayList.add(hunterId);
       System.out.println("hunter added retrieved");
       //need to append array list instead of array or else it causes an error
@@ -322,7 +320,7 @@ public class OpenHuntController implements Controller {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
         System.err.println("groupName: " + nextGroup.groupName);
         int groupSize;
-        if(nextGroup.hunterIds == null) {
+        if (nextGroup.hunterIds == null) {
           groupSize = 0; }
         else {
           System.err.println("hunterids:" + nextGroup.hunterIds.toString());
