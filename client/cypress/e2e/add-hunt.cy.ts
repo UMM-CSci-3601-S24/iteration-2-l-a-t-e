@@ -22,6 +22,8 @@ describe('Add hunt', () => {
     page.getFormField('title').type('test');
     page.addHuntButton().should('be.disabled');
     page.getFormField('description').type('testing description');
+    page.addHuntButton().should('be.disabled');
+    page.getFormField('estimatedTime').type('testing estimatedTime');
     page.getFormField('taskInput').type('task testing');
     page.addHuntButton().should('be.enabled');
   });
