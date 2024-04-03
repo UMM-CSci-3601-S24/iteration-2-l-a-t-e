@@ -1,6 +1,7 @@
 package umm3601.hunt;
 
 import umm3601.hunter.Group;
+import umm3601.hunter.Hunter;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -88,7 +89,8 @@ public class OpenHuntControllerSpec {
     private ObjectId openHuntId1;
 
     private ObjectId hunterId1;
-    private  ObjectId hunterId2;
+    private ObjectId hunterId2;
+    private ObjectId hunterId3;
 
     private List<ObjectId> groupList;
 
@@ -162,9 +164,14 @@ public class OpenHuntControllerSpec {
 
     hunterId1 = new ObjectId();
     hunterId2 = new ObjectId();
+    hunterId3 = new ObjectId();
 
-    ObjectId[] hunterArray = {hunterId1, hunterId2};
-    List<ObjectId> hunterList = Arrays.asList(hunterArray);
+    String[] hunterArray = {hunterId1.toString(), hunterId2.toString()};
+    List<String> hunterList = Arrays.asList(hunterArray);
+    String[] hunterArray2 = {hunterId3.toString()};
+    List<String> hunterList2 = Arrays.asList(hunterArray2);
+    String[] hunterArray3 = new String[0];
+    List<String> hunterList3 = Arrays.asList(hunterArray3);
 
     testGroups.add(
       new Document()
@@ -176,12 +183,14 @@ public class OpenHuntControllerSpec {
     testGroups.add(
       new Document()
       .append("_id", groupId2)
-      .append("groupName", "Group2"));
+      .append("groupName", "Group2")
+      .append("hunterIds", hunterList2));
 
     testGroups.add(
       new Document()
       .append("_id", groupId3)
-      .append("groupName", "Group3"));
+      .append("groupName", "Group3")
+      .append("hunterIds", hunterList3));
 
     groupDocuments.insertMany(testGroups);
 
@@ -198,6 +207,11 @@ public class OpenHuntControllerSpec {
       new Document()
       .append("_id", hunterId2)
       .append("hunterName", "Linnea"));
+
+    testHunters.add(
+      new Document()
+      .append("_id", hunterId3)
+      .append("hunterName", "Tristan"));
 
     hunterDocuments.insertMany(testHunters);
 
@@ -287,18 +301,6 @@ public class OpenHuntControllerSpec {
     assertEquals("The requested invite code was not found " + code, exception.getMessage());
   }
 
-  // test not working because bad request response cannot be mocked
-  // @Test
-  // void getOpenHuntWithBadInviteCode() throws IOException {
-  //   when(ctx.pathParam("invitecode")).thenReturn(" ");
-
-  //   Throwable exception = assertThrows(BadRequestResponse.class, () -> {
-  //     openHuntController.getOpenHuntByInviteCode(ctx);
-
-  //   });
-
-  //   assertEquals("The requested invite code wasn't a legal Mongo invite code.", exception.getMessage());
-  // }
 
   @Test
   void testGetGroupAndNestedHunters() throws IOException {
@@ -357,6 +359,7 @@ public class OpenHuntControllerSpec {
     when(ctx.bodyValidator(OpenHunt.class))
         .then(value -> new BodyValidator<OpenHunt>(testNewOpenHunt, OpenHunt.class, javalinJackson));
 
+
     openHuntController.addNewOpenHunt(ctx);
     verify(ctx).json(mapCaptor.capture());
 
@@ -369,7 +372,7 @@ public class OpenHuntControllerSpec {
 
     // Successfully adding the hunt should return newly generated, non-empty
     // MongoDB ID for that hunt.
-
+    System.out.println("added OpenHunt doc: " + addedOpenHunt);
     ArrayList<String> groupIdsList = (ArrayList<String>) addedOpenHunt.get("groupids");
 
     assertNotEquals("", addedOpenHunt.get("_id"));
@@ -401,26 +404,6 @@ void addInvalidTitleTooShortOpenHunt() throws IOException {
     });
 }
 
-// @Test
-// void addInvalidTitleNullOpenHunt() throws IOException {
-//   String testNewOpenHunt = """
-//     {
-//       "active": true,
-//       "hostid": "1234567",
-//       "huntid": "7654321",
-//       "title": "",
-//       "description": "this is just a test description",
-//       "invitecode": "40442",
-//       "numberofgroups": 3
-//     }
-//     """;
-
-//     when(ctx.bodyValidator(OpenHunt.class))
-//         .then(value -> new BodyValidator<OpenHunt>(testNewOpenHunt, OpenHunt.class, javalinJackson));
-
-//     assertThrows(ValidationException.class, () -> {
-//       openHuntController.addNewOpenHunt(ctx);
-//     });
 
 
 @Test
@@ -485,6 +468,47 @@ void addInvalidNumberOfGroupsOpenHunt() throws IOException {
         openHuntController.addNewOpenHunt(ctx);
       });
 }
+
+@Test
+  void addNewHunter() throws IOException {
+    String testNewHunter = """
+      {
+        "hunterName": "Ethan"
+      }
+      """;
+
+
+    when(ctx.pathParam("id")).thenReturn(openHuntId1.toHexString());
+
+    when(ctx.bodyValidator(Hunter.class))
+    .then(value -> new BodyValidator<Hunter>(testNewHunter, Hunter.class, javalinJackson));
+    System.out.println("testNewHunter:" + testNewHunter);
+
+    openHuntController.addNewHunter(ctx);
+    verify(ctx).json(mapCaptor.capture());
+
+    // Our status should be 201, our new Hunter was successfully created.
+    verify(ctx).status(HttpStatus.CREATED);
+
+    System.out.println("group id in test: " + mapCaptor.getValue().get("id"));
+    System.out.println("mapCaptor: " + mapCaptor.getAllValues());
+
+    // Verify that the hunter was added to the database with correct ID.
+    Document changedGroup = db.getCollection("groups")
+    .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+
+      System.out.println("added changedgroup doc: " + changedGroup);
+    ArrayList<String> hunterIDsInGroup = (ArrayList<String>) changedGroup.get("hunterIds");
+
+    Document addedHunter = db.getCollection("hunters")
+    .find(eq("_id", new ObjectId(hunterIDsInGroup.get(0)))).first();
+
+
+    assertEquals(1, hunterIDsInGroup.size());
+    assertNotEquals("", addedHunter.get("_id"));
+    assertEquals("Ethan", addedHunter.get("hunterName"));
+  }
 
 }
 
