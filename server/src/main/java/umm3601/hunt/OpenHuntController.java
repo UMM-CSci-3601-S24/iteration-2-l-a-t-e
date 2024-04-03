@@ -105,6 +105,7 @@ public class OpenHuntController implements Controller {
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+        hunterArrayList = new ArrayList<Hunter>();
         if (nextGroup.hunterIds != null) {
         for (String hunterId : nextGroup.hunterIds) {
           Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
