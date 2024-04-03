@@ -38,6 +38,7 @@ import umm3601.hunter.Hunter;
 
 public class OpenHuntController implements Controller {
 
+
   private static final String API_NEW_OPENHUNTS = "/api/openhunts/new";
   //this is the actual open hunt id
   private static final String API_OPENHUNTS_BY_ID = "/api/openhunts/{id}";
@@ -95,13 +96,14 @@ public class OpenHuntController implements Controller {
     OpenHunt openHunt;
     int i = 0;
     ArrayList<Hunter> hunterArrayList = new ArrayList<Hunter>();
-
+    System.err.println("id " + id);
     try {
       openHunt = openHuntCollection.find(eq("_id", new ObjectId(id))).first();
       if (openHunt != null) {
       openHunt.groups = new Group[openHunt.numberofgroups];
       for (String groupId : openHunt.groupids) {
         Group nextGroup = groupCollection.find(eq("_id", new ObjectId(groupId))).first();
+        hunterArrayList = new ArrayList<Hunter>();
         if (nextGroup.hunterIds != null) {
         for (String hunterId : nextGroup.hunterIds) {
           Hunter nextHunter = hunterCollection.find(eq("_id", new ObjectId(hunterId))).first();
@@ -112,6 +114,8 @@ public class OpenHuntController implements Controller {
         openHunt.groups[i].hunters = hunterArrayList.toArray(new Hunter[hunterArrayList.size()]);
         i++;
       }
+      System.err.println("openhunt " + openHunt.title);
+      System.err.println("openhunt group name" + openHunt.groups[2].groupName);
     }
 
     } catch (IllegalArgumentException e) {

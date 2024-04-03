@@ -1,0 +1,45 @@
+[
+  {
+    "_id": {
+      "$oid": "660c8ad71e3bebf5b9401139"
+    },
+    "hunterName": "Bartlett"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad7f14e1fcb9c50ae8c"
+    },
+    "hunterName": "Harmon"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad7402aaac7207d5b8e"
+    },
+    "hunterName": "Lynn"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad7f147eed9bc0bd951"
+    },
+    "hunterName": "Reynolds"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad7e107178b329f27b6"
+    },
+    "hunterName": "Latasha"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad71ddb64871d4cc2a6"
+    },
+    "hunterName": "Head"
+  },
+  {
+    "_id": {
+      "$oid": "660c8ad7c8bebf89d64dec25"
+    },
+    "hunterName": "Valarie"
+  }
+
+ ]

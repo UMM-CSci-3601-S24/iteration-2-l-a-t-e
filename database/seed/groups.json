@@ -3,18 +3,34 @@
     "_id": {
       "$oid": "6604555a2713335ce969fbda"
     },
-    "groupName": "Group1"
+    "groupName": "Group1",
+    "hunterIds": [
+      "660c8ad71e3bebf5b9401139",
+      "660c8ad7f14e1fcb9c50ae8c",
+      "660c8ad7402aaac7207d5b8e"
+    ],
+    "hunters": []
   },
   {
     "_id": {
       "$oid": "6604555a3c7292c3bdc28d20"
     },
-    "groupName": "Group2"
+    "groupName": "Group2",
+    "hunterIds": [
+      "660c8ad7f147eed9bc0bd951",
+      "660c8ad7e107178b329f27b6"
+    ],
+    "hunters": []
   },
   {
     "_id": {
       "$oid": "6604555a8aff87ad616185d9"
     },
-    "groupName": "Group3"
+    "groupName": "Group3",
+    "hunterIds": [
+      "660c8ad71ddb64871d4cc2a6",
+      "660c8ad7c8bebf89d64dec25"
+    ],
+    "hunters": []
   }
 ]
