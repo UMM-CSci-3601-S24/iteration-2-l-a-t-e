@@ -28,8 +28,12 @@ export class HuntCardComponent {
 
   onPlayClick(event: Event) {
     event.stopPropagation();
-    // Navigate to play hunt
+    this.router.navigate(['/play-hunt', this.hunt._id]);
   }
+  // onPlayClick(event: Event) {
+  //   event.stopPropagation();
+  //   // Navigate to play hunt
+  // }
 
   onEditClick(event: Event) {
     event.stopPropagation();

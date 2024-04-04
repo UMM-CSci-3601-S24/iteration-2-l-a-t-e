@@ -70,9 +70,12 @@ export class AddHuntComponent {
   }
 
   formControlHasError(controlName: string): boolean {
-    const control = this.addHuntForm.get(controlName);
-    return control && control.errors ? true : false;
+    return this.addHuntForm.get(controlName)?.errors ? true : false;
   }
+  // formControlHasError(controlName: string): boolean {
+  //   const control = this.addHuntForm.get(controlName);
+  //   return control && control.errors ? true : false;
+  // }
 
   getErrorMessage(controlName: string) {
     const control = this.addHuntForm.get(controlName);
