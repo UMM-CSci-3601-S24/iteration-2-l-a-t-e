@@ -273,10 +273,9 @@ public class OpenHuntController implements Controller {
     ArrayList<String> hunterIdArrayList;
       if (group.hunterIds != null) {
         hunterIdArrayList = new ArrayList<String>(Arrays.asList(group.hunterIds));
-      }
-      else {
+      } else {
       hunterIdArrayList = new ArrayList<String>();
-    }
+      }
       hunterIdArrayList.add(hunterId);
       System.out.println("hunter added retrieved");
       //need to append array list instead of array or else it causes an error
@@ -323,8 +322,7 @@ public class OpenHuntController implements Controller {
         int groupSize;
         if (nextGroup.hunterIds == null) {
           groupSize = 0;
-        }
-        else {
+        } else {
           System.err.println("hunterids:" + nextGroup.hunterIds.toString());
           groupSize = nextGroup.hunterIds.length;
           System.err.println("groupName: " + nextGroup.groupName + "group size :" + groupSize);

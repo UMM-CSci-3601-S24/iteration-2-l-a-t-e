@@ -46,6 +46,4 @@ describe('LobbyService', () => {
     req.flush(mockLobby); // Simulate successful response
   });
 
-  // Additional tests here...
-
 });

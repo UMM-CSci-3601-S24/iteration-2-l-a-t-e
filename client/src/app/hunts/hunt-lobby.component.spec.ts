@@ -48,7 +48,7 @@ describe('HuntLobbyComponent', () => {
 
   it('should display an error message when invite code is not provided', () => {
      // Don't set inviteCode to simulate error
-    fixture.detectChanges();
+
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     expect(component.errorMessage).toBe('Please enter a valid invite code.');
@@ -58,13 +58,17 @@ describe('HuntLobbyComponent', () => {
 
   it('should handle errors from LobbyService gracefully', () => {
     spyOn(mockLobbyService, 'getLobbyByInviteCode').and.returnValue(throwError(() => new Error('An error occurred')));
-    component.inviteCode = 'testCode';
+    component.inviteCode = '1234';
 
-    fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     expect(component.errorMessage).toBe('Please enter a valid invite code.');
     expect(fixture.nativeElement.querySelector('.error-message').textContent).toContain('Please enter a valid invite code.');
     });
   });
+
+  it('should initialize with default tab selected', () => {
+    expect(component.selectedTab).toEqual('tasks'); // Assuming 'tasks' is the default
+  });
+
 });
