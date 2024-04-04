@@ -23,6 +23,7 @@ export class HuntProfileComponent implements OnInit, OnDestroy {
   hunt: Hunt;
   tasks: Task[] = [];
   error: { help: string, httpResponse: string, message: string };
+  math = Math;
 
   // This `Subject` will only ever emit one (empty) value when
   // `ngOnDestroy()` is called, i.e., when this component is

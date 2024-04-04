@@ -53,6 +53,11 @@ export class HuntEditComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
+    estimatedTime: ['', Validators.compose([
+      Validators.required,
+      Validators.maxLength(3),
+      // Only allows a maximum of 3 digits
+      Validators.pattern("^[1-9][0-9]{0,2}$")])],
     editTaskForm: this.editTaskForm
   });
 
@@ -62,6 +67,25 @@ export class HuntEditComponent implements OnInit {
     return this.editTaskForm as FormArray;
   }
 
+  // Error messaging for estimatedTime
+  formControlHasError(controlName: string): boolean {
+    const control = this.editHuntForm.get(controlName);
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  // Error messaging for estimatedTime
+  getErrorMessage(controlName: string) {
+    const control = this.editHuntForm.get(controlName);
+
+    if (control.hasError('required')) {
+      return 'You must enter a value';
+    } else {
+      return 'Maximum of 3 digits';
+    }
+
+    // Add other error type handling here if needed
+  }
+
   ngOnInit(): void {
     this.route.params.pipe(
       switchMap((params: Params) => this.huntService.getHuntById(params['id'])),
@@ -69,7 +93,8 @@ export class HuntEditComponent implements OnInit {
         this.hunt = hunt;
         this.editHuntForm.patchValue({
           title: this.hunt.title,
-          description: this.hunt.description
+          description: this.hunt.description,
+          estimatedTime: this.hunt.estimatedTime.toString() // Convert to string
         });
       }),
       switchMap((hunt: Hunt) => this.taskService.getTasks({ huntid: hunt._id }))
@@ -93,7 +118,8 @@ export class HuntEditComponent implements OnInit {
       const updatedHunt: Partial<Hunt> = {
         ...this.hunt,
         title: this.editHuntForm.value.title,
-        description: this.editHuntForm.value.description
+        description: this.editHuntForm.value.description,
+        estimatedTime: parseInt(this.editHuntForm.value.estimatedTime)
       };
 
       this.huntService.updateHunt(this.hunt._id, updatedHunt).subscribe(() => {

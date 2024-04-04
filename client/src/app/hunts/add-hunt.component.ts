@@ -46,6 +46,11 @@ export class AddHuntComponent {
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(140)])],
+    estimatedTime: ['', Validators.compose([
+      Validators.required,
+      Validators.maxLength(3),
+      // Only allows a maximum of 3 digits
+      Validators.pattern("^[1-9][0-9]{0,2}$")])]
   });
 
   addTaskForm = this.formBuilder.group({
@@ -64,15 +69,21 @@ export class AddHuntComponent {
     return this.addTaskForm.get('tasks') as FormArray;
   }
 
-  formControlHasError(controlName: string, errorName: string = 'required'): boolean {
-    return this.addHuntForm.controls[controlName].hasError(errorName);
+  formControlHasError(controlName: string): boolean {
+    return this.addHuntForm.get(controlName)?.errors ? true : false;
   }
+  // formControlHasError(controlName: string): boolean {
+  //   const control = this.addHuntForm.get(controlName);
+  //   return control && control.errors ? true : false;
+  // }
 
   getErrorMessage(controlName: string) {
     const control = this.addHuntForm.get(controlName);
 
     if (control.hasError('required')) {
       return 'You must enter a value';
+    } else {
+      return '';
     }
 
     // Add other error type handling here if needed
@@ -103,7 +114,10 @@ export class AddHuntComponent {
 
     console.log('Submitting form with data:', huntData); // Log the data being submitted
 
-    this.huntService.addHunt(huntData).subscribe({
+    this.huntService.addHunt({
+      ...huntData,
+      estimatedTime: Number(huntData.estimatedTime)
+    }).subscribe({
       next: (response) => {
         this.currentHuntId = response; // Save the id of the created hunt
         this.isHuntCreated = true; // Set the flag to true

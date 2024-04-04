@@ -9,7 +9,22 @@
         <mat-card-header>
           <mat-card-title class="hunt-title">{{ hunt.title }} <i class="fa-solid fa-signature"></i></mat-card-title>
           <mat-card-subtitle class="hunt-description">{{ hunt.description }}</mat-card-subtitle>
-
+          <mat-card-subtitle class="hunt-estimatedTime">
+          {{
+            hunt.estimatedTime >= 60
+              ? (math.floor(hunt.estimatedTime / 60) === 1
+                  ? math.floor(hunt.estimatedTime / 60) + ' hour'
+                  : math.floor(hunt.estimatedTime / 60) + ' hours') +
+                (hunt.estimatedTime % 60 === 0
+                  ? ''
+                  : (hunt.estimatedTime % 60 === 1
+                      ? ' ' + hunt.estimatedTime % 60 + ' minute'
+                      : ' ' + hunt.estimatedTime % 60 + ' minutes'))
+              : (hunt.estimatedTime === 1
+                  ? hunt.estimatedTime + ' minute'
+                  : hunt.estimatedTime + ' minutes')
+          }}
+          </mat-card-subtitle>
         </mat-card-header>
 
         <div class="task-description">

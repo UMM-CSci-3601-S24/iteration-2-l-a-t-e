@@ -22,6 +22,15 @@
                 {{getErrorMessage('description')}}
               </mat-error>
             </mat-form-field>
+
+            <!-- Estimated time field -->
+            <mat-form-field appearance="fill" style="width: 15%;">
+              <mat-label>Estimated Time</mat-label>
+              <input matInput type="number" id="estimatedTime" formControlName="estimatedTime" required>
+              <mat-error *ngIf="formControlHasError('estimatedTime')" data-test="nameError">
+                {{getErrorMessage('estimatedTime')}}
+              </mat-error>
+            </mat-form-field>
           </div>
         </mat-card-content>
       </form>

@@ -11,6 +11,16 @@
         <textarea matInput formControlName="description" data-test="Description"></textarea>
       </mat-form-field>
 
+      <!-- Estimated time field -->
+      <mat-form-field class="flex-1" appearance="fill" style="width: 16%; height: 76px;">
+        <mat-label>Estimated Time</mat-label>
+        <input matInput type="number" id="estimatedTime" formControlName="estimatedTime" required>
+        <textarea matInput formControlName="estimatedTime" data-test="Estimated Time"></textarea>
+        <mat-error *ngIf="formControlHasError('estimatedTime')" data-test="nameError">
+          {{getErrorMessage('estimatedTime')}}
+        </mat-error>
+      </mat-form-field>
+
       <!-- Add this block for tasks -->
       <div formArrayName="editTaskForm">
         <div *ngFor="let taskFormGroup of editTaskForm.controls; let i = index" [formGroupName]="i">

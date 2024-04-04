@@ -8,6 +8,7 @@ export class AddHuntPage {
   private readonly snackBar = '.mat-mdc-simple-snack-bar';
   private readonly titleFieldName = 'title';
   private readonly descriptionFieldName = 'description';
+  private readonly estimatedTimeFieldName = 'estimatedTime';
   private readonly formFieldSelector = `mat-form-field`;
 
   navigateTo() {
@@ -44,6 +45,7 @@ export class AddHuntPage {
   addHunt(newHunt: Hunt) {
     this.getFormField(this.titleFieldName).type(newHunt.title);
     this.getFormField(this.descriptionFieldName).type(newHunt.description.toString());
+    this.getFormField(this.estimatedTimeFieldName).type(newHunt.estimatedTime.toString());
     // if (newUser.company) {
     //   this.getFormField(this.companyFieldName).type(newUser.company);
     // }

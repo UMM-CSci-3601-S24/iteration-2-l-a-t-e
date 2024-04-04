@@ -127,26 +127,30 @@ class HuntControllerSpec {
         new Document()
             .append("hostid", "1234567")
             .append("title", "CSCI3601Hunt")
-            .append("description", "teamAkaHunt"));
+            .append("description", "teamAkaHunt")
+            .append("estimatedTime", "30"));
 
     testHunts.add(
         new Document()
             .append("hostid", "1234567")
             .append("title", "KKHunt")
-            .append("description", "for event test"));
+            .append("description", "for event test")
+            .append("estimatedTime", "60"));
 
     testHunts.add(
         new Document()
             .append("hostid", "1234567")
             .append("title", "NicHunt")
-            .append("description", "for even test 2"));
+            .append("description", "for even test 2")
+            .append("estimatedTime", "120"));
 
     kkHuntId = new ObjectId();
     Document kk = new Document()
         .append("_id", kkHuntId)
         .append("hostid", "1234567")
         .append("title", "KKTestHunt")
-        .append("description", "This is test hunt for KK");
+        .append("description", "This is test hunt for KK")
+        .append("estimatedTime", "730");
 
     huntDocuments.insertMany(testHunts);
     huntDocuments.insertOne(kk);
@@ -315,7 +319,8 @@ class HuntControllerSpec {
         {
           "hostid": "1234567",
           "title": "Test title for hunt",
-          "description": "this is just a test description"
+          "description": "this is just a test description",
+          "estimatedTime": 30
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -352,7 +357,8 @@ class HuntControllerSpec {
         {
           "hostid": "345678",
           "title": "",
-          "description": "This is description of the test"
+          "description": "This is description of the test",
+          "estimatedTime": 10
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -376,7 +382,8 @@ class HuntControllerSpec {
         {
           "hostid": "345678",
           "title": "TEST TITLE",
-          "description": ""
+          "description": "",
+          "estimatedTime": 10
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -441,6 +448,7 @@ class HuntControllerSpec {
           "hostid": "345678",
           "title": "T",
           "description": "This is description of the test"
+          "estimatedTime": 10
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -494,7 +502,8 @@ class HuntControllerSpec {
         {
           "hostid": "1234567",
           "title": "KKTestHunt",
-          "description": "This is test hunt for KK"
+          "description": "This is test hunt for KK",
+          "estimatedTime": 730
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -514,7 +523,7 @@ class HuntControllerSpec {
 
   // update a hunt title in testHunts
   @Test
-  void updateAhuntTitle() throws IOException {
+  void updateAHuntTitle() throws IOException {
     String testID = kkHuntId.toHexString();
     when(ctx.pathParam("id")).thenReturn(testID);
 
@@ -522,7 +531,8 @@ class HuntControllerSpec {
         {
           "hostid": "1234567",
           "title": "KKTestHunt",
-          "description": "This is test hunt for KK"
+          "description": "This is test hunt for KK",
+          "estimatedTime": 730
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -603,6 +613,27 @@ class HuntControllerSpec {
     });
   }
 
+  @Test
+  void updateHuntEstimatedTimeToTooLong() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "KKTestHunt",
+          "description": "This is test hunt for KK"
+          "estimatedTime": 5679345678
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
+
   // Check that a hunt description is not updated to a null string
   @Test
   void updateHuntDescriptionToNull() throws IOException {
@@ -614,6 +645,26 @@ class HuntControllerSpec {
           "hostid": "1234567",
 
           "description": null
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(NullPointerException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
+
+  @Test
+  void updateHuntEstimatedTimeToNull() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+
+          "estimatedTime": null
         }
         """;
     when(ctx.bodyValidator(Hunt.class))
@@ -643,4 +694,26 @@ class HuntControllerSpec {
       huntController.updateHunt(ctx);
     });
   }
+
+  @Test
+  void updateHuntEstimatedTimeToEmptyString() throws IOException {
+    String testID = kkHuntId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    String testNewHunt = """
+        {
+          "hostid": "1234567",
+          "title": "KKTestHunt",
+          "description": "This is test hunt for KK"
+          "estimatedTime":
+        }
+        """;
+    when(ctx.bodyValidator(Hunt.class))
+        .then(value -> new BodyValidator<Hunt>(testNewHunt, Hunt.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      huntController.updateHunt(ctx);
+    });
+  }
+
 }
