@@ -20,7 +20,7 @@ export class HomeComponent {
   username: string;
   inviteCode: string;
   lobby: Lobby;
-  constructor(private router: Router, private lobbyService: LobbyService) { }
+  constructor(private router: Router, public lobbyService: LobbyService) { }
   showHunterInput: boolean = false;
 
 
@@ -37,9 +37,9 @@ export class HomeComponent {
     }
   }
 
-  submitHunterForm() {
+  // submitHunterForm() {
 
-  }
+  // }
 
 
 
@@ -82,20 +82,20 @@ export class HomeComponent {
     // }
   }
 
-  searchByInviteCode() {
-    if (this.inviteCode) {
-      this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
-        (data: Lobby) => {
-          this.lobby = data;
-        },
-        error => {
-          console.error('Failed to retrieve open hunt by invite code', error);
-        }
-      );
-    } else {
-      console.error('Please enter a valid invite code.');
-    }
-  }
+  // searchByInviteCode() {
+  //   if (this.inviteCode) {
+  //     this.lobbyService.searchByInviteCode(this.inviteCode).subscribe(
+  //       (data: Lobby) => {
+  //         this.lobby = data;
+  //       },
+  //       error => {
+  //         console.error('Failed to retrieve open hunt by invite code', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('Please enter a valid invite code.');
+  //   }
+  // }
 
   addNewHunterToGroup(huntId: string) {
     const newHunter: Partial<Hunter>  =

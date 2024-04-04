@@ -89,71 +89,71 @@ export class MockLobbyService extends LobbyService {
     super(null);
   }
 
-  searchByInviteCode(code: string): Observable<Lobby> {
-    if (code === MockLobbyService.testOpenHunts[0]._id) {
-      return of(MockLobbyService.testOpenHunts[0]);
-    } else if (code === MockLobbyService.testOpenHunts[1]._id) {
-      return of(MockLobbyService.testOpenHunts[1]);
-    } else {
-      return of(null);
-    }
-  }
+  // searchByInviteCode(code: string): Observable<Lobby> {
+  //   if (code === MockLobbyService.testOpenHunts[0]._id) {
+  //     return of(MockLobbyService.testOpenHunts[0]);
+  //   } else if (code === MockLobbyService.testOpenHunts[1]._id) {
+  //     return of(MockLobbyService.testOpenHunts[1]);
+  //   } else {
+  //     return of(null);
+  //   }
+  // }
 
-  getGroupById(id: string): Observable<Group> {
-    if (id === MockLobbyService.testGroups[0]._id) {
-      return of(MockLobbyService.testGroups[0]);
-    } else if (id === MockLobbyService.testGroups[1]._id) {
-      return of(MockLobbyService.testGroups[1]);
-    } else {
-      return of(null);
-    }
-  }
+  // getGroupById(id: string): Observable<Group> {
+  //   if (id === MockLobbyService.testGroups[0]._id) {
+  //     return of(MockLobbyService.testGroups[0]);
+  //   } else if (id === MockLobbyService.testGroups[1]._id) {
+  //     return of(MockLobbyService.testGroups[1]);
+  //   } else {
+  //     return of(null);
+  //   }
+  // }
 
-  getOpenHuntById(id: string): Observable<Lobby> {
-    if (id === MockLobbyService.testOpenHunts[0]._id) {
-      return of(MockLobbyService.testOpenHunts[0]);
-    } else if (id === MockLobbyService.testOpenHunts[1]._id) {
-      return of(MockLobbyService.testOpenHunts[1]);
-    } else {
-      return of(null);
-    }
-  }
+  // getOpenHuntById(id: string): Observable<Lobby> {
+  //   if (id === MockLobbyService.testOpenHunts[0]._id) {
+  //     return of(MockLobbyService.testOpenHunts[0]);
+  //   } else if (id === MockLobbyService.testOpenHunts[1]._id) {
+  //     return of(MockLobbyService.testOpenHunts[1]);
+  //   } else {
+  //     return of(null);
+  //   }
+  // }
 
-  addNewOpenHunt(newOpenHuntDetails: Partial<Lobby>): Observable<string> {
-    let idList: string[];
-    for(let i = 1; i<= newOpenHuntDetails.numberofgroups; i++){
-    const newGroup: Group = {
-      _id: `group${MockLobbyService.testGroups.length + 1}_id`,
-      groupName: `Group${i}`,
-      hunterIds: [],
-      hunters: []
-    }
-    idList.push(newGroup._id)
-  }
-    const newOpenHunt: Lobby = {
-      _id: `hunt${MockLobbyService.testOpenHunts.length + 1}_id`,
-      active: newOpenHuntDetails.active,
-      hostid: newOpenHuntDetails.hostid,
-      huntid: newOpenHuntDetails.huntid,
-      title: newOpenHuntDetails.title,
-      description: newOpenHuntDetails.description,
-      invitecode: newOpenHuntDetails.invitecode,
-      numberofgroups: newOpenHuntDetails.numberofgroups,
-      groupids: idList
-    };
-    MockLobbyService.testOpenHunts.push(newOpenHunt);
+  // addNewOpenHunt(newOpenHuntDetails: Partial<Lobby>): Observable<string> {
+  //   let idList: string[];
+  //   for(let i = 1; i<= newOpenHuntDetails.numberofgroups; i++){
+  //   const newGroup: Group = {
+  //     _id: `group${MockLobbyService.testGroups.length + 1}_id`,
+  //     groupName: `Group${i}`,
+  //     hunterIds: [],
+  //     hunters: []
+  //   }
+  //   idList.push(newGroup._id)
+  // }
+  //   const newOpenHunt: Lobby = {
+  //     _id: `hunt${MockLobbyService.testOpenHunts.length + 1}_id`,
+  //     active: newOpenHuntDetails.active,
+  //     hostid: newOpenHuntDetails.hostid,
+  //     huntid: newOpenHuntDetails.huntid,
+  //     title: newOpenHuntDetails.title,
+  //     description: newOpenHuntDetails.description,
+  //     invitecode: newOpenHuntDetails.invitecode,
+  //     numberofgroups: newOpenHuntDetails.numberofgroups,
+  //     groupids: idList
+  //   };
+  //   MockLobbyService.testOpenHunts.push(newOpenHunt);
 
-    return of(newOpenHunt._id);
-  }
+  //   return of(newOpenHunt._id);
+  // }
 
-  addNewHunterByOpenHuntId(openHuntId: string, hunterData: Partial<Hunter>): Observable<string> {
-    const newHunter: Hunter = {
-      _id: `hunter${MockLobbyService.testHunters.length +1}_id`,
-      hunterName: hunterData.hunterName
-    }
-    MockLobbyService.testGroups[0].hunterIds.push(newHunter._id);
-    return of(MockLobbyService.testGroups[0]._id)
-  }
+  // addNewHunterByOpenHuntId(openHuntId: string, hunterData: Partial<Hunter>): Observable<string> {
+  //   const newHunter: Hunter = {
+  //     _id: `hunter${MockLobbyService.testHunters.length +1}_id`,
+  //     hunterName: hunterData.hunterName
+  //   }
+  //   MockLobbyService.testGroups[0].hunterIds.push(newHunter._id);
+  //   return of(MockLobbyService.testGroups[0]._id)
+  // }
 
   }
 

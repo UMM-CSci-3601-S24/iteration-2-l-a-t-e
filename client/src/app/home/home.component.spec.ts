@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { LoginComponent } from '../login/login.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { LobbyService } from '../hunts/lobby.service';
+import { MockLobbyService } from 'src/testing/lobby.service.mock';
 
 describe('Home', () => {
 
@@ -18,6 +20,7 @@ describe('Home', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
     imports: [MatCardModule, HomeComponent, HttpClientTestingModule],
+    providers: [{ provide: LobbyService, useValue: new MockLobbyService}]
 });
 
     fixture = TestBed.createComponent(HomeComponent);
@@ -69,11 +72,14 @@ describe('home navigation', () => {
   });
   }));
 
-  it('showHunterInput changes flag', () =>{
+  it('showHunterInput changes flag and if false sets variable to empty', () =>{
   expect(component.showHunterInput).toBeFalse;
   component.showHunterForm();
   expect(component.showHunterInput).toBeTrue;
-})
+  component.showHunterForm();
+  expect(component.inviteCode).toEqual('')
+  expect(component.username).toEqual('')
+});
 
 // it('should toggle input visibility when clicking the Hunter button', () => {
 //   // Initially, inputs should not be visible
@@ -88,4 +94,16 @@ describe('home navigation', () => {
 //   expect(fixture.debugElement.query(By.css('.input-card'))).not.toBeNull();
 // });
 
+it('submit code function works', () => {
+  component.inviteCode = '1234';
+  component.username = 'testUsername';
+  component.submitCode();
+  expect(component.lobbyService.getInviteCode()).toEqual('1234');
+  component.lobbyService.searchByInviteCode(component.inviteCode);
+});
+
+it('add new hunter to group function works', () => {
+component.username = 'testUsername';
+component.addNewHunterToGroup('hunt1_id');
+});
 });
