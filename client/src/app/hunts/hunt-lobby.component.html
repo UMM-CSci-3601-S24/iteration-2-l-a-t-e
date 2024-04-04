@@ -1,0 +1,61 @@
+<div *ngIf="lobby" class="lobby-container">
+  <div class="lobby-header">
+      <h1>{{ lobby.title }}</h1>
+      <p>{{ lobby.description }}</p>
+  </div>
+  <div class="lobby-info-container">
+      <div class="lobby-info user-info">
+          <strong>User:</strong>
+          <p>{{ username }}</p>
+      </div>
+      <div class="lobby-info status-info">
+          <strong>Status:</strong>
+          <p>{{ lobby.active ? 'Active' : 'Inactive' }}</p>
+      </div>
+  </div>
+  <div class="tabs">
+      <button (click)="selectedTab = 'tasks'" [ngClass]="{'active': selectedTab === 'tasks'}">Tasks</button>
+      <button (click)="selectedTab = 'groups'" [ngClass]="{'active': selectedTab === 'groups'}">Groups</button>
+  </div>
+  <div class="tab-content">
+      <div *ngIf="selectedTab === 'tasks'" class="tasks">
+        <div *ngIf="taskList && taskList.length > 0" class="tasks-container">
+            <table class="tasks-table">
+                <thead>
+                    <tr>
+                        <th>Tasks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of taskList">
+                        <td>{{ task.description }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div *ngIf="selectedTab === 'groups'" class="groups">
+          <div *ngIf="lobby" class="lobby-container">
+              <div class="group-tabs">
+                  <div class="scroll-container">
+                      <button *ngFor="let group of groupList; let i = index" (click)="selectedGroupIndex = i" [ngClass]="{'active': selectedGroupIndex === i}">{{ group.groupName }}</button>
+                  </div>
+              </div>
+              <div *ngIf="groupList.length > 0">
+                  <table class="hunters-table">
+                      <thead>
+                          <tr>
+                              <th>Hunter Name</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let hunter of groupList[selectedGroupIndex]?.hunters">
+                              <td>{{ hunter.hunterName }}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

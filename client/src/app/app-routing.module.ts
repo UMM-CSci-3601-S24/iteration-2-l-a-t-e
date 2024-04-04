@@ -8,6 +8,10 @@ import { HuntEditComponent } from './hunts/edit.component';
 import { AddHuntComponent } from './hunts/add-hunt.component';
 import { OpenHuntComponent } from './open-hunts/open-hunt.component';
 import { NewOpenHuntComponent } from './open-hunts/new-open-hunt.component';
+import { HuntLobbyComponent } from './hunts/hunt-lobby.component';
+import { LoginComponent } from './login/login.component';
+
+
 
 // Note that the 'hunts/new' route needs to come before 'hunts/:id'.
 // If 'hunts/:id' came first, it would accidentally catch requests to
@@ -19,8 +23,15 @@ const routes: Routes = [
   {path: 'hunts/edit/:id', component: HuntEditComponent, title: 'Edit Hunt'},
   {path: 'hunts/new', component: AddHuntComponent, title: 'New Hunt'},
   {path: 'hunts/:id', component: HuntProfileComponent, title: 'Hunt Profile'},
+  {path: 'hunt-lobby', component: HuntLobbyComponent, title: 'Hunt Lobby'},
   {path: 'tasks', component: TaskListComponent, title: 'Task List'},
   {path: 'tasks/new', component: TaskListComponent, title: 'New Task'},
+  {path: '', component: HomeComponent},
+  {path: 'add-hunt', component: AddHuntComponent },
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'hunt-list', component: HuntListComponent },
   {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'},
   {path: 'openhunts/new/:id', component: NewOpenHuntComponent, title: 'Hunt'}, // id for coresponing hunt, not openhunt id.
   {path: 'openhunts/:id', component: OpenHuntComponent, title: 'Hunt'} // openhunt id.

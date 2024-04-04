@@ -11,7 +11,7 @@ describe('App', () => {
   beforeEach(() => page.navigateTo());
 
   it('Should have the correct title', () => {
-    page.getAppTitle().should('contain', 'Scav-a-Snap - By AKA');
+    page.getAppTitle().should('contain', 'Scav-a-Snap');
   });
 
   it('The sidenav should open, navigate to "Hunts" and back to "Home"', () => {
@@ -22,7 +22,7 @@ describe('App', () => {
       .should('be.visible');
 
     page.getSidenavButton().click();
-    page.getNavLink('Hunts').click();
+    page.getNavLink('My Hunts').click();
     cy.url().should('match', /\/hunts$/);
     page.getSidenav()
       .should('be.hidden');

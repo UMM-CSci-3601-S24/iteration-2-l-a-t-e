@@ -67,6 +67,10 @@ describe('Hunt list', () => {
   it('contains a hunt with hostid "chris"', () => {
     expect(huntList.serverFilteredHunts.some((hunt: { hostid: string; }) => hunt.hostid === 'chris')).toBe(true);
   });
+
+  it('returns false if there is no hunt with id', () => {
+    expect(huntList.serverGenericHunts.some((hunt: { hostid: string; }) => hunt.hostid === 'none')).toBe(false);
+  });
 });
 
 describe('Misbehaving Hunt List', () => {

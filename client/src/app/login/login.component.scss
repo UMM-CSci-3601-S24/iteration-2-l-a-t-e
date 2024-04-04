@@ -1,0 +1,59 @@
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: self-start; // Adjusts vertical alignment to start, making the card appear higher
+  height: 100vh;
+  padding-top: 5vh; // Adds some padding at the top to ensure the card isn't right at the edge
+}
+
+.login-card {
+  width: 60%; // Increase the card size
+  max-width: 500px; // Ensures the card is not too wide on larger screens
+  padding: 40px; // Increases padding for more internal space
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 10px; // Slightly more rounded corners
+  margin: auto; // Centers the card horizontally
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; // Ensures children (buttons, inputs) stretch to match the card's width
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Centers the input fields
+  width: 100%;
+}
+
+.form-group label {
+  align-self: flex-start; // Aligns the label to the left
+  width: 80%; // Matches the width of the input fields to maintain alignment
+  padding-left: calc(10%); // Adjusts label's starting position to align with the centered inputs
+}
+
+.form-group input {
+  width: 80%;
+  padding: 15px;
+  font-size: 16px;
+  margin-bottom: 20px; // Adds space below each input field
+  box-sizing: border-box;
+  display: block;
+  margin-left: auto; // These two margins center the input field
+  margin-right: auto;
+}
+
+
+.login-button {
+  padding: 15px 0; // Adjusts padding for a taller, more prominent button
+  font-size: 18px; // Makes the button text larger
+  width: 100%; // Ensures the button spans the entire card width
+  margin-top: 20px; // Adds some space above the button
+  background-color: forestgreen;
+  color: white;
+}
+
+.links {
+  margin-top: 20px; // Adds space between the login button and the links
+  text-align: center;
+  color: forestgreen;
+}

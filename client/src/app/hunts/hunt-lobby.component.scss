@@ -1,0 +1,172 @@
+.lobby-container {
+  font-family: 'Arial', sans-serif;
+  color: #add8e6;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.lobby-container {
+  max-width: 100%; /* Adjust this to match the table width, if necessary */
+  margin: auto;
+  padding: 0 20px; /* Adds some padding on the sides */
+}
+
+.lobby-header h1, .lobby-header p, .lobby-info strong, .lobby-info p {
+  margin: 0;
+  padding: 8px 0; /* Adds vertical padding */
+}
+
+.lobby-header h1 {
+  font-size: 2em; /* Makes the title larger */
+}
+
+.lobby-header p {
+  font-size: 1.2em; /* Adjusts description text size */
+  color: #add8e6;
+}
+
+.lobby-info-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Creates a responsive layout */
+  gap: 20px; /* Space between columns */
+  align-items: center;
+  width: 100%; /* Ensures it spans the full width of its container */
+  margin-top: 20px;
+}
+
+.lobby-info {
+  display: flex;
+  align-items: center;
+}
+
+.lobby-info strong {
+  font-size: 1.1em; /* Larger text for labels */
+  color: forestgreen; /* Example color for the labels */
+  margin-right: 10px; /* Adds space between the label and the value */
+}
+
+.lobby-info p {
+  font-size: 1.1em; /* Larger text for values */
+}
+
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.navigation button {
+  background-color: forestgreen;
+  color: #282c34;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.navigation button:hover {
+  background-color: darken($color: forestgreen, $amount: 10%);
+}
+
+.content-panel {
+  display: none;
+}
+
+.content-panel ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content-panel ul li {
+  margin: 10px 0;
+}
+
+.tabs button {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    width: 50%; /* Ensure each tab takes up half the width of the container */
+    background-color: forestgreen;
+    color: #add8e6;
+}
+
+.tabs button:hover {
+    background-color: darken($color: forestgreen, $amount: 10%);
+    color:#add8e6;
+}
+
+.tabs button.active {
+    background-color: darken($color: forestgreen, $amount: 10%);
+    color: #add8e6;
+}
+
+.tab-content {
+    padding: 20px;
+    clear: both;
+    color: #add8e6;
+    overflow-y: auto;
+    max-height: 50vh; /* Adjust based on your needs */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.tab-content::-webkit-scrollbar {
+  display: none; /* For WebKit browsers like Chrome and Safari */
+}
+
+.group-tabs .scroll-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}
+
+.group-tabs button {
+  flex: 1;
+  min-width: 120px; /* Adjust minimum width for readability */
+  padding: 10px;
+  border: 1px solid #add8e6;
+  background-color: forestgreen;
+  color: #add8e6;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.group-tabs button.active {
+  background-color: darken($color: forestgreen, $amount: 10%);
+  color: #add8e6;
+  border-color: forestgreen;
+}
+
+.tasks-container, .lobby-container {
+  max-width: 800px; /* Adjust based on your preference */
+  margin: auto;
+}
+
+.tasks-table, .hunters-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tasks-table th, .tasks-table td, .hunters-table th, .hunters-table td {
+  border: 1px solid #add8e6;
+  padding: 8px;
+  text-align: left;
+}
+
+.tasks-table th, .hunters-table th {
+  background-color: #282c34;
+  position: sticky;
+}

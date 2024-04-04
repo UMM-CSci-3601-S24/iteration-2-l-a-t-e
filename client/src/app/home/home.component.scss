@@ -1,0 +1,97 @@
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around; // Adds more space between the cards vertically
+  padding: 5px; // Adds some padding around the container for better spacing from the viewport edges
+}
+
+.home-card, .input-card {
+  width: 90%; // Example width, adjust as needed
+  max-width: 500px; // Ensures the card doesn't get too wide on larger screens
+  margin: 20px 0; // Adds more space between cards
+  padding: 20px; // Adds internal spacing within cards
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); // Adds a subtle shadow for depth
+}
+.home-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // This centers children vertically for column direction
+  align-items: center; // This centers children horizontally
+  height: 100%; // Adjust this as necessary
+}
+.input-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.input-card .sign {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+.sign, .choice-sign {
+  text-align: center; // Centers the content within the sign areas
+  max-width: 95%;
+}
+
+.sign {
+  display: flex; // Enables flexbox layout
+  justify-content: center; // Centers content horizontally
+  align-items: center; // Centers content vertically
+  height: 100%; // Ensures the div takes up the full height of its parent
+  text-align: center; // Centers the text
+}
+
+.sign h1 {
+  font-family: 'Roboto Mono', monospace; // Example of a blocky, classy font
+  font-size: 24px; // Adjusted font size for legibility
+  font-weight: bold; // Makes the font weight bold
+  margin: 0; // Removes any default margin
+  padding: 0; // Removes any default padding
+}
+
+.form-control {
+  margin: 10px 0; // Adds more space between form inputs
+  padding: 10px; // Increases padding within inputs for better text visibility
+  width: 100%; // Ensures input takes full width of its parent
+}
+
+.submit-button, .action-button {
+  padding: 15px 0; // Adjusts padding for a taller, more prominent button
+  font-size: 18px; // Makes the button text larger
+  width: 100%; // Ensures the button spans the entire card width
+  margin-top: 20px; // Adds some space above the button
+  background-color: forestgreen;
+  color: white;
+  min-width: 25vw; // Makes buttons full width
+
+  &:hover {
+    background-color: darken(forestgreen, 5%); // Darkens button on hover for interactive feedback
+  }
+}
+
+// Specific adjustments for bottom-card spacing and layout
+.bottom-card {
+  .action-button {
+    margin: 10px; // Adds spacing between buttons
+    width: auto; // Allows button width to adjust to its content
+  }
+}
+
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}

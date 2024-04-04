@@ -8,10 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
+
+
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         BrowserAnimationsModule,
         RouterTestingModule,
         MatToolbarModule,
@@ -19,9 +21,9 @@ describe('AppComponent', () => {
         MatSidenavModule,
         MatCardModule,
         MatListModule,
-        AppComponent
-    ],
-}).compileComponents();
+      ],
+
+    }).compileComponents();
   }));
 
   it('should create the app', () => {
@@ -30,9 +32,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Scav-a-Snap - By AKA'`, () => {
+  it(`should have as title 'Scav-a-Snap - Team L.A.T.E'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Scav-a-Snap - By AKA');
+    expect(app.title).toEqual('Scav-a-Snap - Team L.A.T.E');
   });
 });
