@@ -107,20 +107,20 @@ public class OpenHuntController implements Controller {
 }
 
   // //gets the bare open hunt without the group json and the hunter json
-  // public void getOpenHuntByInviteCode(Context ctx) {
-  //   String code = ctx.pathParam("invitecode");
-  //   System.err.println("Getting open hunt with invite code " + code);
-  //   OpenHunt openHunt;
+  public void getOpenHuntByInviteCode(Context ctx) {
+    String code = ctx.pathParam("invitecode");
+    System.err.println("Getting open hunt with invite code " + code);
+    OpenHunt openHunt;
 
-  //   openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
+    openHunt = openHuntCollection.find(eq(INVITE_CODE_KEY, code)).first();
 
-  //   if (openHunt == null) {
-  //     throw new NotFoundResponse("The requested invite code was not found " + code);
-  //   } else {
-  //     ctx.json(openHunt);
-  //     ctx.status(HttpStatus.OK);
-  //   }
-  // }
+    if (openHunt == null) {
+      throw new NotFoundResponse("The requested invite code was not found " + code);
+    } else {
+      ctx.json(openHunt);
+      ctx.status(HttpStatus.OK);
+    }
+  }
 
 
   public void getOpenHunt(Context ctx) {
@@ -402,7 +402,7 @@ public class OpenHuntController implements Controller {
     //add new hunter, returns group id hunter is in
     server.post(API_NEW_HUNTER_BY_OPENHUNT_ID, this::addNewHunter);
     // //get bare openhunt by invite code
-    // server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
+    server.get(API_OPENHUNTS_BY_INVITE_CODE, this::getOpenHuntByInviteCode);
   }
 
 }
