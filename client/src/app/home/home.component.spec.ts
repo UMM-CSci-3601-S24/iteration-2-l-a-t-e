@@ -127,7 +127,7 @@ it('should navigate to "/hunt-lobby" for an active lobby after submitting code',
   tick(); // Simulate async operation
 
   expect(mockedMethod)
-  .toHaveBeenCalledWith('123')
+  .toHaveBeenCalledWith('123');
   // expect(component.addNewHunterToGroup).toHaveBeenCalledWith('123');
   // expect(component.router.navigate).toHaveBeenCalledWith(['/hunt-lobby']);
 }));
