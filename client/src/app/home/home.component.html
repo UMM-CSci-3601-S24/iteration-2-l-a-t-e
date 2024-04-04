@@ -1,14 +1,23 @@
-<div class="flex-row">
-  <div class="flex-1">
+  <div class="flex-container">
     <mat-card class="home-card">
-      <mat-card-header>
-        <mat-card-title>
-          Home
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        This is a home page! It doesn't do anything!
-      </mat-card-content>
+      <div class="sign">
+        <h1>Welcome to the hunt</h1>
+      </div>
+    </mat-card>
+
+    <mat-card class="input-card" *ngIf="showHunterInput">
+      <div class="sign">
+        <input type="text" placeholder="Enter the invite code">
+        <button class="submit-button" >Submit</button>
+      </div>
+    </mat-card>
+
+    <mat-card class="home-card bottom-card">
+      <div class="choice-sign">
+        <h1>Choose Your Adventure</h1>
+        <button class="action-button" (click)="hostLogin()">Host</button>
+        <button class="action-button" (click)="showHunterForm()">Hunter</button>
+      </div>
     </mat-card>
   </div>
-</div>
+  <!-- <button class="create-button" (click)="navigateToCreateTask();">Add Task</button> -->

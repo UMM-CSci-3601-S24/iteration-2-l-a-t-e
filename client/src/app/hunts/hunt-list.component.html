@@ -20,12 +20,12 @@
 </div>
 <div class="flex-row">
   <div class="flex-1">
-    <mat-card class="hunt-card-wrapper-gen">
+    <mat-card class="hunt-card-wrapper-gen" data-test="hunt-card">
       <div class="banner-gen">Scav-a-Snap Hunts</div>
       <div class="flex-1">
         <div class="hunt-cards-container flex-row gap-8 flex-wrap">
           @for (hunt of serverGenericHunts; track hunt._id) {
-          <app-hunt-card class="hunt-card" [hunt]="hunt" [editable]="false"></app-hunt-card>
+          <app-hunt-card class="hunt-card" data-test="hunt-card" [hunt]="hunt" [editable]="true"></app-hunt-card>
           }
         </div>
       </div>
