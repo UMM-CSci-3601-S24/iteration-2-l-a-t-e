@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
 import { LobbyService } from '../hunts/lobby.service';
 import { MockLobbyService } from 'src/testing/lobby.service.mock';
+import { of } from 'rxjs';
 
 describe('Home', () => {
 
@@ -101,6 +102,36 @@ it('submit code function works', () => {
   expect(component.lobbyService.getInviteCode()).toEqual('1234');
   component.lobbyService.searchByInviteCode(component.inviteCode);
 });
+it('should navigate to "/hunt-lobby" for an active lobby after submitting code', fakeAsync(() => {
+  spyOn(component.lobbyService, 'setInviteCode');
+  spyOn(component.lobbyService, 'searchByInviteCode').and.returnValue(of({
+    _id: "123",
+    active: true,
+    hostid: "generic",
+    huntid: "588935f5236b2d4ad76a1411",
+    title: "Generic-Classic",
+    description: "this is a classic scavenger hunt that will apply to most towns",
+    invitecode: "17.0407",
+    numberofgroups: 3,
+    groupids: [
+      "6604555a2713335ce969fbda",
+      "6604555a3c7292c3bdc28d20",
+      "6604555a8aff87ad616185d9"
+    ]
+ }));
+  const mockedMethod = spyOn(component, 'addNewHunterToGroup').and.callThrough();
+
+  component.inviteCode = 'validCode';
+  component.username = 'hunterName';
+  component.submitCode();
+  tick(); // Simulate async operation
+
+  expect(mockedMethod)
+  .toHaveBeenCalledWith('123')
+  // expect(component.addNewHunterToGroup).toHaveBeenCalledWith('123');
+  // expect(component.router.navigate).toHaveBeenCalledWith(['/hunt-lobby']);
+}));
+
 
 it('add new hunter to group function works', () => {
 component.username = 'testUsername';

@@ -20,7 +20,7 @@ export class HomeComponent {
   username: string;
   inviteCode: string;
   lobby: Lobby;
-  constructor(private router: Router, public lobbyService: LobbyService) { }
+  constructor(public router: Router, public lobbyService: LobbyService) { }
   showHunterInput: boolean = false;
 
 
