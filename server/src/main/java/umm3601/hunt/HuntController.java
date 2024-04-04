@@ -259,8 +259,10 @@ public void getAllHunts(Context ctx) {
     huntDoc.append("description", hunt.description);
     huntDoc.append("estimatedTime", hunt.estimatedTime);
 
+    //changes the specified fields in the $set command json
     Document updateDoc = new Document("$set", huntDoc);
     huntCollection.updateOne(eq("_id", new ObjectId(id)), updateDoc);
+
 
     ctx.status(HttpStatus.OK);
   }

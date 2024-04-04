@@ -1,0 +1,19 @@
+[
+  {
+    "_id": {
+      "$oid": "6604520f333d856fd89719f5"
+    },
+    "active": true,
+    "hostid": "generic",
+    "huntid": "588935f5236b2d4ad76a1411",
+    "title": "Generic-Classic",
+    "description": "this is a classic scavenger hunt that will apply to most towns",
+    "invitecode": "17.0407",
+    "numberofgroups": 3,
+    "groupids": [
+      "6604555a2713335ce969fbda",
+      "6604555a3c7292c3bdc28d20",
+      "6604555a8aff87ad616185d9"
+    ]
+  }
+]

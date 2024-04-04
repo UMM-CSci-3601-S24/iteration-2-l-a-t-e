@@ -28,7 +28,7 @@ export class HuntCardComponent {
 
   onPlayClick(event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/play-hunt', this.hunt._id]);
+    this.router.navigate(['/openhunts/new', this.hunt._id])
   }
   // onPlayClick(event: Event) {
   //   event.stopPropagation();
