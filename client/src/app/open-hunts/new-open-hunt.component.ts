@@ -143,7 +143,7 @@ export class NewOpenHuntComponent implements OnInit, OnDestroy {
           null,
           { duration: 2000 }
         )
-        //this.router.navigate([]); // Where the submit button should route to (the opened hunt)
+        this.router.navigate(['openhunts/',this.currentHuntId]); // Where the submit button should route to (the opened hunt)
 
 
       },
