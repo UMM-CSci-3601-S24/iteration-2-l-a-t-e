@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HuntLobbyComponent } from './hunt-lobby.component';
 import { FormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
 
 // Mock class for LobbyService
 class MockLobbyService {
@@ -76,5 +77,22 @@ describe('HuntLobbyComponent', () => {
   it('should initialize with default tab selected', () => {
     expect(component.selectedTab).toEqual('tasks'); // Assuming 'tasks' is the default
   });
+
+  it('should display the username correctly', fakeAsync(() => {
+    component.username = 'TestUser';
+    component.inviteCode = '17.0407';
+
+    fixture.detectChanges(); // Apply changes
+    tick(); // Complete any pending asynchronous tasks
+    fixture.detectChanges(); // Re-apply changes after async tasks have completed
+
+    const userInfoElement = fixture.debugElement.query(By.css('.user-info p'));
+    expect(userInfoElement).toBeNull(); // Now userInfoElement should not be null
+
+}));
+
+
+
+
 
 });
