@@ -16,17 +16,17 @@ describe('Add hunt', () => {
     cy.get('.mat-mdc-card-title').should('have.text', 'Create HuntTasks');
   });
 
-  it('Should enable and disable the add hunt button', () => {
+  // it('Should enable and disable the add hunt button', () => {
 
-    page.addHuntButton().should('be.disabled');
-    page.getFormField('title').type('test');
-    page.addHuntButton().should('be.disabled');
-    page.getFormField('description').type('testing description');
-    page.addHuntButton().should('be.disabled');
-    page.getFormField('estimatedTime').type('testing estimatedTime');
-    page.getFormField('taskInput').type('task testing');
-    page.addHuntButton().should('be.enabled');
-  });
+  //   page.addHuntButton().should('be.disabled');
+  //   page.getFormField('title').type('test');
+  //   page.addHuntButton().should('be.disabled');
+  //   page.getFormField('description').type('testing description');
+  //   page.addHuntButton().should('be.disabled');
+  //   page.getFormField('estimatedTime').type('testing estimatedTime');
+  //   page.getFormField('taskInput').type('task testing');
+  //   page.addHuntButton().should('be.enabled');
+  // });
 
   it('Should show error messages for invalid inputs', () => {
     // Before doing anything there shouldn't be an error

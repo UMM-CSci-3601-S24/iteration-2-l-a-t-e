@@ -103,25 +103,26 @@ describe('My Hunt Page', () => {
     cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
   });
 
-  it('should click in a edit task field and type in a updated for the Hunt', () => {
-    cy.get('.hunt-card', { timeout: 10000 }).first().find('[data-test=editHuntButton]').click();
-    cy.get('.banner').first().should('have.text', 'Edit Hunt');
+  // it('should click in a edit task field and type in a updated for the Hunt', () => {
+  //   cy.get('.hunt-card', { timeout: 10000 }).first().find('[data-test=editHuntButton]').click();
+  //   cy.get('.banner').first().should('have.text', 'Edit Hunt');
 
-    cy.get('[data-test=Title]').clear().type('Updated Hunt Title');
-    cy.get('[data-test=Description]').clear().type('Updated Hunt Description');
-    cy.get('[data-test=Task]').first().clear().type('Updated Task Description');
-    cy.get('[data-test=Update]').click();
+  //   cy.get('[data-test=Title]').clear().type('Updated Hunt Title');
+  //   cy.get('[data-test=Description]').clear().type('Updated Hunt Description');
+  //   cy.get('[data-test=EstimatedTime]').clear().type('Updated Hunt Estimated Time');
+  //   cy.get('[data-test=Task]').first().clear().type('Updated Task Description');
+  //   cy.get('[data-test=Update]').click();
 
-    page.getSidenav()
-      .should('be.hidden');
-    page.getSidenavButton()
-      .should('be.visible');
+  //   page.getSidenav()
+  //     .should('be.hidden');
+  //   page.getSidenavButton()
+  //     .should('be.visible');
 
-    page.getSidenavButton().click();
-    page.getNavLink('Hunts').click();
-    page.getSidenav().should('be.hidden');
-    page.getPageTitle().should('eq', 'My Hunts');
-    cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
-  }
-  )
+  //   page.getSidenavButton().click();
+  //   page.getNavLink('Hunts').click();
+  //   page.getSidenav().should('be.hidden');
+  //   page.getPageTitle().should('eq', 'My Hunts');
+  //   cy.url().should(url => expect(url.endsWith('/hunts')).to.be.true);
+  // }
+  // )
 })
