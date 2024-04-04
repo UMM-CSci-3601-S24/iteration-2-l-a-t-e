@@ -14,18 +14,21 @@ describe('HuntService', () => {
       hostid: 'chris',
       title: 'Chris\'s Hunt',
       description: 'Chris\'s test hunt',
+      estimatedTime: 45
     },
     {
       _id: 'hunt2_id',
       hostid: 'pat',
       title: 'Pat\'s Hunt',
       description: 'Pat\'s test hunt',
+      estimatedTime: 60
     },
     {
       _id: 'hunt3_id',
       hostid: 'jamie',
       title: 'Jamie\'s Hunt',
       description: 'Jamie\'s test hunt',
+      estimatedTime: 120
     }
   ];
   let huntService: HuntService;
@@ -178,6 +181,7 @@ describe('HuntService', () => {
           hostid: 'new_host',
           title: 'New Hunt',
           description: 'New hunt description',
+          estimatedTime: 60
         };
         service.addHunt(newHunt).subscribe(id => {
           expect(id).toBe(newHunt._id);

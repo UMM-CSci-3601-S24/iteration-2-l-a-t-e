@@ -5,7 +5,8 @@
     },
     "hostid": "kk",
     "title": "Morris Campus Hunt",
-    "description": "This is a scavenger hunt that allows hunter to explore the campus of the University of Minnesota, Morris"
+    "description": "This is a scavenger hunt that allows hunter to explore the campus of the University of Minnesota, Morris",
+    "estimatedTime": "30"
   },
   {
     "_id": {
@@ -13,7 +14,8 @@
     },
     "hostid": "generic",
     "title": "Generic-Classic",
-    "description": "This is a classic scavenger hunt that will apply to most towns"
+    "description": "This is a classic scavenger hunt that will apply to most towns",
+    "estimatedTime": "60"
   },
   {
     "_id": {
@@ -21,7 +23,8 @@
     },
     "hostid": "generic",
     "title": "Generic-Nature",
-    "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild"
+    "description": "This is a nature-themed scavenger hunt that will take hunters out into the wild",
+    "estimatedTime": "120"
   },
   {
     "_id": {
@@ -29,6 +32,7 @@
     },
     "hostid": "generic",
     "title": "Generic-College",
-    "description": "This is a scavenger hunt that will allow hunters to explore a college campus"
+    "description": "This is a scavenger hunt that will allow hunters to explore a college campus",
+    "estimatedTime": "240"
   }
  ]

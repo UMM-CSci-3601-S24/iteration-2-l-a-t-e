@@ -148,7 +148,6 @@ public class OpenHuntController implements Controller {
         i++;
       }
       System.err.println("openhunt " + openHunt.title);
-      System.err.println("openhunt group name" + openHunt.groups[2].groupName);
     }
 
     } catch (IllegalArgumentException e) {

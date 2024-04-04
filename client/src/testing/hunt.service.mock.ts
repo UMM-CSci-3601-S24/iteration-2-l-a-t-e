@@ -15,18 +15,21 @@ export class MockHuntService extends HuntService {
       hostid: 'chris',
       title: 'Chris\'s Hunt',
       description: 'Chris\'s test hunt',
+      estimatedTime: 60
     },
     {
       _id: 'hunt2_id',
       hostid: 'pat',
       title: 'Pat\'s Hunt',
       description: 'Pat\'s test hunt',
+      estimatedTime: 30
     },
     {
       _id: 'hunt3_id',
       hostid: 'jamie',
       title: 'Jamie\'s Hunt',
       description: 'Jamie\'s test hunt',
+      estimatedTime: 15
     }
   ];
 
@@ -59,6 +62,7 @@ export class MockHuntService extends HuntService {
       hostid: huntDetails.hostid,
       title: huntDetails.title,
       description: huntDetails.description,
+      estimatedTime: huntDetails.estimatedTime
     };
     MockHuntService.testHunts.push(newHunt);
 

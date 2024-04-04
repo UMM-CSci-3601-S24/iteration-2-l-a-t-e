@@ -18,6 +18,7 @@ export class HuntCardComponent {
   @Input() hunt: Hunt;
   @Input() simple?: boolean = false;
   @Input() editable: boolean = true;
+  math = Math;
 
   constructor(private router: Router, private huntService: HuntService) { }
 
@@ -29,6 +30,10 @@ export class HuntCardComponent {
     event.stopPropagation();
     this.router.navigate(['/openhunts/new', this.hunt._id])
   }
+  // onPlayClick(event: Event) {
+  //   event.stopPropagation();
+  //   // Navigate to play hunt
+  // }
 
   onEditClick(event: Event) {
     event.stopPropagation();
