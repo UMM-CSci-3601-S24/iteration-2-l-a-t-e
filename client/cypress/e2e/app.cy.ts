@@ -11,7 +11,7 @@ describe('App', () => {
   beforeEach(() => page.navigateTo());
 
   it('Should have the correct title', () => {
-    page.getAppTitle().should('contain', 'Scav-a-Snap - By AKA');
+    page.getAppTitle().should('contain', 'Scav-a-Snap - By Team L.A.T.E.');
   });
 
   it('The sidenav should open, navigate to "Hunts" and back to "Home"', () => {
