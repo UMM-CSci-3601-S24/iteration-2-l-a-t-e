@@ -1,0 +1,25 @@
+@if(this.openHunt) {
+<div class="flex-row">
+  <div class="flex-1">
+    <div class="banner">
+      <div class="label">{{openHunt.title}}</div>
+      <br>
+      <div class="description">{{openHunt.description}}</div>
+
+      <br><br><br>
+
+      <div class="description">
+        @for(group of openHunt.groups ; track group._id) {
+          <p>{{group.groupName}}:
+            @for (hunter of group.hunters ; track hunter._id) {
+                {{hunter.hunterName}} &nbsp;
+            }
+          </p>
+        }
+      </div>
+    </div>
+
+
+  </div>
+</div>
+}

@@ -6,6 +6,8 @@ import { HuntProfileComponent } from './hunts/hunt-profile.component';
 import { TaskListComponent } from './hunts/task-list.component';
 import { HuntEditComponent } from './hunts/edit.component';
 import { AddHuntComponent } from './hunts/add-hunt.component';
+import { OpenHuntComponent } from './open-hunts/open-hunt.component';
+import { NewOpenHuntComponent } from './open-hunts/new-open-hunt.component';
 import { HuntLobbyComponent } from './hunts/hunt-lobby.component';
 import { LoginComponent } from './login/login.component';
 
@@ -30,7 +32,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'hunt-list', component: HuntListComponent },
-  {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'}
+  {path: 'tasks/:id', component: TaskListComponent, title: 'Single Task'},
+  {path: 'openhunts/new/:id', component: NewOpenHuntComponent, title: 'Hunt'}, // id for coresponing hunt, not openhunt id.
+  {path: 'openhunts/:id', component: OpenHuntComponent, title: 'Hunt'} // openhunt id.
 
 ];
 
