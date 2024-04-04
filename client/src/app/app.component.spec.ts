@@ -22,9 +22,7 @@ describe('AppComponent', () => {
         MatCardModule,
         MatListModule,
       ],
-      declarations: [
-        AppComponent // Correct place for AppComponent
-      ],
+
     }).compileComponents();
   }));
 

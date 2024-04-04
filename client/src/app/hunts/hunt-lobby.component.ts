@@ -19,7 +19,7 @@ export class HuntLobbyComponent implements OnInit {
   lobbies: Lobby[] = [];
   inviteCode: string;
   lobby: Lobby;
-  errorMessage: string;
+  errorMessage: string = '';
   searchedLobby: null;
   username: string;
   taskList: Task[];
@@ -57,12 +57,15 @@ export class HuntLobbyComponent implements OnInit {
             }
             else
             {
+              this.errorMessage = 'Failed to fetch lobby details or Lobby not found.';
+              console.error(this.errorMessage);
               this.router.navigate(['']);
             }
 
           },
           error => {
-            console.error('Failed to retrieve open hunt by invite code', error);
+            this.errorMessage = 'Failed to retrieve open hunt by invite code';
+            console.error(this.errorMessage, error);
           }
         );
 
@@ -70,6 +73,8 @@ export class HuntLobbyComponent implements OnInit {
     }
     else
     {
+      this.errorMessage = 'Please enter a valid invite code.';
+      console.error(this.errorMessage);
       this.router.navigate(['']);
     }
 }

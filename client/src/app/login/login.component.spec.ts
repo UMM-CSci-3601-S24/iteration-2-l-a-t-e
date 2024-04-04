@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { HuntListComponent } from '../hunts/hunt-list.component';
 //import { HostComponent } from '../host/host.component';
 
 describe('LoginComponent', () => {
@@ -15,7 +16,7 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent, HttpClientTestingModule,
         RouterTestingModule.withRoutes([
-
+          { path: 'hunt-list', component: HuntListComponent }
       ])]
     })
     .compileComponents();
@@ -36,7 +37,7 @@ describe('LoginComponent', () => {
     fixture.ngZone.run(() => {
     component.sendToHost();
     tick();
-    expect(location.path()).toBe('/host')
+    expect(location.path()).toBe('/hunt-list')
     flush();
   });
   }));
